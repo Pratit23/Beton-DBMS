@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "chart.js": "^2.9.4",
     "firebase": "^8.1.1",
+    "globe.gl": "^2.15.1",
     "materialize-css": "^1.0.0-rc.2",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",

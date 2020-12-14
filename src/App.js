@@ -1,10 +1,11 @@
 import React from 'react';
+import Globe from './components/Globe/Globe';
 
 
 function App() {
   return (
     <div className="App">
-        Hello
+        <Globe />
     </div>
   );
 }
