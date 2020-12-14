@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Globe from 'globe.gl';
-import Dataset from './datasets/world_population.csv'
+import Dataset from './datasets/india_test.csv'
 
 const GlobeJS = () => {
     useEffect(() => {
