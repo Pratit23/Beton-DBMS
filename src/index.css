@@ -65,7 +65,7 @@ aside nav button.active {
 
 aside nav button:hover, aside nav button:active, aside nav button:focus{
   background: black !important;
-  --c-background: white !important;
+  --c-background: lightgray !important;
   --icon-fill: #1DA1F2;
   --c-color: black;
   color: black;
