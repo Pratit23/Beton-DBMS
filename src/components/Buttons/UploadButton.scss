@@ -1,0 +1,114 @@
+.publish-button {
+    --color: #fff;
+    --icon-color: #fff;
+    --background-default: #0376FF;
+    //
+    --text-normal-o: 1;
+    --text-normal-y: 0px;
+    --text-progress-o: 0;
+    --text-progress-y: -8px;
+    --text-done-o: 0;
+    --text-done-y: -8px;
+    --icon-arrow-offset: 0px;
+    --icon-arrow-y: 0px;
+    --icon-cloud-y: 0px;
+    --icon-tick-offset: 11px;
+    --icon-line-offset: 21px;
+    --icon-circle-scale: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: none;
+    outline: none;
+    border: none;
+    background: none;
+    padding: 10px 20px 10px 12px;
+    border-radius: 9px;
+    overflow: hidden;
+    margin: 0;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    color: var(--color);
+    background: var(--background, var(--background-default));
+    .icon {
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+        position: relative;
+        margin-right: 8px;
+        &:before {
+            content: '';
+            position: absolute;
+            left: 1px;
+            top: 1px;
+            right: 1px;
+            bottom: 1px;
+            opacity: .25;
+            border-radius: 50%;
+            background: var(--icon-color);
+            transform: scale(var(--icon-circle-scale)) translateZ(0);
+        }
+        svg {
+            display: block;
+            width: 20px;
+            height: 24px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            &.cloud {
+                fill: var(--icon-color);
+                fill-opacity: .25;
+                transform: translateY(var(--icon-cloud-y)) translateZ(0);
+            }
+            &:not(.cloud) {
+                fill: none;
+                stroke: var(--icon-color);
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                path {
+                    &.line-pub,
+                    &.arrow-pub {
+                        transform: translateY(var(--icon-arrow-y)) translateZ(0);
+                    }
+                    &.line-pub {
+                        stroke-dasharray: 13px;
+                        stroke-dashoffset: var(--icon-line-offset);
+                    }
+                    &.arrow-pub {
+                        stroke-dasharray: 4px;
+                        stroke-dashoffset: var(--icon-arrow-offset);
+                    }
+                    &.tick-pub {
+                        stroke-dasharray: 11px;
+                        stroke-dashoffset: var(--icon-tick-offset);
+                    }
+                }
+            }
+        }
+    }
+    .text {
+        position: relative;
+        span {
+            display: block;
+            opacity: var(--o, var(--text-normal-o));
+            transform: translateY(var(--y, var(--text-normal-y))) translateZ(0);
+            &:not(.normal) {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            &.progress {
+                --o: var(--text-progress-o);
+                --y: var(--text-progress-y);
+            }
+            &.done {
+                --o: var(--text-done-o);
+                --y: var(--text-done-y);
+            }
+        }
+    }
+}
