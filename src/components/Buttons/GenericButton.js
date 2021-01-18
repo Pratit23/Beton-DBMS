@@ -2,10 +2,10 @@ import React from 'react';
 import './GenericButton.scss';
 import { NavLink } from 'react-router-dom'
 
-const GenericButton = ({ text, id }) => {
+const GenericButton = ({ text, id, link }) => {
     return (
         <>
-            <NavLink to="/homepage">
+            <NavLink to={`/${link}`}>
                 <div className="last" id={id}>
                     <button className="generic-btn">
                         <span>{text}</span>

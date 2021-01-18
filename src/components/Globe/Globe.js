@@ -77,7 +77,7 @@ const GlobeJS = () => {
                         Beton helps people raise their concerns to help make India into a better place.
                         Be the change!
                     </h6>
-                    <GenericButton text="Get Started" id="CTA" />
+                    <GenericButton text="Get Started" id="CTA" link="homepage" />
                 </div>
             </div>
             <div id="globeViz" className="col s12 m7" style={{ position: "relative", left: "-150px" }}></div>
