@@ -55,6 +55,7 @@ const ReportPage = () => {
 
     const confirmation = () => {
         alert("Do you agree that the picture uploaded solely belongs to you?")
+        identify()
         next()
     }
 
@@ -70,7 +71,7 @@ const ReportPage = () => {
     const nextPress = {
         initial: { text: 'Upload', action: () => { handleUpload() } },
         ready: { text: 'Confirm', action: confirmation },
-        classifying: { text: 'Identifying', action: identify },
+        classifying: { text: 'Identifying', action: ()=>next() },
         complete: { text: 'Report', action: () => { } },
     }
 
