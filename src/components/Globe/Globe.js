@@ -3,7 +3,8 @@ import Globe from 'globe.gl';
 import Dataset from './datasets/ne_110m_admin_0_countries.geojson';
 import DatasetCSV from'./datasets/india_test.csv';
 import MapImage from '../../images/mapImage.jpg';
-import LandingButton from '../Buttons/LandingButton';
+// import LandingButton from '../Buttons/LandingButton';
+import GenericButton from '../Buttons/GenericButton';
 
 const GlobeJS = () => {
     const OPACITY = 0.1;
@@ -67,13 +68,19 @@ const GlobeJS = () => {
     }, []);
 
     return (
-        <div id="globeWrapper" className="row valign-wrapper" style={{overflow: "hidden", background: "#000011", marginBottom: "0"}} >
-            <div id="intro" className="col s12 m3" style={{ marginBottom: "80px" }}>
-                <h1 className="white-text right-align">Beton</h1>
-                <h6 className="white-text right-align">Some catchy headline here...</h6>
-                <LandingButton />
+        <div id="globeWrapper" className="row" style={{overflow: "hidden", background: "#000011", marginBottom: "0"}} >
+            <div id="intro" className="col s12 m5 valign-wrapper" style={{ zIndex: "2", height: "100vh", position: "relative" }}>
+                <div id="homeMotto">
+                    <h2 className="white-text right-align">Beton</h2>
+                    <h4 className="white-text right-align">Be the change you wan't to see</h4>
+                    <h6 className="white-text right-align">
+                        Beton helps people raise their concerns to help make India into a better place.
+                        Be the change!
+                    </h6>
+                    <GenericButton text="Get Started" id="CTA" />
+                </div>
             </div>
-            <div id="globeViz" className="col s12 m9"></div>
+            <div id="globeViz" className="col s12 m7" style={{ position: "relative", left: "-150px" }}></div>
         </div>
     )
 }

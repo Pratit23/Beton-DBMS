@@ -1,32 +1,28 @@
-import React from 'react'
+import React from 'react';
+import './GenericButton.scss';
 
-const GenericButton = () => {
+const GenericButton = ({ text, id }) => {
     return (
         <>
-            
-
-        <div class="last">
-
-            <button class="btn">
-                <span>Submit</span>
-                <svg preserveAspectRatio="none" viewBox="0 0 132 45">
-                    <g clip-path="url(#clip)" filter="url(#goo-big)">
-                        <circle class="top-left" cx="49.5" cy="-0.5" r="26.5" />
-                        <circle class="middle-bottom" cx="70.5" cy="40.5" r="26.5" />
-                        <circle class="top-right" cx="104" cy="6.5" r="27" />
-                        <circle class="right-bottom" cx="123.5" cy="36.5" r="26.5" />
-                        <circle class="left-bottom" cx="16.5" cy="28" r="30" />
-                    </g>
-                    <defs>
-                        <clipPath id="clip">
-                            <rect width="132" height="45" rx="7" />
-                        </clipPath>
-                    </defs>
-                </svg>
-            </button>
-
+        <div className="last" id={id}>
+            <button className="generic-btn">
+                <span>{text}</span>
+                    <svg preserveAspectRatio="none" viewBox="0 0 132 45">
+                        <g clip-path="url(#clip)" filter="url(#goo-big)">
+                            <circle className="top-left" cx="49.5" cy="-0.5" r="26.5" />
+                            <circle className="middle-bottom" cx="70.5" cy="40.5" r="26.5" />
+                            <circle className="top-right" cx="104" cy="6.5" r="27" />
+                            <circle className="right-bottom" cx="123.5" cy="36.5" r="26.5" />
+                            <circle className="left-bottom" cx="16.5" cy="28" r="30" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip">
+                                <rect width="132" height="45" rx="7" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </button>
             </div>
-
             <svg width="0" height="0">
                 <defs>
                     <filter id="goo" x="-50%" width="200%" y="-50%" height="200%" color-interpolation-filters="sRGB">

@@ -10,6 +10,28 @@ body, html, #root {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media only screen and (max-width: 660px){
+  #globeViz{
+    left: 0 !important;
+  }
+  #intro{
+    height: max-content !important;
+    margin: 20px 0;
+  }
+  #homeMotto *{
+    text-align: center !important;
+  }
+}
+
+#CTA{
+  width: max-content;
+}
+
+#CTA button{
+  width: 169px;
+  font-size: 17px;
+}
+
 /*=================SIDENAV================*/
 aside nav button:hover, aside nav button:active, aside nav button:focus{
   background: black !important;
