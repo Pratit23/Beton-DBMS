@@ -1,6 +1,7 @@
 import React from 'react';
 import Globe from '../../Globe/Globe';
 import WhatTheyDo from './WhatTheyDo';
+import Features from './Features.js';
 
 const LandingPage = () => {
 
@@ -13,18 +14,14 @@ const LandingPage = () => {
                 </path>
             </svg>
 
-            {/* what we do */}
+            {/* what they do */}
             <WhatTheyDo />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style={{ marginBottom: "-10px" }}>
               <path fill="#E63946" fill-opacity="1" d="M0,64L1440,160L1440,320L0,320Z"></path>
             </svg>
-            <div className="section" style={{ backgroundColor: "#E63946" }} >
-              <div className="container white" style={{ borderRadius: "24px" }}>
-                <div className="row">
 
-                </div>
-              </div>
-            </div>
+            {/* features maybe? */}
+            <Features />
         </div>
     )
 }
