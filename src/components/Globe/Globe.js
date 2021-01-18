@@ -70,7 +70,7 @@ const GlobeJS = () => {
     return (
         <div id="globeWrapper" className="row" style={{overflow: "hidden", background: "#000011", marginBottom: "0"}} >
             <div id="intro" className="col s12 m5 valign-wrapper" style={{ zIndex: "2", height: "100vh", position: "relative" }}>
-                <div id="homeMotto">
+                <div id="homeMotto" style={{ paddingLeft: "20px" }}>
                     <h2 className="white-text right-align">Beton</h2>
                     <h4 className="white-text right-align">Be the change you wan't to see</h4>
                     <h6 className="white-text right-align">
