@@ -4,7 +4,13 @@
   display: block;
   width: 23em;
   margin: 0 auto;
-  margin-top: 4em;
+  margin-top: 0;
+}
+
+@media only screen and (max-width: 660px){
+  #yoda-body svg{
+    margin-right: auto;
+  }
 }
 
 #yoda-body .closed-eyes {

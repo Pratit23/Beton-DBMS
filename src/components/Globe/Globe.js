@@ -5,13 +5,15 @@ import DatasetCSV from'./datasets/india_test.csv';
 import MapImage from '../../images/mapImage.jpg';
 // import LandingButton from '../Buttons/LandingButton';
 import GenericButton from '../Buttons/GenericButton';
+import * as d3 from 'd3';
+import 'd3-dsv';
 
 const GlobeJS = () => {
     const OPACITY = 0.1;
     useEffect(() => {
         window.$(document).ready(function () {
 
-            const weightColor = window.d3.scaleSequentialSqrt(window.d3.interpolateYlOrRd)
+            const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
                 .domain([0, 1e7]);
 
             // globe 1 - hexed one
@@ -43,7 +45,7 @@ const GlobeJS = () => {
             // globe 2 - lines one
             var world;
             fetch(DatasetCSV).then(res => res.text())
-            .then(csv => {console.log("csv:", csv); return window.d3.csvParse(csv, ({ lat, lng, pop }) => ({ lat: +lat, lng: +lng, pop: +pop }))})
+            .then(csv => {console.log("csv:", csv); return d3.csvParse(csv, ({ lat, lng, pop }) => ({ lat: +lat, lng: +lng, pop: +pop }))})
             .then(data => {
                     world = Globe()
                         (document.getElementById('globeViz'))

@@ -13,6 +13,8 @@
     "@testing-library/user-event": "^12.1.10",
     "chart.js": "^2.9.4",
     "cloudinary-react": "^1.6.8",
+    "d3": "^6.3.1",
+    "d3-dsv": "^2.0.0",
     "firebase": "^8.1.1",
     "framer-motion": "^3.2.1",
     "globe.gl": "^2.15.1",

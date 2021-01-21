@@ -16,7 +16,12 @@ body, html, #root {
   margin-right: 15px;
 }
 
-#CTA button{
+#CTA2{
+  width: max-content;
+  margin: 0 auto;
+}
+
+#CTA button, #CTA2 button{
   width: 169px;
   font-size: 17px;
 }
