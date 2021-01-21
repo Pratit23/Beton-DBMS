@@ -17,6 +17,7 @@
     "framer-motion": "^3.2.1",
     "globe.gl": "^2.15.1",
     "google-map-react": "^2.1.9",
+    "gsap": "^3.6.0",
     "material-ui": "^0.20.2",
     "materialize-css": "^1.0.0-rc.2",
     "mdi-material-ui": "^6.21.0",

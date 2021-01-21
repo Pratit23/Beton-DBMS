@@ -10,6 +10,17 @@ body, html, #root {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#CTA{
+  width: max-content;
+  margin: 20px auto;
+  margin-right: 15px;
+}
+
+#CTA button{
+  width: 169px;
+  font-size: 17px;
+}
+
 @media only screen and (max-width: 660px){
   #globeViz{
     left: 0 !important;
@@ -24,17 +35,13 @@ body, html, #root {
   #homeMotto *{
     text-align: center !important;
   }
+  #CTA{
+    margin-right: auto !important ;
+  }
 }
 
-#CTA{
-  width: max-content;
-  margin: 20px auto;
-  margin-right: 15px;
-}
-
-#CTA button{
-  width: 169px;
-  font-size: 17px;
+button.button-spam:focus{
+  background-color: #2B3044 !important;
 }
 
 /*=================SIDENAV================*/

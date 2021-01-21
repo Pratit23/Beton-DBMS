@@ -1,0 +1,22 @@
+svg.svggs {
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+    visibility: hidden;
+}
+  
+#btn,
+#replay {
+    margin: 20px auto;
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    fill: #0E979F;
+}
+#pista {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import Intro from '../../../images/intro.gif';
 import Voice from '../../../images/astronaut.png';
+import AboutUsGlobe from './Interactive/AboutUsGlobe';
 
 
 const WhatTheyDo = () => {
@@ -8,13 +9,13 @@ const WhatTheyDo = () => {
         <div className="section">
             <div className="container" style={{ borderRadius: "24px", backgroundColor: "#f3eddf", width: "85%" }}>
                 <div className="row" style={{ paddingTop: "20px" }}>
-                    <div className="col s12 m5">
-                        <img src={Intro} alt="What we do..."
-                            style={{ width: "100%", height: "auto", borderRadius: "24px" }}
-                        />
-                    </div>
-                    <div className="col s12 m7">
+                    <div className="col s12 center-align">
                         <h4>What we do?</h4>
+                    </div>
+                    <div className="col s12 m6">
+                        <AboutUsGlobe />
+                    </div>
+                    <div className="col s12 m6">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.              </p>
                     </div>
