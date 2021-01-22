@@ -2,12 +2,15 @@ import React, { useEffect, useState, useReducer } from 'react'
 import Sidenav from '../Layouts/Sidenav';
 import UploadButton from '../Buttons/UploadButton'
 import { stateMachine, reducer } from '../Processing/StateMachine'
-import * as mobilenet from '@tensorflow-models/mobilenet'
-import * as tf from '@tensorflow/tfjs'
+//import * as mobilenet from '@tensorflow-models/mobilenet'
+import * as tf from '@tensorflow/tfjs-core'
+import LoadingButton from '../Buttons/LoadingButton'
+import LoadingButtonComplete from '../Buttons/LoadingButtonComplete'
+import * as ml5 from "ml5";
+
+let classifier;
 
 const ReportPage = () => {
-
-    tf.setBackend("cpu");
 
     const [image, setImage] = useState(null)
     const [mainImage, setMainImage] = useState(null)
@@ -15,6 +18,9 @@ const ReportPage = () => {
     const [state, dispatch] = useReducer(reducer, stateMachine.initial)
     const [model, setModel] = useState(null)
     const [results, setResults] = useState([])
+    const [upCheck, setUpCheck] = useState(false)
+    const [predictions, setPredictions] = useState([])
+    const [verifyCheck, setVerifyCheck] = useState(false)
 
     const next = () => dispatch('next')
 
@@ -42,10 +48,11 @@ const ReportPage = () => {
             console.log(data.url);
             setUrl(data.url)
             console.log("Photo uploaded")
+            setUpCheck(true)
         }).then(async () => {
-            const mobileNetModel = await mobilenet.load()
-            setModel(mobileNetModel)
-            console.log("Model loaded")
+            // const mobileNetModel = await mobilenet.load()
+            // setModel(mobileNetModel)
+            // console.log("Model loaded")
         }).catch(err => {
             console.log(err);
             return err
@@ -60,18 +67,35 @@ const ReportPage = () => {
     }
 
     const identify = async () => {
-        console.log("Image inside identify: ", mainImage)
         const img = document.getElementById('img');
-        console.log("Img: ", img)
-        const results = await model.classify(img)
-        console.log("Results: ", results)
+        classifier = ml5.imageClassifier('./model/model.json', modelLoaded);
+
+        function modelLoaded() {
+            console.log('Model Loaded!');
+        }
+
+        classifier.classify(img, 5, function (err, results) {
+            // Return the results
+            console.log("Results: ", results)
+            return results;
+        }).then((results) => {
+            // Set the predictions in the state
+            setPredictions(results)
+            console.log("Results: ", results)
+        }).catch((err) => {
+            console.log("Error: ", err)
+        })
+
+        // classifier.classify(document.getElementById('img'), (err, results) => {
+        //     console.log("Plis work: ", results);
+        //   });
         next()
     }
 
     const nextPress = {
         initial: { text: 'Upload', action: () => { handleUpload() } },
         ready: { text: 'Confirm', action: confirmation },
-        classifying: { text: 'Identifying', action: ()=>next() },
+        classifying: { text: 'Identifying', action: () => next() },
         complete: { text: 'Report', action: () => { } },
     }
 
@@ -79,6 +103,7 @@ const ReportPage = () => {
     useEffect(() => {
         console.log("Report Page UseEffect Working")
     }, [image])
+
 
     return (
         <div className="row">
@@ -118,10 +143,26 @@ const ReportPage = () => {
                     <div className="col s4">
                         <h3>STEPS</h3>
                         <h5>Upload a picture</h5>
+                        {
+                            upCheck ? <LoadingButtonComplete /> : <LoadingButton />
+                        }
                         <h5>Verfying picture</h5>
+                        {
+                            verifyCheck ? <LoadingButtonComplete /> : <LoadingButton />
+                        }
                         <h5>Select Location</h5>
                         <h5>Your Details</h5>
                         <h5>Submit</h5>
+                        {
+                            predictions && predictions.length > 0 ?
+                                predictions.map((pred, i) => {
+                                    let { className, probability } = pred;
+                                    probability = Math.floor(probability * 10000) / 100 + "%";
+                                    return (
+                                        <div key={i + ""}>{i + 1}. Prediction: { className} at { probability} </div>
+                                    )
+                                }) : null
+                        }
                     </div>
                 </div>
             </div>
