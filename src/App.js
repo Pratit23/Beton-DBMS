@@ -4,6 +4,7 @@ import Homepage from './components/Layouts/Homepage.js'
 import LandingPage from './components/Layouts/Landing/LandingPage'
 import Cluster from './components/Layouts/Cluster'
 import ReportPage from './components/Layouts/ReportPage'
+import TestFile from './components/Layouts/TestFille'
 
 const App = (props) => {
 
@@ -15,6 +16,7 @@ const App = (props) => {
         <Route exact path='/Homepage' component={Homepage} />
         <Route exact path='/Cluster' component={Cluster} />
         <Route exact path='/ReportPage' component={ReportPage} />
+        <Route exact path='/Test' component={TestFile} />
       </Switch>
       </div>
     </BrowserRouter>
