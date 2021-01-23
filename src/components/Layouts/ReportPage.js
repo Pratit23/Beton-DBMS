@@ -9,7 +9,7 @@ import MainMap from '../Maps/MainMap'
 import Spinner from '../Buttons/Spinner'
 
 let classifier;
-let coords = ''
+let coords = '';
 
 const ReportPage = () => {
 
@@ -17,19 +17,15 @@ const ReportPage = () => {
     const [mainImage, setMainImage] = useState(null)
     const [mlImage, setMlImage] = useState(null)
     const [url, setUrl] = useState('')
+    const [predictions, setPredictions] = useState(null)
     const [state, dispatch] = useReducer(reducer, stateMachine.initial)
-    const [model, setModel] = useState(null)
-    const [results, setResults] = useState([])
-    const [upCheck, setUpCheck] = useState(false)
-    const [predictions, setPredictions] = useState([])
-    const [verifyCheck, setVerifyCheck] = useState(false)
-    const [locationCheck, setLocationCheck] = useState(false)
+
 
     const next = () => dispatch('next')
 
     const getCoords = (coord) => {
         console.log("Check this: ", coord)
-        // setCoords(coord)
+        coords = coord
     }
 
     const handlePicture = (e) => {
@@ -57,7 +53,6 @@ const ReportPage = () => {
             console.log(data.url);
             setUrl(data.url)
             console.log("Photo uploaded")
-            setUpCheck(true)
             if(document.querySelector('.upload')){
                 document.querySelector('.upload').dispatchEvent(new CustomEvent("toggle"));
             }
@@ -92,7 +87,6 @@ const ReportPage = () => {
         }).then((results) => {
             // Set the predictions in the state
             setPredictions(results)
-            setVerifyCheck(true)
             console.log("Results: ", results)
             if(document.querySelector('.verify')){
                 console.log("in verify biach")
@@ -111,7 +105,7 @@ const ReportPage = () => {
     }
 
     const selectLocation = () => {
-        console.log("Select location is called")
+        console.log("Selected location: ", coords)
         if(document.querySelector('.location')){
             document.querySelector('.location').dispatchEvent(new CustomEvent("toggle"));
         }
