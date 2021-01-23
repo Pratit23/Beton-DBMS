@@ -10,7 +10,7 @@ const Homepage = () => {
                     <Sidenav />
                 </div>
                 <div className="col s9" style={{ padding: "0" }}>
-                    <MainMap />
+                    {/*<MainMap />*/}
                 </div>
             </div>
         </div>

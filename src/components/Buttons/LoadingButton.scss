@@ -8,7 +8,6 @@ $check-thickness: 3px;
 $check-color: $brand-success;
 
 .circle-loader {
-  margin-bottom: $loader-size/2;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-left-color: $check-color;
   animation: loader-spin 1.2s infinite linear;
@@ -16,8 +15,9 @@ $check-color: $brand-success;
   display: inline-block;
   vertical-align: top;
   border-radius: 50%;
-  width: $loader-size;
-  height: $loader-size;
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
 }
 
 .load-complete {
@@ -39,15 +39,15 @@ $check-color: $brand-success;
   
   &:after {
     opacity: 1;
-    height: $check-height;
-    width: $check-width;
+    height: 18px;
+    width: 9px;
     transform-origin: left top;
-    border-right: $check-thickness solid $check-color;
-    border-top: $check-thickness solid $check-color;
+    border-right: 3px solid #5cb85c;
+    border-top: 3px solid #5cb85c;
     content: '';
-    left: $check-left;
-    top: $check-height;
     position: absolute;
+    top: 14px;
+    left: 2px;
   }
 }
 
@@ -68,17 +68,17 @@ $check-color: $brand-success;
   }
   20% {
     height: 0;
-    width: $check-width;
+    width: 9px;
     opacity: 1;
   }
   40% {
-    height: $check-height;
-    width: $check-width;
+    height: 18px;
+    width: 9px;
     opacity: 1;
   }
   100% {
-    height: $check-height;
-    width: $check-width;
+    height: 18px;
+    width: 9px;
     opacity: 1;
   }
 }

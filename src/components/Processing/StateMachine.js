@@ -4,9 +4,10 @@ const stateMachine = {
     initial: 'initial',
     states : {
         initial: { on: { next: 'ready'} },
-        ready: { on: { next: 'classifying'}, showImage: true},
-        classifying: { on: { next: 'complete'} },
-        complete: { on: { next: 'awaitingUpload'}, showImage: true},
+        ready: { on: { next: 'classifying'}},
+        classifying: { on: { next: 'location'} },
+        location: { on: { next: 'complete'} },
+        complete: { on: { next: 'awaitingUpload'}},
     }
 }
 

@@ -4,7 +4,7 @@ import { compose, withStateHandlers } from 'recompose'
 
 
 
-const MapContainer = () => {
+const MapContainer = ({ getCoords }) => {
 
   var coords = [0, 0]
   var zoomLevel = 10
@@ -29,7 +29,7 @@ const MapContainer = () => {
       if (props.markerPosition && props.markerPosition.lat() && props.markerPosition.lng()) {
         coords = [props.markerPosition.lat(), props.markerPosition.lng()]
       }
-      console.log(coords)
+      getCoords(coords)
       return (
         <GoogleMap
           defaultZoom={zoomLevel}
@@ -124,15 +124,6 @@ const MapContainer = () => {
       )
     }
     )
-
-
-  useEffect(() => {
-    window.$(document).ready(function () {
-      if(zoomLevel > 13) {
-
-      }
-    })
-  })
 
   return (
     <div style={{ height: '100%' }}>
