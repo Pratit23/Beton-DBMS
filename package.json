@@ -27,6 +27,7 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-chartjs-2": "^2.11.1",
     "react-dom": "^16.13.1",
+    "react-geocode": "^0.2.2",
     "react-google-maps": "^9.4.5",
     "react-materialize": "^3.9.6",
     "react-router-dom": "^5.2.0",

@@ -2,11 +2,10 @@ import React, { useEffect, useState, useReducer } from 'react'
 import Sidenav from '../Layouts/Sidenav';
 import UploadButton from '../Buttons/UploadButton'
 import { stateMachine, reducer } from '../Processing/StateMachine'
-import LoadingButton from '../Buttons/LoadingButton'
 import LoadingButtonComplete from '../Buttons/LoadingButtonComplete'
 import * as ml5 from "ml5";
 import MainMap from '../Maps/MainMap'
-import Spinner from '../Buttons/Spinner'
+import Geocode from "react-geocode";
 
 let classifier;
 let coords = '';
@@ -19,6 +18,12 @@ const ReportPage = () => {
     const [url, setUrl] = useState('')
     const [predictions, setPredictions] = useState(null)
     const [state, dispatch] = useReducer(reducer, stateMachine.initial)
+
+    // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+    Geocode.setApiKey("AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w");
+
+    // set response language. Defaults to english.
+    Geocode.setLanguage("en");
 
 
     const next = () => dispatch('next')
@@ -53,7 +58,7 @@ const ReportPage = () => {
             console.log(data.url);
             setUrl(data.url)
             console.log("Photo uploaded")
-            if(document.querySelector('.upload')){
+            if (document.querySelector('.upload')) {
                 document.querySelector('.upload').dispatchEvent(new CustomEvent("toggle"));
             }
         }).then(async () => {
@@ -79,7 +84,7 @@ const ReportPage = () => {
         function modelLoaded() {
             console.log('Model Loaded!');
         }
-        
+
         classifier.classify(mlImage, 5, function (err, results) {
             // Return the results
             console.log("Results:-- ", results)
@@ -88,10 +93,10 @@ const ReportPage = () => {
             // Set the predictions in the state
             setPredictions(results)
             console.log("Results: ", results)
-            if(document.querySelector('.verify')){
+            if (document.querySelector('.verify')) {
                 console.log("in verify biach")
                 document.querySelector('.verify').dispatchEvent(new CustomEvent("toggle"));
-            }else{
+            } else {
                 console.log("bruh")
             }
         }).catch((err) => {
@@ -106,12 +111,33 @@ const ReportPage = () => {
 
     const selectLocation = () => {
         console.log("Selected location: ", coords)
-        if(document.querySelector('.location')){
+        Geocode.fromLatLng(coords[0], coords[1]).then(
+            response => {
+                var address = response.results[0].formatted_address;
+                console.log("Address: ", address)
+                address = address.split(" " || ",")
+                console.log("Address array: ", address)
+                for (var i = 0; i < address.length; i++) {
+                    if (address[i] === 'Road' || address[i] === 'road' || address[i] === 'road,' || 
+                    address[i] === 'Road,' || address[i] === 'Mahamarg' || address[i] == 'marg', address[i] === 'Mahamarg,' || address[i] == 'marg,', address[i] === 'NH' || address[i] == 'SH'
+                    || address[i] === 'Rd' || address[i] == 'rd' || address[i] === 'Rd,' || address[i] == 'rd,'
+                    || address[i] === 'Highway' || address[i] == 'highway' || address[i] === 'Highway,' || address[i] == 'highway,') {
+                        console.log("Valid Road")
+                        break
+                    } else {
+                        console.log("Road Invalid")
+                    }
+                }
+            },
+            error => {
+                console.error("Error fetching the land: ", error);
+            })
+        if (document.querySelector('.location')) {
             document.querySelector('.location').dispatchEvent(new CustomEvent("toggle"));
         }
         next()
     }
-    
+
     const nextPress = {
         initial: { text: 'Upload', action: () => { handleUpload() } },
         ready: { text: 'Confirm', action: confirmation },
@@ -165,7 +191,7 @@ const ReportPage = () => {
                                 }
                                 {
                                     nextPress[state].text === 'Select' ?
-                                        <MainMap getCoords={getCoords}/> : null
+                                        <MainMap getCoords={getCoords} /> : null
                                 }
                             </div>
                             <div className="col s12">
@@ -176,22 +202,22 @@ const ReportPage = () => {
                     <div className="col s4">
                         <h3>STEPS</h3>
                         <div className="hood">
-                            <LoadingButtonComplete id="upload"/>
+                            <LoadingButtonComplete id="upload" />
                             <h5>Upload a picture</h5>
                         </div>
-                        
+
                         {/* {
                             upCheck ? <LoadingButtonComplete /> : <Spinner />
                         } */}
                         <div className="hood">
-                            <LoadingButtonComplete id="verify"/>
+                            <LoadingButtonComplete id="verify" />
                             <h5>Verfying picture</h5>
                         </div>
                         {/* {
                             verifyCheck ? <LoadingButtonComplete /> : <Spinner />
                         } */}
                         <div className="hood">
-                            <LoadingButtonComplete id="location"/>
+                            <LoadingButtonComplete id="location" />
                             <h5>Select Location</h5>
                         </div>
                         {/* {
