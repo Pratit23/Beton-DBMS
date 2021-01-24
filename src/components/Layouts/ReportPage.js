@@ -121,7 +121,7 @@ const ReportPage = () => {
                     if (address[i] === 'Road' || address[i] === 'road' || address[i] === 'road,' || 
                     address[i] === 'Road,' || address[i] === 'Mahamarg' || address[i] == 'marg', address[i] === 'Mahamarg,' || address[i] == 'marg,', address[i] === 'NH' || address[i] == 'SH'
                     || address[i] === 'Rd' || address[i] == 'rd' || address[i] === 'Rd,' || address[i] == 'rd,'
-                    || address[i] === 'Highway' || address[i] == 'highway' || address[i] === 'Highway,' || address[i] == 'highway,') {
+                    || address[i] === 'Highway' || address[i] === 'highway' || address[i] === 'Highway,' || address[i] === 'highway,') {
                         console.log("Valid Road")
                         break
                     } else {
@@ -142,6 +142,7 @@ const ReportPage = () => {
         initial: { text: 'Upload', action: () => { handleUpload() } },
         ready: { text: 'Confirm', action: confirmation },
         classifying: { text: 'Identifying', action: () => next() },
+        details: { text: 'Confirm', action: () => { console.log("Details entered"); next()} },
         location: { text: 'Select', action: () => { selectLocation() } },
         complete: { text: 'Report', action: () => { } },
     }
@@ -220,10 +221,13 @@ const ReportPage = () => {
                             <LoadingButtonComplete id="location" />
                             <h5>Select Location</h5>
                         </div>
+                        <div className="hood">
+                            <LoadingButtonComplete id="details" />
+                            <h5>Your Details</h5>
+                        </div>
                         {/* {
                             locationCheck ? <LoadingButtonComplete /> : <Spinner />
                         } */}
-                        <h5>Your Details</h5>
                         <h5>Submit</h5>
                     </div>
                 </div>

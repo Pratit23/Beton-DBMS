@@ -6,6 +6,7 @@ import Cluster from './components/Layouts/Cluster'
 import ReportPage from './components/Layouts/ReportPage'
 import SignIn from './components/Auth/SignIn'
 import SignUp from './components/Auth/SignUp'
+import Chonker from './components/Layouts/Chonker'
 
 const App = (props) => {
 
@@ -17,8 +18,9 @@ const App = (props) => {
         <Route exact path='/Homepage' component={Homepage} />
         <Route exact path='/Cluster' component={Cluster} />
         <Route exact path='/ReportPage' component={ReportPage} />
-        <Route exact path='/Signin' component={SignIn} />
+        <Route exact path='/login' component={SignIn} />
         <Route exact path='/Signup' component={SignUp} />
+        <Route exact path='/Chonker' component={Chonker} />
       </Switch>
       </div>
     </BrowserRouter>

@@ -6,6 +6,7 @@ const stateMachine = {
         initial: { on: { next: 'ready'} },
         ready: { on: { next: 'classifying'}},
         classifying: { on: { next: 'location'} },
+        details: { on: { next: 'location'} },
         location: { on: { next: 'complete'} },
         complete: { on: { next: 'awaitingUpload'}},
     }
