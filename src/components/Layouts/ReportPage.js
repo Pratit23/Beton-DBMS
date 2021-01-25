@@ -118,10 +118,10 @@ const ReportPage = () => {
                 address = address.split(" " || ",")
                 console.log("Address array: ", address)
                 for (var i = 0; i < address.length; i++) {
-                    if (address[i] === 'Road' || address[i] === 'road' || address[i] === 'road,' || 
-                    address[i] === 'Road,' || address[i] === 'Mahamarg' || address[i] == 'marg', address[i] === 'Mahamarg,' || address[i] == 'marg,', address[i] === 'NH' || address[i] == 'SH'
-                    || address[i] === 'Rd' || address[i] == 'rd' || address[i] === 'Rd,' || address[i] == 'rd,'
-                    || address[i] === 'Highway' || address[i] === 'highway' || address[i] === 'Highway,' || address[i] === 'highway,') {
+                    if (address[i] === 'Road' || address[i] === 'road' || address[i] === 'road,' ||
+                        address[i] === 'Road,' || address[i] === 'Mahamarg' || address[i] == 'marg', address[i] === 'Mahamarg,' || address[i] == 'marg,', address[i] === 'NH' || address[i] == 'SH'
+                        || address[i] === 'Rd' || address[i] == 'rd' || address[i] === 'Rd,' || address[i] == 'rd,'
+                        || address[i] === 'Highway' || address[i] === 'highway' || address[i] === 'Highway,' || address[i] === 'highway,') {
                         console.log("Valid Road")
                         break
                     } else {
@@ -142,7 +142,7 @@ const ReportPage = () => {
         initial: { text: 'Upload', action: () => { handleUpload() } },
         ready: { text: 'Confirm', action: confirmation },
         classifying: { text: 'Identifying', action: () => next() },
-        details: { text: 'Confirm', action: () => { console.log("Details entered"); next()} },
+        details: { text: 'Confirm', action: () => { console.log("Details entered"); next() } },
         location: { text: 'Select', action: () => { selectLocation() } },
         complete: { text: 'Report', action: () => { } },
     }
@@ -163,12 +163,50 @@ const ReportPage = () => {
             </div>
             <div className="col s9" style={{ padding: "0", overflowX: "hidden" }}>
                 <div className="row" style={{ margin: "0" }}>
-                    <div className="col s8 reportForm">
+                    <div className="col s12 topReport">
                         <div className="row">
                             <div className="col s12">
-                                <h2 className="black-text">REPORT POTHOLES</h2>
+                                <h2>REPORT POTHOLES</h2>
                             </div>
-                            <div className="col s12">
+                            <div className="col s3">
+                                <div className="hood">
+                                    <LoadingButtonComplete id="upload" />
+                                    <h5>Upload a picture</h5>
+                                </div>
+                            </div>
+
+                            {/* {
+                            upCheck ? <LoadingButtonComplete /> : <Spinner />
+                        } */}
+                            <div className="col s3">
+                                <div className="hood">
+                                    <LoadingButtonComplete id="verify" />
+                                    <h5>Verfying picture</h5>
+                                </div>
+                            </div>
+                            {/* {
+                            verifyCheck ? <LoadingButtonComplete /> : <Spinner />
+                        } */}
+                            <div className="col s3">
+                                <div className="hood">
+                                    <LoadingButtonComplete id="location" />
+                                    <h5>Select Location</h5>
+                                </div>
+                            </div>
+                            <div className="col s3">
+                                <div className="hood">
+                                    <LoadingButtonComplete id="details" />
+                                    <h5>Your Details</h5>
+                                </div>
+                            </div>
+                            {/* {
+                            locationCheck ? <LoadingButtonComplete /> : <Spinner />
+                        } */}
+                        </div>
+                    </div>
+                    <div className="col s12 reportForm">
+                        <div className="row">
+                            <div className="col s7 leftContainReport">
                                 {
                                     nextPress[state].text === 'Upload' ?
                                         <>
@@ -195,40 +233,10 @@ const ReportPage = () => {
                                         <MainMap getCoords={getCoords} /> : null
                                 }
                             </div>
-                            <div className="col s12">
+                            <div className="col s5 rightContainReport">
                                 <UploadButton action={nextPress[state].action} btnText={nextPress[state].text} />
                             </div>
                         </div>
-                    </div>
-                    <div className="col s4">
-                        <h3>STEPS</h3>
-                        <div className="hood">
-                            <LoadingButtonComplete id="upload" />
-                            <h5>Upload a picture</h5>
-                        </div>
-
-                        {/* {
-                            upCheck ? <LoadingButtonComplete /> : <Spinner />
-                        } */}
-                        <div className="hood">
-                            <LoadingButtonComplete id="verify" />
-                            <h5>Verfying picture</h5>
-                        </div>
-                        {/* {
-                            verifyCheck ? <LoadingButtonComplete /> : <Spinner />
-                        } */}
-                        <div className="hood">
-                            <LoadingButtonComplete id="location" />
-                            <h5>Select Location</h5>
-                        </div>
-                        <div className="hood">
-                            <LoadingButtonComplete id="details" />
-                            <h5>Your Details</h5>
-                        </div>
-                        {/* {
-                            locationCheck ? <LoadingButtonComplete /> : <Spinner />
-                        } */}
-                        <h5>Submit</h5>
                     </div>
                 </div>
             </div>

@@ -31,14 +31,6 @@ body, html, #root, #root .App, #root .App > div {
   width: 100% !important;
 }
 
-.hood{
-  display: block;
-  margin: 20px 0;
-}
-.hood h5{
-  display: inline;
-}
-
 #CTA{
   width: max-content;
   margin: 20px auto;
@@ -406,12 +398,6 @@ aside nav button.profile .icon svg {
 aside nav button.profile .icon svg .head {
   transform-origin: 12px 9px;
   transform: rotate(var(--icon-r));
-}
-
-/*=======================ReportPage==========================*/
-.reportForm {
-  height: 100vh;
-  background-color: #ffffff !important;
 }
 
 /*=======================Buttonsaurus==========================*/
@@ -1273,3 +1259,35 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
   top: 380px !important; */
 }
 
+/*==============Report Page==============*/
+
+.topReport {
+  background: #061873;
+  color: white;
+  height: 300px !important;
+}
+
+.hood{
+  display: block;
+  margin: 20px 0;
+}
+.hood h5{
+  display: inline;
+}
+
+.reportForm {
+  height: 100vh;
+  width: 100% !important;
+  background-color: #F0F2F7 !important;
+}
+
+.leftContainReport {
+  background-color: white !important;
+  height: 100vh !important;
+  position: absolute !important;
+}
+
+.rightContainReport {
+  position: absolute !important;
+  right: 0 !important;
+}
