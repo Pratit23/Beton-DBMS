@@ -485,7 +485,7 @@ a {
   --red: #f04949;
   width: 100%;
   max-width: 250px;
-  margin: 0 auto;
+  margin: 0 auto !important ;
 }
 #login-form .logo {
   width: 44px;
@@ -705,8 +705,8 @@ a {
   cursor: pointer;
 }
 #login-form button:disabled {
-  --b: var(--pale);
-  --c: var(--grey-light);
+  --b: grey;
+  --c: var(--grey-light) !important;
   cursor: not-allowed;
 }
 #login-form button svg {

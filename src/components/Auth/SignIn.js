@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import LoginHover from './Hover/LoginHover';
 
 const SignIn = () => {
 
@@ -84,7 +85,7 @@ const SignIn = () => {
 
     return (
         <div className="row" style={{ height: "100vh", width: "100vw", backgroundColor: "#181818" }}>
-            <div className="col s12 m6" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', height: "100%" }}>
+            <div className="col s12 m5" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', height: "100%" }}>
                 <div className="signInContainer valign-wrapper" >
                     <form id="login-form" style={{ margin: '100px', marginLeft: '150px'}}>
                         <svg className="logo">
@@ -141,6 +142,7 @@ const SignIn = () => {
             <div className="col s6 hide-on-small-only">
 
             </div>
+            {/* <LoginHover/> */}
         </div>
     )
 }
