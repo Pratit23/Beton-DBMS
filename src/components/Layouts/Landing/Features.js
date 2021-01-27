@@ -33,7 +33,7 @@ const Features = () => {
     return (
         <>
            <div className="section" style={{ backgroundColor: "#E63946" }} >
-              <div className="container white" style={{ borderRadius: "24px", width: "85%" }}>
+              <div className="container white" style={{ borderRadius: "24px", width: "85%", paddingBottom: "20px" }}>
                 <div className="row" style={{ paddingTop: "20px" }}>
                     <div className="col s12 center-align">
                         <h3 className="center-align">Why Us?</h3>
