@@ -468,14 +468,20 @@ a {
   width: 200px !important;
 }
 
+@media only screen and (max-width: 1300px){
+  #master-artboard{
+    width: auto !important;
+    height: 100% !important;
+  }
+}
 
 /* ============================WAVEY============================== */
 
 /* ============================Sign In============================== */
 #login-form {
-  --primary: #6d58ff;
-  --primary-dark: #362a89;
-  --dark: #2b3044;
+  --primary: #0099ff;
+  --primary-dark: #0099ff;
+  --dark: #0099ff;
   --grey-dark: #404660;
   --grey: #8a91b4;
   --grey-light: #a6accd;
@@ -486,6 +492,16 @@ a {
   width: 100%;
   max-width: 250px;
   margin: 0 auto !important ;
+}
+
+#login-form-wrapper{
+  padding: 15px;
+  border-radius: 24px;
+  background-color: #181818;
+  width: 400px;
+  margin: 0px auto !important;
+  position: static !important;
+  padding: 30px !important;
 }
 #login-form .logo {
   width: 44px;

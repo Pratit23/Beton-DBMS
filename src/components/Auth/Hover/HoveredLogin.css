@@ -1,0 +1,56 @@
+#contaianer {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: #fcd389;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+  }
+  #wrapper {
+    overflow: hidden;
+    position: absolute;
+    width: 1500px;
+    height: 800px;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  #wrapper div {
+    position: absolute;
+    background-position: center center;
+    background-size: cover;
+  }
+  .p1 {
+    width: 100%;
+    height: 100%;
+    z-index: 8;
+    background-image: url('./Component3.svg');    /* black-red front thingy */
+    bottom: 25px;
+}
+.p2 {
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+    background-image: url('./Component2.svg');  /* red middle thingy */
+    bottom: -50px;
+  }
+  .p3 {
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+    background-image: url('./Component1.svg');  /* yellow background one */
+  }
+  .letra {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 8;
+  }
+  
