@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './HoveredLogin.css';
 import LoginForm from './LoginForm';
 import { TweenMax } from 'gsap';
+import CornerBlob from './CornerBlob';
 
 const HoveredLogin = () => {
 
@@ -31,6 +32,7 @@ const HoveredLogin = () => {
 
     return (
         <>
+            <CornerBlob />
             <div id="contaianer">
                 <section id="wrapper">
                     <div className="p1" data-speed="0.02" data-revert="true"></div>

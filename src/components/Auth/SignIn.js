@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import CornerBlob from './Hover/CornerBlob';
+import HoveredLogin from './Hover/HoveredLogin';
 
 const SignIn = () => {
 
     return (
         <>
-            <CornerBlob />
+            <HoveredLogin />
         </>
     )
 }

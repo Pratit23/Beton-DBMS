@@ -500,8 +500,9 @@ a {
   background-color: #181818;
   width: 400px;
   margin: 0px auto !important;
-  position: static !important;
+  position: relative !important;
   padding: 30px !important;
+  z-index: 50;
 }
 #login-form .logo {
   width: 44px;
