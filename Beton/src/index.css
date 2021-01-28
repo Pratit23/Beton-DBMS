@@ -1317,9 +1317,9 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 /*==============Report Page==============*/
 
 .topReport {
-  background: #061873;
+  background: #212121 ;
   color: white;
-  height: 300px !important;
+  height: 100% !important;
 }
 
 .hood{
@@ -1333,16 +1333,16 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 .reportForm {
   height: 100vh;
   width: 100% !important;
-  background-color: #F0F2F7 !important;
+  background-color: white !important;
+  margin: 20px !important;
 }
 
 .leftContainReport {
-  background-color: white !important;
-  height: 100vh !important;
-  position: absolute !important;
+  background-color: #eceff1 !important;
+  height: 50vh !important;
+  border-radius: 24px !important;
 }
 
 .rightContainReport {
-  position: absolute !important;
   right: 0 !important;
 }

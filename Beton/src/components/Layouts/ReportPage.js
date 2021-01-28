@@ -39,6 +39,7 @@ const ReportPage = () => {
             setImage(URL.createObjectURL(e.target.files[0]))
             setMainImage(e.target.files[0])
             setMlImage(document.getElementById('img'))
+            document.getElementById("publishBtn").disabled = false;
         }
     }
     const handleUpload = async () => {
@@ -206,7 +207,7 @@ const ReportPage = () => {
                     </div>
                     <div className="col s12 reportForm">
                         <div className="row">
-                            <div className="col s7 leftContainReport">
+                            <div className="col s6 leftContainReport">
                                 {
                                     nextPress[state].text === 'Upload' ?
                                         <>
@@ -233,8 +234,8 @@ const ReportPage = () => {
                                         <MainMap getCoords={getCoords} /> : null
                                 }
                             </div>
-                            <div className="col s5 rightContainReport">
-                                <UploadButton action={nextPress[state].action} btnText={nextPress[state].text} />
+                            <div className="col s6 rightContainReport">
+                                <UploadButton img={mainImage} action={nextPress[state].action} btnText={nextPress[state].text} />
                             </div>
                         </div>
                     </div>
