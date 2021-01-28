@@ -1346,3 +1346,10 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 .rightContainReport {
   right: 0 !important;
 }
+
+
+
+/* ======================= SIGN UP ========================= */
+.signupformwrapper div.col.s12{
+  margin: 20px 10px;
+}

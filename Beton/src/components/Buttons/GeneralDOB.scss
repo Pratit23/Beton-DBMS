@@ -1,0 +1,168 @@
+.birthday {
+    --background: #fff;
+    --border: #e6e7ee;
+    --border-width: 1px;
+    --border-focus: #0077ff;
+    --border-focus-width: 2px;
+    --text: #00104b;
+    --text-placeholder: #999fb7;
+    --default: #0077ff;
+    --smoke: var(--text-placeholder);
+    --error: #ff5252;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--background);
+    box-shadow: inset 0 0 0 var(--border-width) var(--border);
+    transition: box-shadow .3s;
+    .icon,
+    .icon svg {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+    }
+    .icon {
+        top: 12px;
+        left: 12px;
+        svg {
+            top: 0;
+            left: 0;
+            opacity: var(--o, 1);
+            transform: scale(var(--s, 0));
+            color: var(--c, var(--default));
+            transition: color .3s, transform .2s, opacity .2s;
+        }
+        .normal {
+            opacity: var(--o, 1);
+            transform: scale(var(--s, 1));
+            transition: transform .2s, opacity .2s;
+            svg {
+                &.cake-smoke {
+                    --s: 1;
+                    --c: var(--smoke);
+                    path {
+                        --size: 11px;
+                        stroke-dasharray: var(--size);
+                        stroke-dashoffset: var(--offset, calc(var(--size) * 3));
+                        transition: stroke-dashoffset var(--d, 0s);
+                        &:nth-child(2) {
+                            --size: 8px;
+                        }
+                        &:nth-child(3) {
+                            --size: 4px;
+                        }
+                    }
+                }
+                &.cake-light {
+                    --s: 1;
+                }
+                &.cake {
+                    --s: 1;
+                }
+            }
+        }
+        .zodiac {
+            div {
+                width: 24px;
+                height: 24px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/165585/zodiac-signs-sprite%402x.png');
+                background-size: auto 24px;
+                background-position: var(--offset) 0;
+                opacity: var(--o, 0);
+                transform: scale(var(--s, .6));
+                transition: transform .2s, opacity .2s;
+            }
+        }
+    }
+    input {
+        -webkit-appearance: none;
+        background: none;
+        border: none;
+        outline: none;
+        text-align: center;
+        font-family: inherit;
+        font-size: 16px;
+        line-height: 24px;
+        padding: 12px var(--r, 0) 12px var(--l, 0);
+        width: var(--w, 22px);
+        color: var(--text);
+        &:first-of-type {
+            --w: 72px;
+            --l: 44px;
+        }
+        &:last-of-type {
+            --w: 64px;
+            --r: 24px;
+        }
+        &::placeholder {
+            font-size: 15px;
+            color: var(--text-placeholder);
+        }
+    }
+    span {
+        display: block;
+        opacity: .4;
+        margin: -1px 3px 0 3px;
+        color: var(--text-placeholder);
+    }
+    .error-message {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 500;
+        opacity: var(--o, 0);
+        color: var(--error);
+        transition: opacity .2s, transform .2s;
+        transform: translate(-50%, 4px) scale(var(--s, .8));
+        &.show {
+            --s: 1;
+            --o: 1;
+        }
+    }
+    &:focus-within {
+        --border: var(--border-focus);
+        --border-width: var(--border-focus-width);
+    }
+    &:not(.error) {
+        .icon {
+            .normal {
+                &.hide {
+                    --o: 0;
+                    --s: .6;
+                }
+            }
+            .zodiac {
+                .show {
+                    --o: 1;
+                    --s: 1;
+                }
+            }
+        }
+    }
+    &.error {
+        --border: var(--error);
+        --border-width: var(--border-focus-width);
+        .icon {
+            .normal {
+                --c: var(--error);
+                svg {
+                    &.cake-smoke {
+                        path {
+                            --d: .6s;
+                            --offset: var(--size);
+                        }
+                    }
+                    &.cake-light {
+                        --s: 0;
+                    }
+                }
+            }
+        }
+    }
+}

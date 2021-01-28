@@ -1,0 +1,85 @@
+.email-input {
+    --text: #646B8C;
+    --text-placeholder: #BBC1E1;
+    --icon: #A6ACCD;
+    --icon-focus: #646B8C;
+    --icon-invalid: #F04949;
+    --icon-valid: #16BF78;
+    --background: #fff;
+    --border: #D1D6EE;
+    --border-hover: #A6ACCD;
+    --border-focus: #275EFE;
+    --shadow-focus: #{rgba(#275EFE, .32)};
+    position: relative;
+    input {
+        width: 100%;
+        -webkit-appearance: none;
+        outline: none;
+        display: block;
+        font-size: 14px;
+        font-family: inherit;
+        margin: 0;
+        padding: 8px 16px 8px 41px;
+        line-height: 26px;
+        border-radius: 6px;
+        color: var(--text);
+        border: 1px solid var(--bc, var(--border));
+        background: var(--background);
+        transition: border-color .3s, box-shadow .3s;
+        &::placeholder {
+            color: var(--text-placeholder);
+        }
+    }
+    svg {
+        width: 16px;
+        height: 16px;
+        top: 14px;
+        left: 14px;
+        display: block;
+        position: absolute;
+        fill: none;
+        stroke: var(--i, var(--icon));
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.6;
+        transition: stroke .3s;
+        path {
+            stroke-dasharray: 80;
+            stroke-dashoffset: var(--path, 170);
+            transition: stroke-dashoffset .5s ease var(--path-delay, .3s);
+        }
+        polyline {
+            stroke-dasharray: 12;
+            stroke-dashoffset: var(--tick, 12);
+            transition: stroke-dashoffset .45s ease var(--tick-delay, 0s);
+        }
+    }
+    &:hover {
+        --bc: var(--border-hover);
+    }
+    &:focus-within {
+        --bc: var(--border-focus);
+        --i: var(--icon-focus);
+        input {
+            box-shadow: 0 1px 6px -1px var(--shadow-focus);
+        }
+    }
+    &:not(.valid) {
+        input {
+            &:not(:placeholder-shown) {
+                &:not(:focus) {
+                    & + svg {
+                        --i: var(--icon-invalid);
+                    }
+                }
+            }
+        }
+    }
+    &.valid {
+        --i: var(--icon-valid);
+        --path: 132;
+        --path-delay: 0s;
+        --tick: 0;
+        --tick-delay: .3s;
+    }
+}
