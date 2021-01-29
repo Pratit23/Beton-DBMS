@@ -1,4 +1,4 @@
-body, html, #root, #root .App, #root .App > div:not(.demo-1) {
+body, html, #root, #root .App, #root .App > div:not(.demo-1,.below-demo) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -1350,6 +1350,28 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 
 
 /* ======================= SIGN UP ========================= */
-.signupformwrapper div.col.s12{
-  margin: 20px 10px;
+.signupformwrapper div.col.s10{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+/* ================= SIGN UP ============= */
+.below-demo{
+  position: fixed;
+  top: 10px;
+  height: 100%;
+  width: 100%;
+}
+
+.below-demo > .col{
+  background-color: white;
+  border-radius: 24px
+}
+
+.address{
+  margin: 20px !important;
+}
+#signup-form{
+  margin: 0 auto !important;
 }

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { gsap } from 'gsap';
 import './GeneralInput.scss';
 
-const GeneralInput = ({ placeholder, classy, type }) => {
+const GeneralInput = ({ placeholder, classy, type, id }) => {
 
     useEffect(() => {
         const { to, set, timeline } = gsap
@@ -164,7 +164,7 @@ const GeneralInput = ({ placeholder, classy, type }) => {
         <>
             <div className={`input-general ${classy}`} style={{ padding: "0" }}>
                 <div className="text-general">
-                    <input type={type} className="browser-default" placeholder={ placeholder } />
+                    <input type={type} id={id} className="browser-default" placeholder={ placeholder } />
                 </div>
                 <button className="clear-general">
                     <svg viewBox="0 0 24 24">
