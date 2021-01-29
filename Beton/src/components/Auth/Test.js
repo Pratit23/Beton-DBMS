@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import './css/component.css'
 import './css/demo.css'
 // import './css/normalize.css'
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Test = () => {
-    
+
     const script = document.createElement('script');
     script.src = "./js/modernizr.custom.js";
     script.async = true;
@@ -14,10 +14,10 @@ const Test = () => {
     script0.src = "./js/customTwo.js";
     script0.async = true;
     document.body.appendChild(script0);
-    useEffect(()=>{
-        
+    useEffect(() => {
 
-        window.$( document ).ready(function() {
+
+        window.$(document).ready(function () {
             const script1 = document.createElement('script');
             const script2 = document.createElement('script');
             const script3 = document.createElement('script');
@@ -66,16 +66,13 @@ const Test = () => {
         });
     });
 
-    return(
-        <div id = "body-sign" className="demo-1">
+    return (
+        <div id="body-sign" className="demo-1">
             <main>
-                <header className="codrops-header">
+                <div className="signUpHead">
                     <h1>Sign Up</h1>
-                    <p>
-                        Already have an account? 
-                        <Link to="/login" style={{ cursor: "pointer" }}>Log in</Link>
-                    </p>
-                </header>
+                    <p>Already have an account? <NavLink to="/login" style={{ cursor: "pointer" }}>Log in</NavLink></p>
+                </div>
                 <div className="isolayer isolayer--scroll1 isolayer--shadow">
                     <ul className="grid grid--effect-flip">
                         <li className="grid__item">
@@ -833,7 +830,7 @@ const Test = () => {
                     </ul>
                 </div>
             </main>
-            
+
         </div>
     )
 

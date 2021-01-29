@@ -5,19 +5,19 @@
 
 #body-sign {
 	color: #141715;
-	background: #D4D2E0;
+	background: #212121;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
 #body-sign a {
 	outline: none;
-	color: #323F5C;
+	color: #0277bd;
 	text-decoration: none;
 }
 
 #body-sign a:hover,#body-sign a:focus {
-	color: #4d5871;
+	color: #ffffff;
 	outline: none;
 }
 
@@ -67,6 +67,29 @@
     font-size: 1.25em;
     font-weight: bold;
     color: #fff;
+}
+
+.signUpHead {
+	margin-top: 30px !important;
+	margin-left: 40px !important;
+}
+
+.signUpHead h1{
+	margin: 0;
+	letter-spacing: -0.035em;
+	font-size: 4.65em;
+	line-height: 1;
+	font-weight: 900;
+	color: #bdbfc2;
+}
+
+.signUpHead p {
+	padding: 0;
+	margin: 0;
+	margin-top: 10px;
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #6d6e70;
 }
 
 .codrops-header p a{
