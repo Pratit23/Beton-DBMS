@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import './css/component.css'
 import './css/demo.css'
 // import './css/normalize.css'
-import { Link } from 'react-router-dom';
 import SignUpForm from './Interactive/SignUpForm';
 
 const Test = () => {
@@ -53,17 +52,17 @@ const Test = () => {
             document.body.appendChild(script7);
 
             // remove `em bruh
-            return () => {
-                document.body.removeChild(script);
-                document.body.removeChild(script0);
-                document.body.removeChild(script1);
-                document.body.removeChild(script2);
-                document.body.removeChild(script3);
-                document.body.removeChild(script4);
-                document.body.removeChild(script5);
-                document.body.removeChild(script6);
-                document.body.removeChild(script7);
-            }
+            // return () => {
+            //     document.body.removeChild(script);
+            //     document.body.removeChild(script0);
+            //     document.body.removeChild(script1);
+            //     document.body.removeChild(script2);
+            //     document.body.removeChild(script3);
+            //     document.body.removeChild(script4);
+            //     document.body.removeChild(script5);
+            //     document.body.removeChild(script6);
+            //     document.body.removeChild(script7);
+            // }
         });
     });
 
@@ -71,13 +70,9 @@ const Test = () => {
         <>
             <div id="body-sign" className="demo-1">
                 <main>
-                    <header className="codrops-header hide-on-small-only">
+                    <div className="signUpHead">
                         <h1>Sign Up</h1>
-                        <p>
-                            Already have an account?
-                        <Link to="/login" style={{ cursor: "pointer" }}>Log in</Link>
-                        </p>
-                    </header>
+                    </div>
                     <div className="isolayer isolayer--scroll1 isolayer--shadow">
                         <ul className="grid grid--effect-flip">
                             <li className="grid__item">

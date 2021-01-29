@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 
 const CornerBlob = () => {
 
@@ -130,6 +130,9 @@ const CornerBlob = () => {
                             Beton
                         </h4>
                     </Link>
+                    <p style={{
+                        position: "fixed", top: "90px", left: "20px"
+                    }}><NavLink to="/signup" style={{ cursor: "pointer" }}>Sign up?</NavLink></p>
                 </div>
             </div>
         </>

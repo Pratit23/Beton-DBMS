@@ -18,20 +18,19 @@ const SignUpForm = () => {
                 Sign Up
             </h3>
             {/* name */}
-            <GeneralInput placeholder="Your name" classy="col s10 offset-s1 m6" type="text" id="name-signup"/>
+            <GeneralInput placeholder="Your name" classy="col s10 offset-s1 m6" type="text" id="name-signup" />
 
             {/* dob */}
-            <GeneralDOB classy="col s10 offset-s1 m6"/>
+            <GeneralDOB classy="col s10 offset-s1 m6" />
 
             {/* email */}
-            <GeneralEmail classy="col s10 offset-s1 m6"/>
+            <GeneralEmail classy="col s10 offset-s1 m6" />
 
             {/* pass */}
-            <GeneralInput placeholder="Your password" classy="col s10 offset-s1 m6" type="password" id="password-signup"/>
+            <GeneralInput placeholder="Your password" classy="col s10 offset-s1 m6" type="password" id="password-signup" />
 
             {/* address */}
             <GeneralInput placeholder="Your address" classy="col s10 offset-s1 m12" type="text" id="address-signup" />
-
             <SubmitButton text="Create" id="signup" func={handleSubmit} />
         </form>
     )
