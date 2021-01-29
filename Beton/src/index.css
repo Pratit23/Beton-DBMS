@@ -1,4 +1,4 @@
-body, html, #root, #root .App, #root .App > div {
+body, html, #root, #root .App, #root .App > div:not(.demo-1) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
