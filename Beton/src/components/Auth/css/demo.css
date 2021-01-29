@@ -41,14 +41,14 @@
 /* Header */
 .codrops-header {
 	padding: 3vmax 0 0 3vmax;
-	position: absolute;
+	position: relative;
 	width: 100%;
 	z-index: 2000;
 	pointer-events: none;
 }
 
 .demo-1 .codrops-header {
-	position: fixed;
+	position: relative;
 }
 
 .codrops-header h1 {
@@ -63,9 +63,14 @@
 .codrops-header p {
 	padding: 0;
 	margin: 0;
+	margin-top: 10px;
     font-size: 1.25em;
     font-weight: bold;
     color: #fff;
+}
+
+.codrops-header p a{
+	cursor: pointer;
 }
 
 /* Top Navigation Style */
