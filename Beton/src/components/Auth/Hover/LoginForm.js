@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
+import { loginQuery } from '../../../queries/query'
+import M from 'materialize-css'
 
-const LoginForm = () => {
+
+const LoginForm = (props) => {
 
     useEffect(() => {
-        // correct password is `password` lol
-
         const $ = (s, o = document) => o.querySelector(s);
         const $$ = (s, o = document) => o.querySelectorAll(s);
 
@@ -58,10 +61,24 @@ const LoginForm = () => {
 
             if (!login.classList.contains("processing")) {
                 login.classList.add("processing");
-                setTimeout(() => {
+                setTimeout(async () => {
                     // password check is here
-                    let cls = password.value == "password" ? "success" : "error";
-                    console.log(password.value);
+                    // let cls = password.value == "password" ? "success" : "error";
+                    // console.log(password.value);
+                    const email = document.querySelector('#login-email').value;
+                    let result = await props.loginQuery({
+                        variables: {
+                            email,
+                            password: password.value
+                        }
+                    })
+                    console.log(result)
+                    let cls = "";
+                    if(result.data.login){
+                        cls = "success";
+                    }else{
+                        cls = "error";
+                    }
 
                     login.classList.add(cls);
                     setTimeout(() => {
@@ -94,7 +111,7 @@ const LoginForm = () => {
                         <h1>Log In</h1>
 
                         <div className="input email">
-                            <input type="text" placeholder=" " />
+                            <input type="text" placeholder=" " id="login-email" />
                             <label>Email</label>
                         </div>
 
@@ -143,4 +160,6 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+export default compose(
+    graphql(loginQuery, { name: "loginQuery" })
+)(LoginForm)

@@ -32,7 +32,7 @@ const HoveredLogin = () => {
 
     return (
         <>
-            <CornerBlob />
+            {/*<CornerBlob />*/}
             <div id="contaianer">
                 <section id="wrapper">
                     <div className="p1" data-speed="0.02" data-revert="true"></div>
@@ -40,9 +40,11 @@ const HoveredLogin = () => {
                     <div className="p3" data-speed="0.02"></div>
                     <div className="letra valign-wrapper" data-speed="0">
                         <LoginForm />
+                        
                     </div>
                 </section>
             </div>
+            
  
         </>
     )

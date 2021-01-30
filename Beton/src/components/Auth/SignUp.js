@@ -4,7 +4,7 @@ import './css/demo.css'
 // import './css/normalize.css'
 import SignUpForm from './Interactive/SignUpForm';
 
-const Test = () => {
+const Test = (props) => {
 
     const script = document.createElement('script');
     script.src = "./js/modernizr.custom.js";
@@ -15,8 +15,6 @@ const Test = () => {
     script0.async = true;
     document.body.appendChild(script0);
     useEffect(() => {
-
-
         window.$(document).ready(function () {
             const script1 = document.createElement('script');
             const script2 = document.createElement('script');
@@ -834,7 +832,7 @@ const Test = () => {
             </div>
             <div className="row below-demo valign-wrapper">
                 <div className="col s12 m5 offset-m6 signupformwrapper">
-                    <SignUpForm />
+                    <SignUpForm props={{...props}}/>
                 </div>
             </div>
         </>

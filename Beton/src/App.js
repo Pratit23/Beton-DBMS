@@ -6,24 +6,49 @@ import Cluster from './components/Layouts/Cluster'
 import ReportPage from './components/Layouts/ReportPage'
 import SignIn from './components/Auth/SignIn'
 import SignUp from './components/Auth/SignUp'
-import Chonker from './components/Layouts/Chonker'
+import Chonker from './components/Layouts/Chonker';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+import M from 'materialize-css'
+
+// setting up an apollo client
+const client = new ApolloClient({
+  uri: 'http://localhost:1000/graphql',
+  // onError:({ response, operation,graphQLErrors,networkError }) => {
+  //   if (operation.operationName === "IgnoreErrorsQuery") {
+  //     response.errors = null;
+  //   }
+  //   if( graphQLErrors && graphQLErrors[0] && graphQLErrors[0].message){
+  //     M.toast({ html: graphQLErrors[0].message })
+  //   }
+  //   if(networkError){
+  //     M.toast({ html: "There seems to be an internet issue!"})
+  //   }
+  //   if(response?.errors){
+  //     response.errors = null;
+  //   }
+
+  // }
+})
 
 const App = (props) => {
 
   return (
-    <BrowserRouter>
-      <div className="App">
-      <Switch>
-        <Route exact path='/' component={LandingPage} />
-        <Route exact path='/Homepage' component={Homepage} />
-        <Route exact path='/Cluster' component={Cluster} />
-        <Route exact path='/ReportPage' component={ReportPage} />
-        <Route exact path='/login' component={SignIn} />
-        <Route exact path='/Signup' component={SignUp} />
-        <Route exact path='/Chonker' component={Chonker} />
-      </Switch>
-      </div>
-    </BrowserRouter>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <div className="App">
+        <Switch>
+          <Route exact path='/' component={LandingPage} />
+          <Route exact path='/Homepage' component={Homepage} />
+          <Route exact path='/Cluster' component={Cluster} />
+          <Route exact path='/ReportPage' component={ReportPage} />
+          <Route exact path='/login' component={SignIn} />
+          <Route exact path='/Signup' component={SignUp} />
+          <Route exact path='/Chonker' component={Chonker} />
+        </Switch>
+        </div>
+      </BrowserRouter>
+    </ApolloProvider>
   );
 }
 

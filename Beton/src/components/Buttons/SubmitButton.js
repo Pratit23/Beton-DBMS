@@ -9,7 +9,7 @@ const GenericButton = ({ text, id, func }) => {
                 <button className="generic-btn" id={id} onClick={func}>
                     <span>{text}</span>
                     <svg preserveAspectRatio="none" viewBox="0 0 132 45">
-                        <g clip-path="url(#clip)" filter="url(#goo-big)">
+                        <g clipPath="url(#clip)" filter="url(#goo-big)">
                             <circle className="top-left" cx="49.5" cy="-0.5" r="26.5" />
                             <circle className="middle-bottom" cx="70.5" cy="40.5" r="26.5" />
                             <circle className="top-right" cx="104" cy="6.5" r="27" />
@@ -24,7 +24,7 @@ const GenericButton = ({ text, id, func }) => {
                     </svg>
                 </button>
                 <div className="signUpHead">
-                    <p>Already have an account? <NavLink to="/login" style={{ cursor: "pointer" }}>Log in</NavLink></p>
+                    <p>Already have an account? <NavLink to="/login" style={{ cursor: "pointer" }}>  Log in</NavLink></p>
                 </div>
             </div>
             <svg width="0" height="0">
