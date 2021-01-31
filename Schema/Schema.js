@@ -51,6 +51,11 @@ let coupons = [
 // {address: "address3", image:"google2.com", location:"183.23.1"},
 // {address: "address4", image:"google3.com", location:"152.72.4"},
 // ]
+
+let advertisers = [
+    { id: "50", company: "gencoin", password: "pass123", category:  "cryptocurrency", email: "gencoin@hotmail.com", name: "user123", website: "youtube.com"},
+    { id: "50", company: "gencoin", password: "pass123", category:  "cryptocurrency", email: "gencoin@hotmail.com", name: "user123", website: "youtube.com"},
+]
     
 
 

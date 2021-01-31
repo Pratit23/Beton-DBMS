@@ -15,8 +15,6 @@ const Test = () => {
     script0.async = true;
     document.body.appendChild(script0);
     useEffect(() => {
-
-
         window.$(document).ready(function () {
             const script1 = document.createElement('script');
             const script2 = document.createElement('script');

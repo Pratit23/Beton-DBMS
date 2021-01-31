@@ -10,6 +10,8 @@ import Chonker from './components/Layouts/Chonker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import M from 'materialize-css'
+import Facts from './components/Layouts/Landing/Interactive/Facts';
+
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -45,6 +47,7 @@ const App = (props) => {
           <Route exact path='/login' component={SignIn} />
           <Route exact path='/Signup' component={SignUp} />
           <Route exact path='/Chonker' component={Chonker} />
+          <Route exact path='/test' component={ Facts } />
         </Switch>
         </div>
       </BrowserRouter>

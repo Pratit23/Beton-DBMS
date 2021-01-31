@@ -966,11 +966,6 @@ html {
 }
 
 /*==============RefreshHome==============*/
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
 @media (max-width: 768px) {
   html, body {
@@ -987,7 +982,7 @@ html {
 }
 .demo__top {
   position: relative;
-  height: 12.6rem;
+  height: 8em !important;
   background: linear-gradient(#7BCECA, #82D3CB);
   overflow: hidden;
 }

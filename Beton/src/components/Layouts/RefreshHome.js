@@ -1,6 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import HomeCard from '../Cards/HomeCards'
+import { flowRight as compose } from 'lodash';
+import { geolocated } from "react-geolocated";
+import Geocode from "react-geocode";
 
-const RefreshHome = () => {
+
+const RefreshHome = (props) => {
+
+    const [refresh, setRefresh] = useState(false)
+    const [city, setCity] = useState(false)
+
+    // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+    Geocode.setApiKey("AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w");
+
+    // set response language. Defaults to english.
+    Geocode.setLanguage("en");
 
     useEffect(() => {
         "use strict";
@@ -221,6 +235,7 @@ const RefreshHome = () => {
             release event is fired
             */
             function releaseChange(props) {
+
                 bg1change = bg2change = bg3change = props.bgY;
                 checkMaxBgValues();
                 treeChange = props.treeVal * treeMaxCoef;
@@ -231,6 +246,7 @@ const RefreshHome = () => {
 
             function release() {
                 // number of frames, which you need to animate with requestAnimationFrame
+                setRefresh(true)
                 var steps = Math.floor(releaseTime / frame);
                 var curStep = 0;
                 var topY, bgY, treeVal, planeDeg;
@@ -335,11 +351,28 @@ const RefreshHome = () => {
 
     }, [])
 
+    console.log("Props,", props.coords)
+
+    if (props.coords !== null) {
+        console.log("latitude:", props.coords)
+        Geocode.fromLatLng(props.coords.latitude, props.coords.longitude).then(
+            response => {
+                var address = response.results[0].formatted_address;
+                console.log("Address: ", address)
+                address = address.split(",")
+                console.log("Address array: ", address)
+                console.log("City: ", address[address.length - 3])
+                setCity(address[address.length - 3])
+            },
+            error => {
+                console.error("Error fetching the land: ", error);
+            })
+    }
 
     return (
         <div className="demo">
             <div className="demo__top">
-                <svg className="demo__top-svgBg" viewBox="0 0 366 256" style={{ position: "relative", top: "-180px" }}>
+                <svg className="demo__top-svgBg" viewBox="0 0 366 256" style={{ position: "relative", top: "-250px" }}>
                     <g className="svgBg__objects">
                         <path className="svgBg__bg svgBg__bg1" fill="#86D7DB" d="M0,143 88,107 224,153 348,109 366,123 366,256 0,256z" />
                         <path className="svgBg__bg svgBg__bg2" fill="#3C929A" d="M0,156 106,136 272,172 342,124 366,144 366,256 0,256z" />
@@ -379,60 +412,17 @@ const RefreshHome = () => {
                 </div>
                 <div className="pull-down">Pull down</div>
                 <div className="items">
-                    <div className="row">
-                        <div className="col s12 m6">
-                            <div className="card blue-grey darken-1">
-                                <div className="card-content white-text">
-                                    <span className="card-title">Card Title</span>
-                                    <p>I am a very simple card. I am good at containing small bits of information.</p>
-                                </div>
-                                <div className="card-action">
-                                    <a href="#">This is a link</a>
-                                    <a href="#">This is a link</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col s12 m6">
-                            <div className="card blue-grey darken-1">
-                                <div className="card-content white-text">
-                                    <span className="card-title">Card Title</span>
-                                    <p>I am a very simple card. I am good at containing small bits of information.</p>
-                                </div>
-                                <div className="card-action">
-                                    <a href="#">This is a link</a>
-                                    <a href="#">This is a link</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col s12 m6">
-                            <div className="card blue-grey darken-1">
-                                <div className="card-content white-text">
-                                    <span className="card-title">Card Title</span>
-                                    <p>I am a very simple card. I am good at containing small bits of information.</p>
-                                </div>
-                                <div className="card-action">
-                                    <a href="#">This is a link</a>
-                                    <a href="#">This is a link</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col s12 m6">
-                            <div className="card blue-grey darken-1">
-                                <div className="card-content white-text">
-                                    <span className="card-title">Card Title</span>
-                                    <p>I am a very simple card. I am good at containing small bits of information.</p>
-                                </div>
-                                <div className="card-action">
-                                    <a href="#">This is a link</a>
-                                    <a href="#">This is a link</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <HomeCard city={city}/>
                 </div>
             </div>
         </div>
     )
 }
 
-export default RefreshHome
+export default
+    geolocated({
+        positionOptions: {
+            enableHighAccuracy: false,
+        },
+        userDecisionTimeout: 5000,
+    })(RefreshHome)
