@@ -16,16 +16,17 @@ const {
     GraphQLInt,
     GraphQLList,
     GraphQLNonNull,
+    GraphQLBoolean
 } = graphql
 
 // dummy data
 let users = [
-    { id: "1", name: "Aajinkya", email: "a@gmail.com", password: "harrypotter123", address: "oshiwara", DOB: "12/03/2003" },
-   { id: "2", name: "Pratit", email: "p@gmail.com", password: "bigronnie", address: "vakola", DOB: "09/01/2004" },
-  {  id: "3", name: "Miheer", email: "m@gmail.com", password: "lewishamilton", address: "lokhandwala", DOB: "31/12/2000" },
-  { id: "4", name: "George", email: "g@gmail.com", password: "merc", address: "london", DOB: "06/05/2006" },
-  {id: "5", name: "Max", email: "x@gmail.com", password: "redbull", address: "haiti", DOB: "1/01/2008" },
-  {id: '6', name: "Nick", email: "n@gmail.com", password: "talman", address: "miami", DOB: "30/09/202" }
+    { id: "1", name: "Aajinkya", email: "a@gmail.com", password: "harrypotter123", address: "oshiwara", DOB: "12/03/2003", reports: [], coupons: ['9'] },
+   { id: "2", name: "Pratit", email: "p@gmail.com", password: "bigronnie", address: "vakola", DOB: "09/01/2004", reports:["20", "117"], coupons: ['10'] },
+  {  id: "3", name: "Miheer", email: "m@gmail.com", password: "lewishamilton", address: "lokhandwala", DOB: "31/12/2000", reports:[ "18"], coupons: ['7'] },
+  { id: "4", name: "George", email: "g@gmail.com", password: "merc", address: "london", DOB: "06/05/2006", reports:[ "19"], coupons: [] },
+  {id: "5", name: "Max", email: "x@gmail.com", password: "redbull", address: "haiti", DOB: "1/01/2008", reports: [], coupons: [] },
+  {id: '6', name: "Nick", email: "n@gmail.com", password: "talman", address: "miami", DOB: "30/09/202", reports:["17"], coupons: ['8'] }
 ]
 
 let admin = [
@@ -39,23 +40,25 @@ let admin = [
 ]
 
 let coupons = [
-    {id: "10", name: "scam200", amount: "200", validity: "20/12/2021" },
-    {id: "9", name: "disc100", amount: "100", validity: "02/01/2021" },
-    {id: "8", name: "sneak69", amount: "69", validity: "09/08/2021" },
-    {id: "7", name: "report420", amount: "42", validity: "26/11/2021" },
-
+    {id: "10", name: "scam200", amount: "200", validity: "20/12/2021", advertiserID: "51", userID: "2" },
+    {id: "9", name: "disc100", amount: "100", validity: "02/01/2021", advertiserID: "50", userID: "1"  },
+    {id: "8", name: "sneak69", amount: "69", validity: "09/08/2021", advertiserID: "51", userID: "6"  },
+    {id: "7", name: "report420", amount: "42", validity: "26/11/2021", advertiserID: "53", userID: "3"  },
 ] 
 
-// let reports = [
-//     {address: "address1", image:"google.com", location:"182.22.5"},
-//{address: "address2", image:"google1.com", location:"183.12.6"},
-// {address: "address3", image:"google2.com", location:"183.23.1"},
-// {address: "address4", image:"google3.com", location:"152.72.4"},
-// ]
+let reports = [
+    {id: "20", address: "address1", image:"google.com", location:"182.22.5", resolved: true, userID: "2"},
+    {id: "19", address: "address2", image:"google1.com", location:"183.12.6", resolved: false, userID: "4"},
+    {id: "18", address: "address3", image:"google2.com", location:"183.23.1", resolved: false, userID: "3"},
+    {id: "17",address: "address4", image:"google3.com", location:"152.72.4", resolved: true, userID: "6"},
+    {id: "117",address: "address4", image:"youtube.com", location:"02.72.4", resolved: true, userID: "2"},
+]
 
 let advertisers = [
     { id: "50", company: "gencoin", password: "pass123", category:  "cryptocurrency", email: "gencoin@hotmail.com", name: "user123", website: "youtube.com"},
-    { id: "50", company: "gencoin", password: "pass123", category:  "cryptocurrency", email: "gencoin@hotmail.com", name: "user123", website: "youtube.com"},
+    { id: "51", company: "yahoo", password: "pass1234", category:  "information", email: "yahoo@hotmail.com", name: "user12345", website: "youtube.com"},
+    { id: "52", company: "google", password: "pass12345", category:  "search-engine", email: "google@hotmail.com", name: "user123456", website: "youtube.com"},
+    { id: "53", company: "tesla", password: "pass12345", category:  "automobile", email: "tesla@hotmail.com", name: "user123457", website: "youtube.com"},
 ]
     
 
@@ -70,7 +73,29 @@ const UserType = new GraphQLObjectType({
         password: { type: GraphQLString },
         address: { type: GraphQLString },
         dob: { type: GraphQLString },
-        token: { type: GraphQLString }
+        token: { type: GraphQLString },
+        reports: {
+            type: new GraphQLList(ReportsType),
+            resolve(parent, args){
+                let temp = []
+                parent.reports.forEach(y=>{
+                    let test = _.find(reports, r => r.id === y)
+                    temp.push(test)
+                })
+                return temp
+            }
+        },
+        coupons: {
+            type: new GraphQLList(CouponsType),
+            resolve(parent, args){
+                let temp = []
+                parent.coupons.forEach(y=>{
+                    let test = _.find(coupons, r => r.id === y)
+                    temp.push(test)
+                })
+                return temp
+            } 
+        }
     })
 });
 
@@ -82,15 +107,72 @@ const AdminType = new GraphQLObjectType({
     })
 });
 
-const Contractors = new GraphQLObjectType({
+const ContractorsType = new GraphQLObjectType({
     name: "Contractor",
     fields: () => ({
+        id: { type: GraphQLID },
         email: { type: GraphQLString },
         password: { type: GraphQLString },
         address: { type: GraphQLString },
         name: { type: GraphQLString }
     })
 });
+
+const AdvertisersType = new GraphQLObjectType({
+    name: "Contractor",
+    fields: () => ({
+        id: { type: GraphQLID },
+        email: { type: GraphQLString },
+        password: { type: GraphQLString },
+        company: { type: GraphQLString },
+        name: { type: GraphQLString },
+        website: { type: GraphQLString },
+        category: { type: GraphQLString },
+    })
+});
+
+const ReportsType = new GraphQLObjectType({
+    name: "Reports",
+    fields: () => ({
+        id: { type: GraphQLID },
+        image: { type: GraphQLString },
+        address: { type: GraphQLString },
+        location: { type: GraphQLString },
+        userID: {
+            type: UserType,
+            resolve(parent, args){
+                return _.find(users, a=>a.id === parent.userID)
+            }
+        },
+        resolved: { type: GraphQLBoolean }
+    })
+})
+
+const CouponsType = new GraphQLObjectType({
+    name: "Coupons",
+    fields: () => ({
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        amount: { type: GraphQLString },
+        validity: { type: GraphQLString },
+        advertiserID: {
+            type: AdvertisersType,
+            resolve(parent, args){
+                return _.find(advertisers, a=>a.id === parent.advertiserID)
+            }
+        },
+        userID: {
+            type: UserType,
+            resolve(parent, args){
+                return _.find(users, a=>a.id === parent.userID)
+            }
+        },
+    })
+})
+
+
+
+
 
 
 
@@ -124,6 +206,30 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(UserType),
             resolve(parent, args){
                 return users;
+            }
+        },
+        allReports: {
+            type: new GraphQLList(ReportsType),
+            resolve(parent, args){
+                return reports
+            }
+        },
+        admins: {
+            type: new GraphQLList(AdminType),
+            resolve(parent, args){
+                return admin
+            }
+        },
+        advertisers: {
+            type: new GraphQLList(AdvertisersType),
+            resolve(parent, args){
+                return advertisers
+            }
+        },
+        coupons: {
+            type: new GraphQLList(CouponsType),
+            resolve(parent, args){
+                return coupons
             }
         }
     }

@@ -8,7 +8,7 @@ class Sidenav1 extends React.Component {
     constructor() {
         super();
         this.state = {
-            expanded: false,
+            expanded: true,
             activeKey: '1'
         };
         this.handleToggle = this.handleToggle.bind(this);
@@ -38,7 +38,6 @@ class Sidenav1 extends React.Component {
 
             <div className="sidenav" id="mySidenav">
                 <Toggle onChange={this.handleToggle} checked={expanded} />
-                <hr />
                 <Sidenav
                     expanded={expanded}
                     defaultOpenKeys={['3', '4']}
@@ -48,45 +47,20 @@ class Sidenav1 extends React.Component {
                     <Sidenav.Body>
                         <Nav>
                             <NavLink to='/Homepage'>
-                                <Nav.Item eventKey="1" icon={<Icon icon="dashboard" />}>
+                                <Nav.Item eventKey="1" icon={<Icon className="white-text" icon="dashboard" />}>
                                     Dashboard
                                 </Nav.Item>
                             </NavLink>
                             <NavLink to='/Cluster'>
-                            <Nav.Item eventKey="2" icon={<Icon icon="group" />}>
-                                Map
+                                <Nav.Item eventKey="2" icon={<Icon className="white-text" icon="map" />}>
+                                    Map
                             </Nav.Item>
                             </NavLink>
                             <NavLink to='/ReportPage'>
-                            <Nav.Item eventKey="3" icon={<Icon icon="group" />}>
-                                Report
+                                <Nav.Item eventKey="3" icon={<Icon className="white-text" icon="exclamation-triangle" />}>
+                                    Report
                             </Nav.Item>
                             </NavLink>
-                            <Dropdown
-                                placement="rightStart"
-                                eventKey="4"
-                                title="Advanced"
-                                icon={<Icon icon="magic" />}
-                            >
-                                <Dropdown.Item eventKey="4-1">Geo</Dropdown.Item>
-                                <Dropdown.Item eventKey="4-2">Devices</Dropdown.Item>
-                                <Dropdown.Item eventKey="4-3">Loyalty</Dropdown.Item>
-                                <Dropdown.Item eventKey="4-4">Visit Depth</Dropdown.Item>
-                            </Dropdown>
-                            <Dropdown
-                                placement="rightStart"
-                                eventKey="5"
-                                title="Settings"
-                                icon={<Icon icon="gear-circle" />}
-                            >
-                                <Dropdown.Item eventKey="5-1">Applications</Dropdown.Item>
-                                <Dropdown.Item eventKey="5-2">Channels</Dropdown.Item>
-                                <Dropdown.Item eventKey="5-3">Versions</Dropdown.Item>
-                                <Dropdown.Menu eventKey="5-5" title="Custom Action">
-                                    <Dropdown.Item eventKey="5-5-1">Action Name</Dropdown.Item>
-                                    <Dropdown.Item eventKey="5-5-2">Action Params</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
                         </Nav>
                     </Sidenav.Body>
                 </Sidenav>
@@ -98,9 +72,7 @@ class Sidenav1 extends React.Component {
 
 const instance = () => {
     return (
-        <div className="nav-wrapper">
-            <Sidenav1 appearance="subtle" />
-        </div>
+        <Sidenav1 appearance="subtle"/>
     )
 }
 

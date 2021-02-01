@@ -1329,7 +1329,10 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
   height: 100vh;
   width: 100% !important;
   background-color: white !important;
-  margin: 20px !important;
+  margin: 0;
+}
+.reportForm *{
+  margin: 0;
 }
 
 .leftContainReport {
@@ -1396,7 +1399,7 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 
 .sidenav {
   height: 100%;
-  width: 60px;
+  width: 250px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -1408,14 +1411,17 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
   padding-top: 10px;
   transform: none;
   overflow-y: auto;
+  background-color: #000000;
 }
 
 .sidenav a {
   display: block;
   transition: 0.3s;
-  color: white;
 }
 
+.rs-sidenav-default {
+  background-color: #212121 !important;
+}
 
 /* .closebtn {
   position: absolute;
@@ -1427,12 +1433,20 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 
 #main{
   transition: margin-left .5s;
-  margin-left: 60px;
+  margin-left: 250px;
 }
 
 @media screen and (max-height: 450px) {
 .sidenav {padding-top: 15px;}
 .sidenav a {font-size: 18px;}
+}
+
+.rs-nav {
+  margin-top: 30px !important;
+}
+
+.rs-btn-toggle {
+  margin-top: 10px !important;
 }
 
 
