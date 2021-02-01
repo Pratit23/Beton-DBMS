@@ -121,7 +121,7 @@ export default function HomeCards(props) {
                             props.city && (props.city).length !== 0 ? <h2>{props.city} - 69 Reportings</h2> : <h2>Loading...</h2>
                         }
                         <p>Live Reportings for your location</p>
-                        <DashChart1/>
+                        <DashChart1 />
                     </div>
                     <span id='sz'></span>
                 </div>

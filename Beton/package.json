@@ -40,6 +40,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "react-tensorflow": "^2.1.0",
+    "rsuite": "^4.8.8",
     "swr": "^0.4.0",
     "use-supercluster": "^0.2.9",
     "uuid": "^8.3.1"

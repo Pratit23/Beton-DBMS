@@ -4,6 +4,7 @@ const _ = require('lodash');
 const crypto = require('crypto')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { JWT_SEC } = require('../keys/keys');
 
 // https://www.figma.com/file/4bAC5AKUM1VmxyAaRhiLrs/BETON-ER-Diagram?node-id=0%3A1
 
@@ -69,6 +70,7 @@ const UserType = new GraphQLObjectType({
         password: { type: GraphQLString },
         address: { type: GraphQLString },
         dob: { type: GraphQLString },
+        token: { type: GraphQLString }
     })
 });
 
@@ -198,6 +200,8 @@ const Mutation = new GraphQLObjectType({
                 if(!didMatch){
                     throw new Error("Invalid Email and Password combination :(")
                 }
+                const token = jwt.sign( { id: result.id }, JWT_SEC);
+                result['token'] = token;
                 return result;
             }
         }, //login mutation done

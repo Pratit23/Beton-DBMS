@@ -27,9 +27,9 @@ body, html, #root, #root .App, #root .App > div:not(.demo-1,.below-demo) {
   src: url('./fonts/GT-Walsheim-Regular.woff2') format('woff2');
 }
 
-.col.s9 .demo{
+/* .col.s9 .demo{
   width: 100% !important;
-}
+} */
 
 #CTA{
   width: max-content;
@@ -974,7 +974,7 @@ html {
 }
 
 .demo {
-  background: #FFFFFF;
+  background: #ffffff;
   height: 100%;
   border-radius: 1.2rem;
   box-shadow: 0 2rem 2rem rgba(0, 0, 0, 0.15);
@@ -982,7 +982,7 @@ html {
 }
 .demo__top {
   position: relative;
-  height: 8em !important;
+  height: 8em;
   background: linear-gradient(#7BCECA, #82D3CB);
   overflow: hidden;
 }
@@ -1021,7 +1021,7 @@ html {
           animation: arrowAnim 1.5s infinite;
 }
 .pull-down:before {
-  left: 11rem;
+  left: 70%;
 }
 .pull-down:after {
   left: 25rem;
@@ -1303,7 +1303,7 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 
 .demo {
   height: 100% !important;
-  width: 100% !important;
+  /* width: 100% !important; */
   /* position: relative !important;
   left: 0 !important;
   top: 380px !important; */
@@ -1370,3 +1370,69 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 #signup-form{
   margin: 0 auto !important;
 }
+
+
+/* =========== SIDEbySIDE ============ */
+/* .boah-wrapper{
+  width: 100% !important;
+}
+.boah1, .boah2{
+  height: 100vh !important;
+  display: inline-block !important;
+}
+.boah1{
+  width: 20%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.boah2{
+  width: 80%;
+  margin-right: 20%;
+} */
+
+/* ======================= */
+
+
+.sidenav {
+  height: 100%;
+  width: 60px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding: 0;
+  margin: 0;
+  padding-top: 10px;
+  transform: none;
+  overflow-y: auto;
+}
+
+.sidenav a {
+  display: block;
+  transition: 0.3s;
+  color: white;
+}
+
+
+/* .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px !important;
+  margin-left: 50px;
+} */
+
+#main{
+  transition: margin-left .5s;
+  margin-left: 60px;
+}
+
+@media screen and (max-height: 450px) {
+.sidenav {padding-top: 15px;}
+.sidenav a {font-size: 18px;}
+}
+
+

@@ -370,7 +370,7 @@ const RefreshHome = (props) => {
     }
 
     return (
-        <div className="demo">
+        <div className="demo" id="main">
             <div className="demo__top">
                 <svg className="demo__top-svgBg" viewBox="0 0 366 256" style={{ position: "relative", top: "-250px" }}>
                     <g className="svgBg__objects">

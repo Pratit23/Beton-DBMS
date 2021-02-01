@@ -158,89 +158,86 @@ const ReportPage = () => {
 
 
     return (
-        <div className="row">
-            <div className="col s3" style={{ height: "100vh", backgroundColor: "black" }}>
-                <Sidenav />
-            </div>
-            <div className="col s9" style={{ padding: "0", overflowX: "hidden" }}>
-                <div className="row" style={{ margin: "0" }}>
-                    <div className="col s12 topReport">
-                        <div className="row">
-                            <div className="col s12">
-                                <h2>REPORT POTHOLES</h2>
+        <div>
+            <Sidenav />
+            <div id="main" className="row">
+                <div className="col s12 topReport">
+                    <div className="row">
+                        <div className="col s12">
+                            <h2>REPORT POTHOLES</h2>
+                        </div>
+                        <div className="col s3">
+                            <div className="hood">
+                                <LoadingButtonComplete id="upload" />
+                                <h5>Upload a picture</h5>
                             </div>
-                            <div className="col s3">
-                                <div className="hood">
-                                    <LoadingButtonComplete id="upload" />
-                                    <h5>Upload a picture</h5>
-                                </div>
-                            </div>
+                        </div>
 
-                            {/* {
+                        {/* {
                             upCheck ? <LoadingButtonComplete /> : <Spinner />
                         } */}
-                            <div className="col s3">
-                                <div className="hood">
-                                    <LoadingButtonComplete id="verify" />
-                                    <h5>Verfying picture</h5>
-                                </div>
+                        <div className="col s3">
+                            <div className="hood">
+                                <LoadingButtonComplete id="verify" />
+                                <h5>Verfying picture</h5>
                             </div>
-                            {/* {
+                        </div>
+                        {/* {
                             verifyCheck ? <LoadingButtonComplete /> : <Spinner />
                         } */}
-                            <div className="col s3">
-                                <div className="hood">
-                                    <LoadingButtonComplete id="location" />
-                                    <h5>Select Location</h5>
-                                </div>
+                        <div className="col s3">
+                            <div className="hood">
+                                <LoadingButtonComplete id="location" />
+                                <h5>Select Location</h5>
                             </div>
-                            <div className="col s3">
-                                <div className="hood">
-                                    <LoadingButtonComplete id="details" />
-                                    <h5>Your Details</h5>
-                                </div>
+                        </div>
+                        <div className="col s3">
+                            <div className="hood">
+                                <LoadingButtonComplete id="details" />
+                                <h5>Your Details</h5>
                             </div>
-                            {/* {
+                        </div>
+                        {/* {
                             locationCheck ? <LoadingButtonComplete /> : <Spinner />
                         } */}
-                        </div>
                     </div>
-                    <div className="col s12 reportForm">
-                        <div className="row">
-                            <div className="col s6 leftContainReport">
-                                {
-                                    nextPress[state].text === 'Upload' ?
-                                        <>
-                                            <div className="col s6 right-align">
-                                                {/* <div className="btn-floating btn-large red"><input type="file"/><i style={{padding: '70px'}} className="material-icons">upload</i></div> */}
-                                                <div className="file-field input-field">
-                                                    <div className="btn">
-                                                        <span>File</span>
-                                                        <input type="file" id="photo" onChange={handlePicture} />
-                                                    </div>
-                                                    <div className="file-path-wrapper">
-                                                        <input className="file-path validate" type="text" required />
-                                                    </div>
+                </div>
+                <div className="col s12 reportForm">
+                    <div className="row">
+                        <div className="col s6 leftContainReport">
+                            {
+                                nextPress[state].text === 'Upload' ?
+                                    <>
+                                        <div className="col s6 right-align">
+                                            {/* <div className="btn-floating btn-large red"><input type="file"/><i style={{padding: '70px'}} className="material-icons">upload</i></div> */}
+                                            <div className="file-field input-field">
+                                                <div className="btn">
+                                                    <span>File</span>
+                                                    <input type="file" id="photo" onChange={handlePicture} />
+                                                </div>
+                                                <div className="file-path-wrapper">
+                                                    <input className="file-path validate" type="text" required />
                                                 </div>
                                             </div>
-                                            <div className='imgContainer'>
-                                                <img id="img" className="materialboxed" src={image} />
-                                            </div>
-                                        </>
-                                        : null
-                                }
-                                {
-                                    nextPress[state].text === 'Select' ?
-                                        <MainMap getCoords={getCoords} /> : null
-                                }
-                            </div>
-                            <div className="col s6 rightContainReport">
-                                <UploadButton img={mainImage} action={nextPress[state].action} btnText={nextPress[state].text} />
-                            </div>
+                                        </div>
+                                        <div className='imgContainer'>
+                                            <img id="img" className="materialboxed" src={image} />
+                                        </div>
+                                    </>
+                                    : null
+                            }
+                            {
+                                nextPress[state].text === 'Select' ?
+                                    <MainMap getCoords={getCoords} /> : null
+                            }
+                        </div>
+                        <div className="col s6 rightContainReport">
+                            <UploadButton img={mainImage} action={nextPress[state].action} btnText={nextPress[state].text} />
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
     )

@@ -9,7 +9,7 @@ export default class DashChart1 extends Component {
         const myChartRef = this.chartRef.current.getContext("2d");
 
         new Chart(myChartRef, {
-            type: "line",
+            type: "bar",
             data: {
                 //Bring in data
                 labels: ["Jan", "Feb", "March"],
@@ -38,18 +38,21 @@ export default class DashChart1 extends Component {
                 },
                 scales: {
                     xAxes: [{
-                        ticks: { display: false },
+                        ticks: { display: true },
                         gridLines: {
                             display: false
                         }
                     }],
                     yAxes: [{
-                        ticks: { display: false },
+                        ticks: { display: true },
                         gridLines: {
                             display: false
                         }
                     }]
-                }
+                },
+                chartArea: {
+					backgroundColor: 'rgba(251, 85, 85, 0)'
+				}
             },
         });
     }
