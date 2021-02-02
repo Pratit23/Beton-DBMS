@@ -17,6 +17,7 @@
     "dynamics": "^1.0.0",
     "firebase": "^8.1.1",
     "framer-motion": "^3.2.1",
+    "geolib": "^3.3.1",
     "globe.gl": "^2.15.1",
     "google-map-react": "^2.1.9",
     "graphql": "^15.3.0",

@@ -18,17 +18,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    Coupons:[{
+    coupons:[{
         type: ObjectId,
-        ref: "Group"
+        ref: "Coupons"
     }],
-    DOB:{
+    dob:{
         type: String,
         require: true
     },
-    Reports:[{
+    reports:[{
         type: ObjectId,
-        ref: "Group"
+        ref: "Reports"
     }],
 });
 

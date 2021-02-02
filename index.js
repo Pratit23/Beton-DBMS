@@ -5,11 +5,9 @@ const bodyParser = require('body-parser');
 const { graphqlHTTP } = require('express-graphql');
 const cors = require('cors');
 const schema = require('./Schema/Schema');
-// const { URI } = require('./keys/dev')
-const URI = "mongodb+srv://levitation:BigTits@beton.eur3n.mongodb.net/betonDB?retryWrites=true&w=majority"
+const { URI } = require('./keys/dev')
 
 const app = express();
-console.log("URI", URI)
 
 app.use(cors());
 app.use( bodyParser.json());

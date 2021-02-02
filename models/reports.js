@@ -6,7 +6,12 @@ const reportsSchema = new mongoose.Schema({
         type:String,
         require:true
     },
-    imageLink :{
+    userID:{
+        type:String,
+        require:true,
+        ref:'User'
+    },
+    image :{
         type:String,
         require:true,
     },

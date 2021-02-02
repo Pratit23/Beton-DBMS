@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import HoveredLogin from './Hover/HoveredLogin';
 
-const SignIn = () => {
+const SignIn = (props) => {
 
     return (
         <>
-            <HoveredLogin />
+            <HoveredLogin  props={props} />
         </>
     )
 }

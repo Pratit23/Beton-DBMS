@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 import { TweenMax } from 'gsap';
 import CornerBlob from './CornerBlob';
 
-const HoveredLogin = () => {
+const HoveredLogin = (props) => {
 
     useEffect(()=>{
         window.$('html').mousemove(function(e){
@@ -39,7 +39,7 @@ const HoveredLogin = () => {
                     <div className="p2" data-speed="0.04"></div>
                     <div className="p3" data-speed="0.02"></div>
                     <div className="letra valign-wrapper" data-speed="0">
-                        <LoginForm />
+                        <LoginForm props={props.props} />
                         
                     </div>
                 </section>

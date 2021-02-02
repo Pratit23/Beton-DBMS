@@ -12,7 +12,7 @@ function PreFooter() {
                 <p className="white-text">
                     Hop on the train to become part of something bigger and earn some exciting rewards while you're at it.
                 </p>
-                <GenericButton text="Get Started" id="CTA2" link="homepage" />
+                <GenericButton text="Get Started" id="CTA2" link="signup" />
             </div>
             <SleepyYoda />
         </div>

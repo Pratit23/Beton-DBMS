@@ -7,7 +7,6 @@ import M from 'materialize-css'
 
 
 const LoginForm = (props) => {
-
     useEffect(() => {
         const $ = (s, o = document) => o.querySelector(s);
         const $$ = (s, o = document) => o.querySelectorAll(s);
@@ -74,9 +73,11 @@ const LoginForm = (props) => {
                     })
                     console.log(result)
                     let cls = "";
-                    if(result.data.login){
+                    if (result.data.login) {
                         cls = "success";
-                    }else{
+                        localStorage.setItem("token", result.data.login.token)
+                        props.props.history.push('/homepage');
+                    } else {
                         cls = "error";
                     }
 
@@ -140,6 +141,9 @@ const LoginForm = (props) => {
                             <span>Submit</span>
                         </button>
 
+                        <div className="signUpHead">
+                            <p>Don't have an account? <NavLink to="/signup" style={{ cursor: "pointer" }}>Sign up</NavLink></p>
+                        </div>
 
                         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
                             <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" id="logo">

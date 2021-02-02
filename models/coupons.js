@@ -16,7 +16,7 @@ const couponsSchema = new mongoose.Schema({
     },
     advertiser:[{
         type: ObjectId,
-        ref: "Group"
+        ref: "advertiser"
     }],
 });
 

@@ -23,6 +23,10 @@ const SignUpForm = (props) => {
         let month = document.querySelector('.month').value
         let year = document.querySelector('.year').value
         let dob = `${day}/${month}/${year}`;
+        console.log(name)
+        console.log(email)
+        console.log(password)
+        console.log(address)
         console.log(dob)
 
         let res = await props.addUser({

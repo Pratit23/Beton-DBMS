@@ -30,6 +30,7 @@ const loginQuery = gql`
       password
       address
       dob
+      token
     }
   }
 `;

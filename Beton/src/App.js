@@ -11,26 +11,27 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import M from 'materialize-css'
 import Facts from './components/Layouts/Landing/Interactive/Facts';
+import TestReport from './components/Layouts/TestReport'
 
 
 // setting up an apollo client
 const client = new ApolloClient({
   uri: 'http://localhost:1000/graphql',
-  // onError:({ response, operation,graphQLErrors,networkError }) => {
-  //   if (operation.operationName === "IgnoreErrorsQuery") {
-  //     response.errors = null;
-  //   }
-  //   if( graphQLErrors && graphQLErrors[0] && graphQLErrors[0].message){
-  //     M.toast({ html: graphQLErrors[0].message })
-  //   }
-  //   if(networkError){
-  //     M.toast({ html: "There seems to be an internet issue!"})
-  //   }
-  //   if(response?.errors){
-  //     response.errors = null;
-  //   }
+  onError:({ response, operation,graphQLErrors,networkError }) => {
+    if (operation.operationName === "IgnoreErrorsQuery") {
+      response.errors = null;
+    }
+    if( graphQLErrors && graphQLErrors[0] && graphQLErrors[0].message){
+      M.toast({ html: graphQLErrors[0].message })
+    }
+    if(networkError){
+      M.toast({ html: "There seems to be an internet issue!"})
+    }
+    if(response?.errors){
+      response.errors = null;
+    }
 
-  // }
+  }
 })
 
 const App = (props) => {
@@ -48,6 +49,7 @@ const App = (props) => {
           <Route exact path='/Signup' component={SignUp} />
           <Route exact path='/Chonker' component={Chonker} />
           <Route exact path='/test' component={ Facts } />
+          <Route exact path='/testReport' component={ TestReport } />
         </Switch>
         </div>
       </BrowserRouter>

@@ -94,12 +94,12 @@
 }
 
 .signUpHead a {
-	color: #0058fb;
+	color: #0058fb !important;
     text-decoration: none !important;
     transition: 0.2s;
     text-align: center !important;
     font-weight: bold !important;
-    font-size: 1.25rem;
+    font-size: 0.9rem;
 	letter-spacing: 0 !important;
 }
 
