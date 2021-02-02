@@ -8,6 +8,9 @@ import MainMap from '../Maps/MainMap'
 import Geocode from "react-geocode";
 import DropHere from '../Buttons/DropHere';
 import ProgressCard from '../Cards/ProgressCard';
+import initial from '../../images/initial.jpg'
+import location from '../../images/location.jpg'
+import deets from '../../images/deets.jpg'
 
 let classifier;
 let coords = '';
@@ -130,10 +133,10 @@ const ReportPage = (props) => {
     }
 
     const nextPress = {
-        initial: { text: 'Upload', action: () => handleUpload(), link: 'https://cdn.dribbble.com/users/1784672/screenshots/14316821/media/e37528e940f4e43d0425f009143d060f.png'},
-        ready: { text: 'Confirm', action: () => confirmation(), link: 'https://dribbble.com/shots/5682300-Clay-Winter/attachments/5682300-Clay-Winter?mode=media'},
-        classifying: { text: 'Identifying', action: () => next(), link: 'https://dribbble.com/shots/12348034-3D-Icon-exploration/attachments/3963711?mode=media' },
-        details: { text: 'Confirm', action: () => { console.log("Details entered"); next() } },
+        initial: { text: 'Upload', action: () => handleUpload()},
+        ready: { text: 'Confirm', action: () => confirmation()},
+        classifying: { text: 'Identifying', action: () => next()},
+        details: { text: 'Details', action: () => { console.log("Details entered"); next() } },
         location: { text: 'Select', action: () => { selectLocation() } },
         complete: { text: 'Report', action: () => { } },
     }
@@ -175,12 +178,31 @@ const ReportPage = (props) => {
                     </div>
                 </div>
                 <div className="col m5 hide-on-small-only" style={{ overflow: "hidden", height: "100%" }} >
-                    <img src={nextPress[state].link}
-                        alt="Select an image"
-                        style={{
-                            height: "100%"
-                        }}
-                    />
+                    {
+                        nextPress[state].text === "Select" ? (
+                            <img src={location}
+                                alt="Select location"
+                                style={{
+                                    height: "100%"
+                                }}
+                            />
+                        ) : nextPress[state].text === "Report" ? (
+                            <img src={deets}
+                                alt="Enter details"
+                                style={{
+                                    height: "100%"
+                                }}
+                            />
+                        ) : (
+                            <img src={initial}
+                                alt="Select an image"
+                                style={{
+                                    height: "100%"
+                                }}
+                            />
+                        )
+                    }
+                    
                 </div>
             </div>
         </div>
