@@ -6,11 +6,13 @@ import LoadingButtonComplete from '../Buttons/LoadingButtonComplete'
 import * as ml5 from "ml5";
 import MainMap from '../Maps/MainMap'
 import Geocode from "react-geocode";
+import DropHere from '../Buttons/DropHere';
+import ProgressCard from '../Cards/ProgressCard';
 
 let classifier;
 let coords = '';
 
-const ReportPage = () => {
+const ReportPage = (props) => {
 
     const [image, setImage] = useState(null)
     const [mainImage, setMainImage] = useState(null)
@@ -33,20 +35,22 @@ const ReportPage = () => {
         coords = coord
     }
 
-    const handlePicture = (e) => {
-        e.preventDefault()
-        if (e.target.files[0]) {
-            setImage(URL.createObjectURL(e.target.files[0]))
-            setMainImage(e.target.files[0])
-            setMlImage(document.getElementById('img'))
+    const handlePicture = (image) => {
+        if (image) {
+            console.log("Image: ", image)
+            setImage(URL.createObjectURL(image))
+            setMainImage(image)
+            setMlImage(<img src={image}></img>)
             document.getElementById("publishBtn").disabled = false;
+            // document.getElementById("publishBtn").addEventListener('click', function(){
+            //     nextPress[state].action()
+            // })
         }
     }
     const handleUpload = async () => {
-
-
         console.log("Handle Upload triggered")
         const fileData = new FormData();
+        console.log("Main Image", mainImage);
         fileData.append("file", mainImage);
         fileData.append("upload_preset", "levitation");
         fileData.append("cloud_name", "levitation");
@@ -59,13 +63,6 @@ const ReportPage = () => {
             console.log(data.url);
             setUrl(data.url)
             console.log("Photo uploaded")
-            if (document.querySelector('.upload')) {
-                document.querySelector('.upload').dispatchEvent(new CustomEvent("toggle"));
-            }
-        }).then(async () => {
-            // const mobileNetModel = await mobilenet.load()
-            // setModel(mobileNetModel)
-            // console.log("Model loaded")
         }).catch(err => {
             console.log(err);
             return err
@@ -76,6 +73,7 @@ const ReportPage = () => {
     const confirmation = () => {
         alert("Do you agree that the picture uploaded solely belongs to you?")
         identify()
+        document.querySelectorAll('.tabbar li a')[1].dispatchEvent(new CustomEvent('click'))
         next()
     }
 
@@ -94,12 +92,6 @@ const ReportPage = () => {
             // Set the predictions in the state
             setPredictions(results)
             console.log("Results: ", results)
-            if (document.querySelector('.verify')) {
-                console.log("in verify biach")
-                document.querySelector('.verify').dispatchEvent(new CustomEvent("toggle"));
-            } else {
-                console.log("bruh")
-            }
         }).catch((err) => {
             console.log("Error: ", err)
         })
@@ -133,16 +125,14 @@ const ReportPage = () => {
             error => {
                 console.error("Error fetching the land: ", error);
             })
-        if (document.querySelector('.location')) {
-            document.querySelector('.location').dispatchEvent(new CustomEvent("toggle"));
-        }
+        document.querySelectorAll('.tabbar li a')[2].dispatchEvent(new CustomEvent('click'))
         next()
     }
 
     const nextPress = {
-        initial: { text: 'Upload', action: () => { handleUpload() } },
-        ready: { text: 'Confirm', action: confirmation },
-        classifying: { text: 'Identifying', action: () => next() },
+        initial: { text: 'Upload', action: () => handleUpload(), link: 'https://cdn.dribbble.com/users/1784672/screenshots/14316821/media/e37528e940f4e43d0425f009143d060f.png'},
+        ready: { text: 'Confirm', action: () => confirmation(), link: 'https://dribbble.com/shots/5682300-Clay-Winter/attachments/5682300-Clay-Winter?mode=media'},
+        classifying: { text: 'Identifying', action: () => next(), link: 'https://dribbble.com/shots/12348034-3D-Icon-exploration/attachments/3963711?mode=media' },
         details: { text: 'Confirm', action: () => { console.log("Details entered"); next() } },
         location: { text: 'Select', action: () => { selectLocation() } },
         complete: { text: 'Report', action: () => { } },
@@ -160,84 +150,39 @@ const ReportPage = () => {
     return (
         <div>
             <Sidenav />
-            <div id="main" className="row">
-                <div className="col s12 topReport">
-                    <div className="row">
-                        <div className="col s12">
-                            <h2>REPORT POTHOLES</h2>
-                        </div>
-                        <div className="col s3">
-                            <div className="hood">
-                                <LoadingButtonComplete id="upload" />
-                                <h5>Upload a picture</h5>
-                            </div>
-                        </div>
-
-                        {/* {
-                            upCheck ? <LoadingButtonComplete /> : <Spinner />
-                        } */}
-                        <div className="col s3">
-                            <div className="hood">
-                                <LoadingButtonComplete id="verify" />
-                                <h5>Verfying picture</h5>
-                            </div>
-                        </div>
-                        {/* {
-                            verifyCheck ? <LoadingButtonComplete /> : <Spinner />
-                        } */}
-                        <div className="col s3">
-                            <div className="hood">
-                                <LoadingButtonComplete id="location" />
-                                <h5>Select Location</h5>
-                            </div>
-                        </div>
-                        <div className="col s3">
-                            <div className="hood">
-                                <LoadingButtonComplete id="details" />
-                                <h5>Your Details</h5>
-                            </div>
-                        </div>
-                        {/* {
-                            locationCheck ? <LoadingButtonComplete /> : <Spinner />
-                        } */}
+            <div id="main" className="row" style={{ marginBottom: "0", height: "100%" }} >
+                <div className="col s12 m7">
+                    <div className="section center-align" style={{ paddingTop: '50px' }}>
+                        <ProgressCard one="active" two="" three="" props={props} style1="81.133px" style2="81.133px" />
+                    </div>
+                    <div className="divider"></div>
+                    <div className="section">
+                        {
+                            nextPress[state].text === 'Upload' ?
+                                <DropHere handlePicture={handlePicture} />
+                                : null
+                        }
+                        {
+                            nextPress[state].text === 'Confirm' ?
+                                <img id="img" className="materialboxed" src={image} />
+                                : null
+                        }
+                        {
+                            nextPress[state].text === 'Select' ?
+                                <MainMap getCoords={getCoords} /> : null
+                        }
+                        <UploadButton action={nextPress[state].action} btnText={nextPress[state].text} step="1" />
                     </div>
                 </div>
-                <div className="col s12 reportForm">
-                    <div className="row">
-                        <div className="col s6 leftContainReport">
-                            {
-                                nextPress[state].text === 'Upload' ?
-                                    <>
-                                        <div className="col s6 right-align">
-                                            {/* <div className="btn-floating btn-large red"><input type="file"/><i style={{padding: '70px'}} className="material-icons">upload</i></div> */}
-                                            <div className="file-field input-field">
-                                                <div className="btn">
-                                                    <span>File</span>
-                                                    <input type="file" id="photo" onChange={handlePicture} />
-                                                </div>
-                                                <div className="file-path-wrapper">
-                                                    <input className="file-path validate" type="text" required />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='imgContainer'>
-                                            <img id="img" className="materialboxed" src={image} />
-                                        </div>
-                                    </>
-                                    : null
-                            }
-                            {
-                                nextPress[state].text === 'Select' ?
-                                    <MainMap getCoords={getCoords} /> : null
-                            }
-                        </div>
-                        <div className="col s6 rightContainReport">
-                            <UploadButton img={mainImage} action={nextPress[state].action} btnText={nextPress[state].text} />
-                        </div>
-                    </div>
+                <div className="col m5 hide-on-small-only" style={{ overflow: "hidden", height: "100%" }} >
+                    <img src={nextPress[state].link}
+                        alt="Select an image"
+                        style={{
+                            height: "100%"
+                        }}
+                    />
                 </div>
             </div>
-
         </div>
 
     )

@@ -11,8 +11,6 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import M from 'materialize-css'
 import Facts from './components/Layouts/Landing/Interactive/Facts';
-import TestReport from './components/Layouts/TestReport'
-
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -49,7 +47,6 @@ const App = (props) => {
           <Route exact path='/Signup' component={SignUp} />
           <Route exact path='/Chonker' component={Chonker} />
           <Route exact path='/test' component={ Facts } />
-          <Route exact path='/testReport' component={ TestReport } />
         </Switch>
         </div>
       </BrowserRouter>
