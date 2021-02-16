@@ -32,7 +32,7 @@
     height: 100%;
     z-index: 8;
     background-image: url('./Component3.svg');    /* black-red front thingy */
-    bottom: 25px;
+    bottom: 15px;
 }
 .p2 {
     width: 100%;

@@ -37,7 +37,7 @@ const App = (props) => {
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <div className="App">
+        <div className="App" >
         <Switch>
           <Route exact path='/' component={LandingPage} />
           <Route exact path='/Homepage' component={Homepage} />
