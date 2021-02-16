@@ -32,7 +32,6 @@
   .wrap .card__top:after {
     content: "";
     display: block;
-    position: absolute;
     right: 0;
     width: 24px;
     height: 24px;
@@ -64,7 +63,6 @@
     transition: all 0.2s ease-out;
   }
   .wrap .card__bottom h2:before {
-    content: "";
     display: block;
     position: relative;
     top: 30px;

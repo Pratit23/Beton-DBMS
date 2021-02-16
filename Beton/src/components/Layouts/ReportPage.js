@@ -2,7 +2,6 @@ import React, { useEffect, useState, useReducer } from 'react'
 import Sidenav from '../Layouts/Sidenav';
 import UploadButton from '../Buttons/UploadButton'
 import { stateMachine, reducer } from '../Processing/StateMachine'
-import LoadingButtonComplete from '../Buttons/LoadingButtonComplete'
 import * as ml5 from "ml5";
 import MainMap from '../Maps/MainMap'
 import Geocode from "react-geocode";
@@ -13,7 +12,7 @@ import location from '../../images/location.jpg'
 import deets from '../../images/deets.jpg'
 
 let classifier;
-let coords = '';
+let coords = ''
 
 const ReportPage = (props) => {
 
@@ -23,6 +22,7 @@ const ReportPage = (props) => {
     const [url, setUrl] = useState('')
     const [predictions, setPredictions] = useState(null)
     const [state, dispatch] = useReducer(reducer, stateMachine.initial)
+    const [reset, setReset] = useState(false)
 
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
     Geocode.setApiKey("AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w");
@@ -32,6 +32,18 @@ const ReportPage = (props) => {
 
 
     const next = () => dispatch('next')
+
+    // const handleCancel = () => {
+    //     setImage(null)
+    //     setMainImage(null)
+    //     mlImage(null)
+        
+    //     if (reset) {
+    //         setReset(false)
+    //     } else {
+    //         setReset(true)
+    //     }
+    // }
 
     const getCoords = (coord) => {
         console.log("Check this: ", coord)
@@ -133,9 +145,9 @@ const ReportPage = (props) => {
     }
 
     const nextPress = {
-        initial: { text: 'Upload', action: () => handleUpload()},
-        ready: { text: 'Confirm', action: () => confirmation()},
-        classifying: { text: 'Identifying', action: () => next()},
+        initial: { text: 'Upload', action: () => handleUpload() },
+        ready: { text: 'Confirm', action: () => confirmation() },
+        classifying: { text: 'Identifying', action: () => next() },
         details: { text: 'Details', action: () => { console.log("Details entered"); next() } },
         location: { text: 'Select', action: () => { selectLocation() } },
         complete: { text: 'Report', action: () => { } },
@@ -167,14 +179,21 @@ const ReportPage = (props) => {
                         }
                         {
                             nextPress[state].text === 'Confirm' ?
-                                <img id="img" className="materialboxed" src={image} />
+                                <img style={{ borderRadius: '24px', margin: '0 auto' }} id="img" className="materialboxed" src={image} />
                                 : null
                         }
                         {
                             nextPress[state].text === 'Select' ?
                                 <MainMap getCoords={getCoords} /> : null
                         }
-                        <UploadButton action={nextPress[state].action} btnText={nextPress[state].text} step="1" />
+                        <div className="section" style={{ paddingTop: '70px' }}>
+                            <UploadButton img={mainImage} action={nextPress[state].action} btnText={nextPress[state].text} step="1" />
+                            {
+                                (mainImage && nextPress[state].text === 'Upload') ?
+                                    <a style={{ marginLeft: '44%', marginTop: '20px' }} className="btn center-align red">Cancel</a>
+                                    : null
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className="col m5 hide-on-small-only" style={{ overflow: "hidden", height: "100%" }} >
@@ -194,15 +213,15 @@ const ReportPage = (props) => {
                                 }}
                             />
                         ) : (
-                            <img src={initial}
-                                alt="Select an image"
-                                style={{
-                                    height: "100%"
-                                }}
-                            />
-                        )
+                                    <img src={initial}
+                                        alt="Select an image"
+                                        style={{
+                                            height: "100%"
+                                        }}
+                                    />
+                                )
                     }
-                    
+
                 </div>
             </div>
         </div>

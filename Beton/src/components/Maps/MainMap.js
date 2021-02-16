@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polygon } from "react-google-maps"
 import { compose, withStateHandlers } from 'recompose'
+import { geolocated } from "react-geolocated";
 
 
 
@@ -9,9 +10,13 @@ const MapContainer = ({ getCoords }) => {
   var coords = [0, 0]
   var zoomLevel = 10
 
-  
-
   const Map = compose(
+    geolocated({
+      positionOptions: {
+        enableHighAccuracy: false,
+      },
+      userDecisionTimeout: 5000,
+    }),
     withStateHandlers(() => ({
       isMarkerShown: false,
       markerPosition: null
@@ -33,7 +38,7 @@ const MapContainer = ({ getCoords }) => {
       return (
         <GoogleMap
           defaultZoom={zoomLevel}
-          defaultCenter={{ lat: 15.995614, lng: 73.666122 }}
+          defaultCenter={console.log(props), props.coords ? { lat: props.coords.latitude, lng: props.coords.longitude } : { lat: 19.073880, lng: 72.849062 }}
           onClick={props.onMapClick}
           options={{
             styles: [
@@ -130,10 +135,10 @@ const MapContainer = ({ getCoords }) => {
       <Map
         googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w&v=3.exp&libraries=geometry,drawing,places"
         loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100vh` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `50vh` }} />}
+        mapElement={<div style={{ height: `100%`, borderRadius: `24px` }} />}
       />
-      
+
     </div>
   )
 }

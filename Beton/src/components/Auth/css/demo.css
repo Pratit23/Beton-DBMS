@@ -34,6 +34,10 @@
 	pointer-events: auto;
 }
 
+.homeCardRow {
+	margin-left: 0 !important;
+}
+
 .button-menu:focus {
 	outline: none;
 }

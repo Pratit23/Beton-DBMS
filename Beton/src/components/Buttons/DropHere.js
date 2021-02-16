@@ -8,6 +8,7 @@ export default function DropHere(props) {
     }
 
     useEffect(() => {
+        console.log("Drophere useEffect working")
         var fileUpload = document.querySelector(".upload");
 
         fileUpload.addEventListener("dragover", function () {
