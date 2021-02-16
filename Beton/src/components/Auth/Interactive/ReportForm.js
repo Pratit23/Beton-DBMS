@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import GeneralInput from '../../Buttons/GeneralInput';
 import GeneralEmail from '../../Buttons/GeneralEmail';
-// import GeneralPassword from '../../Buttons/GeneralPassword';
 import GeneralDOB from '../../Buttons/GeneralDOB';
 import SubmitButton from '../../Buttons/SubmitButton';
 // have to import these 2 lines

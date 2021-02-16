@@ -93,9 +93,9 @@ const SleepyYoda = () => {
       c4.3,5.8,3.2,14.7,13.8,11.8c1.7-3.3,3-6.9,3.9-10.6C143.4,59.8,143.7,52.4,143.4,45.8z"/>
                     <path id="ear-right" fill="#70C152" d="M118.6,42c1.7-8.4,21.7-11.7,41.7-14s27.7-5.5,18.7,4.4s-34,49.9-49,38.3
       C130,70.7,113.6,66.3,118.6,42z"/>
-                    <path id="eye-left" className="closed-eyes" fill="none" stroke="#4A7F32" stroke-width="3" stroke-miterlimit="10" d="M44.8,70.3
+                    <path id="eye-left" className="closed-eyes" fill="none" stroke="#4A7F32" strokeWidth="3" strokeMiterlimit="10" d="M44.8,70.3
       c9.2,1.5,14.5,0.3,18.5-1.5"/>
-                    <path id="eye-right" className="closed-eyes" fill="none" stroke="#4A7F32" stroke-width="3" stroke-miterlimit="10" d="M84.4,69.4
+                    <path id="eye-right" className="closed-eyes" fill="none" stroke="#4A7F32" strokeWidth="3" strokeMiterlimit="10" d="M84.4,69.4
       c10.8,3.4,17.4,2.8,22.5,1.3"/>
                     <g id="open-eyes">
                         <path id="right-eye-open" fill="#E1EDDA" d="M85,69.7c0,0,7-6.5,16.2-2.8c9.2,3.7,6.5,3.3,6.5,3.3S97.2,79.3,85,69.7z" />
@@ -125,12 +125,12 @@ const SleepyYoda = () => {
                     <ellipse id="nostral-left" fill="#4A7F32" cx="69.1" cy="89.4" rx="2.9" ry="1.4" />
                     <ellipse id="nostral-right" fill="#4A7F32" cx="78.3" cy="89.4" rx="2.9" ry="1.4" />
                     <g id="hairs">
-                        <path className="wiggle" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" d="M112.5,29.1c9.3-2.8,19.1-4.2,22.7-12.6" />
-                        <path className="wiggle" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" d="M47.8,28.6c-4.5-2.2-7.5-5-11.8-4.3" />
-                        <path className="wiggle" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" d="M125.7,29.1c4.3-3.9,5.9-4.5,11.8-4.2c5.9,0.3,7.1-3.1,7.1-3.1" />
-                        <path className="antiwiggle" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" d="M129.8,29.1c9.7-0.6,19.5,0.3,25-7" />
-                        <path className="antiwiggle" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" d="M43.3,36.7c-4.2-4-10.7,0.6-12-2.1" />
-                        <path className="antiwiggle" fill="none" stroke="#FFFFFF" stroke-miterlimit="10" d="M43.3,30c-6.3-2.4-12.7,2.6-16.7-1.7" />
+                        <path className="wiggle" fill="none" stroke="#FFFFFF" strokeMiterlimit="10" d="M112.5,29.1c9.3-2.8,19.1-4.2,22.7-12.6" />
+                        <path className="wiggle" fill="none" stroke="#FFFFFF" strokeMiterlimit="10" d="M47.8,28.6c-4.5-2.2-7.5-5-11.8-4.3" />
+                        <path className="wiggle" fill="none" stroke="#FFFFFF" strokeMiterlimit="10" d="M125.7,29.1c4.3-3.9,5.9-4.5,11.8-4.2c5.9,0.3,7.1-3.1,7.1-3.1" />
+                        <path className="antiwiggle" fill="none" stroke="#FFFFFF" strokeMiterlimit="10" d="M129.8,29.1c9.7-0.6,19.5,0.3,25-7" />
+                        <path className="antiwiggle" fill="none" stroke="#FFFFFF" strokeMiterlimit="10" d="M43.3,36.7c-4.2-4-10.7,0.6-12-2.1" />
+                        <path className="antiwiggle" fill="none" stroke="#FFFFFF" strokeMiterlimit="10" d="M43.3,30c-6.3-2.4-12.7,2.6-16.7-1.7" />
                     </g>
                 </g>
             </g>

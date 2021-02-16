@@ -96,26 +96,26 @@ const Reward = ({ onClick }) => {
                     <path d="M49.6155 33.0642L63.6972 24.1088L50.0219 54.1243L49.6155 33.0642Z" fill="#22B061" />
                 </g>
                 <g className="sparkles">
-                    <path d="M84 13V8" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M84 13H89" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M84 13H79" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M84 13V18" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M85 68V63" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M85 68H90" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M85 68H80" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M85 68V73" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M75 80V75" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M75 80H80" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M75 80H70" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M75 80V85" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M11 70V65" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M11 70H16" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M11 70H6" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M11 70V75" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M9 14V9" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M9 14H14" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M9 14H4" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
-                    <path d="M9 14V19" stroke="#FFDCA1" stroke-width="1.875" stroke-linecap="round" />
+                    <path d="M84 13V8" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M84 13H89" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M84 13H79" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M84 13V18" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M85 68V63" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M85 68H90" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M85 68H80" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M85 68V73" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M75 80V75" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M75 80H80" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M75 80H70" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M75 80V85" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M11 70V65" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M11 70H16" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M11 70H6" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M11 70V75" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M9 14V9" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M9 14H14" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M9 14H4" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
+                    <path d="M9 14V19" stroke="#FFDCA1" strokeWidth="1.875" strokeLinecap="round" />
                 </g>
                 <path className="filled" d="M50.0025 75.0544H49.9677C43.5416 74.935 25 58.1821 25 42.3149C25 34.6922 31.2817 28 38.4416 28C44.1387 28 47.9699 31.9307 50 34.7917C52.0251 31.9357 55.8563 28 61.5559 28C68.7208 28 75 34.6922 75 42.3173C75 58.1796 56.4559 74.9325 50.0299 75.0495H50.0025V75.0544Z" fill="#E0245E" />
                 <path className="stroke" d="M50.0025 75.0544H49.9677C43.5416 74.935 25 58.1821 25 42.3149C25 34.6922 31.2817 28 38.4416 28C44.1387 28 47.9699 31.9307 50 34.7917C52.0251 31.9357 55.8563 28 61.5559 28C68.7208 28 75 34.6922 75 42.3173C75 58.1796 56.4559 74.9325 50.0299 75.0495H50.0025V75.0544ZM38.4441 31.7342C33.2695 31.7342 28.7342 36.68 28.7342 42.3198C28.7342 56.5999 46.2335 71.1685 50.005 71.3227C53.7815 71.1685 71.2758 56.6023 71.2758 42.3198C71.2758 36.68 66.7405 31.7342 61.5658 31.7342C55.2766 31.7342 51.7639 39.0384 51.734 39.1106C51.1618 40.5087 48.8581 40.5087 48.2834 39.1106C48.2486 39.0359 44.7383 31.7342 38.4466 31.7342H38.4441Z" fill="#8899A6" />
