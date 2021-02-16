@@ -607,7 +607,6 @@ a {
   letter-spacing: 0.025em;
   line-height: 22px;
   caret-color: var(--primary);
-  padding: 7px 0 5px 0;
   box-shadow: inset 0 -1px 0 0 var(--grey);
 }
 #login-form .input.password {
