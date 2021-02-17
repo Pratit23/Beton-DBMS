@@ -141,7 +141,7 @@ const LoginForm = (props) => {
                             <span>Submit</span>
                         </button>
 
-                        <div className="signUpHead">
+                        <div className="signUpHeady">
                             <p>Don't have an account? <NavLink to="/signup" style={{ cursor: "pointer" }}>Sign up</NavLink></p>
                         </div>
 

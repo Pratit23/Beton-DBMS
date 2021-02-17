@@ -1347,7 +1347,7 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 
 
 /* ======================= SIGN UP ========================= */
-.signupformwrapper div.col.m8{
+.signupformwrapper div.col{
   margin-top: 12px;
   margin-bottom: 12px;
 }
@@ -1355,8 +1355,17 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 .signUpHead {
 	margin: 10px auto !important;
 }
+.signUpHeady {
+	margin: 30px !important;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
 
-.signUpHead h1{
+.signUpHead h1, .signUpHeady h1{
 	margin: 0;
 	letter-spacing: -0.035em;
 	font-size: 4.65em;
@@ -1365,11 +1374,11 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 	color: #bdbfc2;
 }
 
-.signUpHead p {
+.signUpHead p, .signUpHeady p {
 	padding: 0;
 	margin: 0;
 	margin-top: 10px;
-  font-size: 0.9rem;
+  font-size: 12px;
   font-weight: bold;
 	color: #6d6e70;
 	text-align:center;
@@ -1381,7 +1390,16 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
   transition: 0.2s;
   text-align: center !important;
   font-weight: bold !important;
-  font-size: 0.9rem;
+  font-size: 12px;
+	letter-spacing: 0 !important;
+}
+.signUpHeady a {
+	color: #09f !important;
+  text-decoration: none !important;
+  transition: 0.2s;
+  text-align: center !important;
+  font-weight: bold !important;
+  font-size: 12px;
 	letter-spacing: 0 !important;
 }
 

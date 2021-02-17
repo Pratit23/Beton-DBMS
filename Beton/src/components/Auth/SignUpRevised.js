@@ -15,9 +15,9 @@ const SignUpRevised = (props) => {
                     style={{ height: "100%", position: "relative" }}
                 >
                     <SignUpForm props={{...props}}/>
-                    <img style={{height: "200px", width: "auto", position: "absolute", bottom: 0, left: 0}} src={SignUpCover} alt="Abstract Cover"/>
+                    <img className="hide-on-med-and-down" style={{height: "200px", width: "auto", position: "absolute", bottom: 0, left: 0, zIndex: 0}} src={SignUpCover} alt="Abstract Cover"/>
                 </div>
-                <div className="col s12 m6"
+                <div className="col s12 m6 hide-on-small-only"
                     style={{
                         height: "100%",
                         overflow: "hidden"

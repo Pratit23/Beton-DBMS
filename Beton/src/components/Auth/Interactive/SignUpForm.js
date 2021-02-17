@@ -56,19 +56,19 @@ const SignUpForm = (props) => {
                 Sign Up
             </h2>
             {/* name */}
-            <GeneralInput placeholder="Your name" classy="col s12 m8 offset-m2" type="text" id="name-signup" />
+            <GeneralInput placeholder="Your name" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="text" id="name-signup" />
 
             {/* dob */}
-            <GeneralDOB classy="col s12 m8 offset-m2"/>
+            <GeneralDOB classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2"/>
 
             {/* email */}
-            <GeneralEmail classy="col s12 m8 offset-m2"/>
+            <GeneralEmail classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2"/>
 
             {/* pass */}
-            <GeneralInput placeholder="Your password" classy="col s12 m8 offset-m2" type="password" id="password-signup" />
+            <GeneralInput placeholder="Your password" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="password" id="password-signup" />
 
             {/* address */}
-            <GeneralInput placeholder="Your address" classy="col s12 m8 offset-m2" type="text" id="address-signup" />
+            <GeneralInput placeholder="Your address" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="text" id="address-signup" />
             <SubmitButton text="Create" id="signup" func={handleSubmit} />
         </form>
     )
