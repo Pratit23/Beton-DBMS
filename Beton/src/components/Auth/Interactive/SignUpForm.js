@@ -50,24 +50,25 @@ const SignUpForm = (props) => {
     console.log(props)
     return (
         <form id="signup-form" className="row">
-            <h3 className="show-on-small-only center-align hide-on-med-and-up"
+            <h2 className="white-text center-align"
+                style={{ marginBottom: "20px" }}
             >
                 Sign Up
-            </h3>
+            </h2>
             {/* name */}
-            <GeneralInput placeholder="Your name" classy="col s10 offset-s1 m6" type="text" id="name-signup" />
+            <GeneralInput placeholder="Your name" classy="col s12 m8 offset-m2" type="text" id="name-signup" />
 
             {/* dob */}
-            <GeneralDOB classy="col s10 offset-s1 m6"/>
+            <GeneralDOB classy="col s12 m8 offset-m2"/>
 
             {/* email */}
-            <GeneralEmail classy="col s10 offset-s1 m6"/>
+            <GeneralEmail classy="col s12 m8 offset-m2"/>
 
             {/* pass */}
-            <GeneralInput placeholder="Your password" classy="col s10 offset-s1 m6" type="password" id="password-signup" />
+            <GeneralInput placeholder="Your password" classy="col s12 m8 offset-m2" type="password" id="password-signup" />
 
             {/* address */}
-            <GeneralInput placeholder="Your address" classy="col s10 offset-s1 m12" type="text" id="address-signup" />
+            <GeneralInput placeholder="Your address" classy="col s12 m8 offset-m2" type="text" id="address-signup" />
             <SubmitButton text="Create" id="signup" func={handleSubmit} />
         </form>
     )

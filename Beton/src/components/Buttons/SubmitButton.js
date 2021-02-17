@@ -23,7 +23,7 @@ const GenericButton = ({ text, id, func }) => {
                         </defs>
                     </svg>
                 </button>
-                <div className="signUpHead">
+                <div className="signUpHead center-align">
                     <p>Already have an account? <NavLink to="/login" style={{ cursor: "pointer" }}>  Log in</NavLink></p>
                 </div>
             </div>
