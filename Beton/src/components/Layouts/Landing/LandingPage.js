@@ -5,6 +5,7 @@ import Features from './Features.js';
 import PreFooter from './PreFooter';
 import Footer from './Footer';
 import Facts from './Interactive/Facts';
+import WhatTheyDoRevised from './WhatTheyDoRevised';
 
 const LandingPage = () => {
 
@@ -18,7 +19,7 @@ const LandingPage = () => {
             </svg>
 
             {/* what they do */}
-            <WhatTheyDo />
+            <WhatTheyDoRevised />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style={{ marginBottom: "-10px" }}>
               <path fill="#E63946" fillOpacity="1" d="M0,64L1440,160L1440,320L0,320Z"></path>
             </svg>

@@ -10,14 +10,15 @@ const WhatTheyDo = () => {
             <div className="container" style={{ borderRadius: "24px", backgroundColor: "#f3eddf", width: "85%" }}>
                 <div className="row" style={{ paddingTop: "20px" }}>
                     <div className="col s12 center-align">
-                        <h4>What we do?</h4>
+                        <h2>What we do?</h2>
                     </div>
                     <div className="col s12 m6">
                         <AboutUsGlobe />
                     </div>
                     <div className="col s12 m6">
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.              </p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        </p>
                     </div>
                 </div>
 
@@ -39,7 +40,7 @@ const WhatTheyDo = () => {
                             <div className="card-reveal" style={{ "backgroundColor": "#2a9d8f", "color": "white" }}>
                                 <span className="card-title white-text text-darken-4">
                                     Your voice makes a difference!
-                    <i className="material-icons right">close</i>
+                                    <i className="material-icons right">close</i>
                                 </span>
                                 <p>
                                     <a href="https://github.com"
