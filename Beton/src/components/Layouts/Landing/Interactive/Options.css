@@ -1,0 +1,167 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;500&display=swap");
+@import url("https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css");
+
+/* body {
+  background: #F6F7FD;
+  font-family: "Raleway", sans-serif;
+  overflow-x: hidden;
+} */
+
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-item {
+  width: 380px;
+  /*min-height: 300px*/
+  margin: 25px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 18px 40px -16px rgba(36, 64, 255, 0.25);
+  transition: ease 0.4s;
+}
+.card-item .color-back-img {
+  width: 330px;
+  height: 190px;
+  position: absolute;
+  margin: 25px;
+  border-radius: 15px;
+  z-index: 0;
+}
+.card-item .img-card {
+  position: absolute;
+  width: 350px;
+  left: 0;
+  right: 0;
+  margin: -60px auto 0;
+}
+.card-item .title {
+  padding: 240px 35px 15px 35px;
+  font-weight: 500;
+  color: #707070;
+  font-size: 24px;
+}
+.card-item .text-body {
+  font-weight: 300;
+  color: #707070;
+  font-size: 13px;
+  line-height: 22px;
+  padding: 0 35px 30px;
+}
+.card-item .card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.card-item .card-footer .btn-card {
+  width: 150px;
+  height: 45px;
+  text-align: center;
+  padding: 11px;
+  font-size: 19px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.card-item .card-footer .icons {
+  padding-bottom: 15px;
+  width: 200px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.card-item .card-footer .icons .bx {
+  color: #a9a9a9;
+}
+
+.bxl-dribbble {
+  position: fixed;
+  bottom: 15px;
+  right: 30px;
+  color: #ea4c89;
+  font-size: 45px;
+}
+
+@media (max-width: 849px) {
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+  .wrapper .card-item {
+    margin: 65px 0 30px;
+  }
+
+  .bxl-dribbble {
+    right: 15px;
+  }
+}
+@media (max-width: 480px) {
+  .card-item {
+    width: 250px;
+    min-height: 240px;
+    border-radius: 14px;
+  }
+  .card-item .color-back-img {
+    width: 220px;
+    height: 115px;
+    margin: 15px;
+    border-radius: 10px;
+  }
+  .card-item .img-card {
+    width: 240px;
+  }
+  .card-item .title {
+    padding: 140px 20px 15px 20px;
+    font-size: 15px;
+  }
+  .card-item .text-body {
+    font-size: 12px;
+    line-height: 17px;
+    padding: 0 20px 15px;
+  }
+  .card-item .card-footer .btn-card {
+    width: 100px;
+    height: 36px;
+    padding: 9px;
+    font-size: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+  }
+  .card-item .card-footer .icons {
+    padding: 12px 0;
+    width: 130px;
+  }
+
+  .bxl-dribbble {
+    bottom: 10px;
+    right: 10px;
+    font-size: 30px;
+  }
+}
+@keyframes fadeInUp {
+  from {
+    transform: translate3d(0, 80px, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+.animated {
+  animation-duration: 0.6s;
+  animation-delay: 700ms;
+  animation-fill-mode: both;
+  -webkit-animation-duration: 0.6s;
+  -webkit-animation-delay: 700ms;
+  -webkit-animation-fill-mode: both;
+}
+
+.fadeInUp {
+  opacity: 0;
+  animation-name: fadeInUp;
+  -webkit-animation-name: fadeInUp;
+}

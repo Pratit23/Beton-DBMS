@@ -8,10 +8,13 @@ import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { users, addUser } from '../../../queries/query'
 import M from 'materialize-css'
+import { useState } from 'react';
 
 const SignUpForm = (props) => {
+    const [showLoader, setShowLoader] = useState(false);
 
     const handleSubmit = async (e) => {
+        setShowLoader(true)
         e.preventDefault();
         const name = document.getElementById("name-signup").value
         const password = document.getElementById("password-signup").value
@@ -39,12 +42,13 @@ const SignUpForm = (props) => {
         })
 
         console.log("Res: ", res)
-        if(res.data.addUser){
-            M.toast({html: "Wohoo! You're in...Log in to get in ヽ(•‿•)ノ"});
+        if (res.data.addUser) {
+            M.toast({ html: "Wohoo! You're in...Log in to get in ヽ(•‿•)ノ" });
             props.props.history.push("/login");
         }
-        else{
-            M.toast({html: "Oopsie! Something went wrong!"})
+        else {
+            M.toast({ html: "Oopsie! Something went wrong!" })
+            setShowLoader(false)
         }
     }
     console.log(props)
@@ -59,17 +63,26 @@ const SignUpForm = (props) => {
             <GeneralInput placeholder="Your name" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="text" id="name-signup" />
 
             {/* dob */}
-            <GeneralDOB classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2"/>
+            <GeneralDOB classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" />
 
             {/* email */}
-            <GeneralEmail classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2"/>
+            <GeneralEmail classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" />
 
             {/* pass */}
             <GeneralInput placeholder="Your password" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="password" id="password-signup" />
 
             {/* address */}
             <GeneralInput placeholder="Your address" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="text" id="address-signup" />
-            <SubmitButton text="Create" id="signup" func={handleSubmit} />
+            {
+                showLoader ? (
+                    <div className="col s10 offset-s1 m9 offset-m2 l8 offset-l2">
+                        <div className="progress">
+                            <div className="indeterminate blue"></div>
+                        </div>
+                    </div>
+                ) : 
+                <SubmitButton text="Create" id="signup" func={handleSubmit} />
+            }
         </form>
     )
 }

@@ -56,6 +56,7 @@ const LoginForm = (props) => {
         });
 
         login.addEventListener("submit", (e) => {
+            M.toast({ html: "Give us a moment while we check your credentials" })
             e.preventDefault();
 
             if (!login.classList.contains("processing")) {
@@ -112,13 +113,13 @@ const LoginForm = (props) => {
                         <h1>Log In</h1>
 
                         <div className="input email">
-                            <input type="text" placeholder=" " id="login-email" />
+                            <input type="text" placeholder="" id="login-email" required />
                             <label>Email</label>
                         </div>
 
                         <div className="input password">
                             <div className="dots"></div>
-                            <input type="password" placeholder=" " />
+                            <input type="password" placeholder="" required />
                             <label>Password</label>
                             <div className="cursor"></div>
                             <div className="line">
@@ -132,7 +133,6 @@ const LoginForm = (props) => {
                                 </svg>
                             </div>
                         </div>
-
                         <button type="submit" disabled>
                             <svg viewBox="0 0 16 16">
                                 <circle strokeOpacity=".1" cx="8" cy="8" r="6"></circle>
@@ -140,6 +140,7 @@ const LoginForm = (props) => {
                             </svg>
                             <span>Submit</span>
                         </button>
+
 
                         <div className="signUpHeady">
                             <p>Don't have an account? <NavLink to="/signup" style={{ cursor: "pointer" }}>Sign up</NavLink></p>

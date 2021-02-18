@@ -151,11 +151,11 @@ const GeneralDOB = ({ classy }) => {
                     </div>
                     <div className="zodiac"></div>
                 </div>
-                <input id="mm-dob" type="text" className="month browser-default" placeholder="MM" maxLength="2" pattern="\d*" />
+                <input id="mm-dob" type="text" className="month browser-default" placeholder="MM" maxLength="2" pattern="\d*" required />
                 <span>/</span>
-                <input id="dd-dob" type="text" className="day browser-default" placeholder="DD" maxLength="2" pattern="\d*" />
+                <input id="dd-dob" type="text" className="day browser-default" placeholder="DD" maxLength="2" pattern="\d*" required />
                 <span>/</span>
-                <input id="yy-dob" type="text" className="year browser-default" placeholder="YYYY" maxLength="4" pattern="\d*" />
+                <input id="yy-dob" type="text" className="year browser-default" placeholder="YYYY" maxLength="4" pattern="\d*" required />
             </div>
 
             <div className="log"></div>

@@ -10,6 +10,7 @@ import ProgressCard from '../Cards/ProgressCard';
 import initial from '../../images/initial.jpg'
 import location from '../../images/location.jpg'
 import deets from '../../images/deets.jpg'
+import { Redirect } from 'react-router-dom';
 
 let classifier;
 let coords = ''
@@ -161,6 +162,7 @@ const ReportPage = (props) => {
         });
     }, [image])
 
+    if(!localStorage.getItem('token')) return <Redirect to='/login' />
 
     return (
         <div>

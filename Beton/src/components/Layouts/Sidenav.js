@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Sidenav, Toggle, Nav, Icon, Dropdown } from 'rsuite';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { NavLink } from 'react-router-dom'
+import { routes as Routes } from './Routes';
 
 
 class Sidenav1 extends React.Component {
@@ -37,7 +38,12 @@ class Sidenav1 extends React.Component {
         return (
 
             <div className="sidenav" id="mySidenav">
-                <Toggle onChange={this.handleToggle} checked={expanded} />
+                {
+                    expanded ? (
+                        <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial" }} >Beton</h3>
+                    ) : 
+                        <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial" }} >B</h3>
+                }
                 <Sidenav
                     expanded={expanded}
                     defaultOpenKeys={['3', '4']}
@@ -46,24 +52,29 @@ class Sidenav1 extends React.Component {
                 >
                     <Sidenav.Body>
                         <Nav>
-                            <NavLink to='/Homepage'>
-                                <Nav.Item eventKey="1" icon={<Icon className="white-text" icon="dashboard" />}>
-                                    Dashboard
-                                </Nav.Item>
-                            </NavLink>
-                            <NavLink to='/Cluster'>
-                                <Nav.Item eventKey="2" icon={<Icon className="white-text" icon="map" />}>
-                                    Map
-                            </Nav.Item>
-                            </NavLink>
-                            <NavLink to='/ReportPage'>
-                                <Nav.Item eventKey="3" icon={<Icon className="white-text" icon="exclamation-triangle" />}>
-                                    Report
-                            </Nav.Item>
-                            </NavLink>
+                            {
+                                Routes.map(route=>{
+                                    return (
+                                        <NavLink to={route.link} key={route.eventKey}>
+                                            <Nav.Item eventKey={route.eventKey} icon={<Icon className="white-text" icon={route.icon} />}>
+                                                {route.name}
+                                            </Nav.Item>
+                                        </NavLink> 
+                                    )
+                                })
+                            }
                         </Nav>
                     </Sidenav.Body>
                 </Sidenav>
+                {
+                    expanded ? (
+                        <div className="valign-wrapper">
+                            <p style={{display: "inline-block", width: "max-content", margin: "10px 10px 0 10px"}}>Toggle Sidebar</p>
+                            <Toggle onChange={this.handleToggle} checked={expanded} />
+                        </div>
+                    ): 
+                    <Toggle onChange={this.handleToggle} checked={expanded} />
+                }
             </div>
 
         );

@@ -4,8 +4,8 @@ import WhatTheyDo from './WhatTheyDo';
 import Features from './Features.js';
 import PreFooter from './PreFooter';
 import Footer from './Footer';
-import Facts from './Interactive/Facts';
 import WhatTheyDoRevised from './WhatTheyDoRevised';
+import Options from './Interactive/Options';
 
 const LandingPage = () => {
 
@@ -31,7 +31,7 @@ const LandingPage = () => {
             </svg>
 
             <div>
-              {/* <Facts /> */}
+              <Options />
             </div>
 
             {/* pre footer */}

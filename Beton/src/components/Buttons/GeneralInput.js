@@ -164,7 +164,7 @@ const GeneralInput = ({ placeholder, classy, type, id }) => {
         <>
             <div className={`input-general ${classy}`} style={{ padding: "0" }}>
                 <div className="text-general">
-                    <input type={type} id={id} className="browser-default" placeholder={ placeholder } />
+                    <input type={type} id={id} className="browser-default" placeholder={ placeholder } required />
                 </div>
                 <button className="clear-general">
                     <svg viewBox="0 0 24 24">

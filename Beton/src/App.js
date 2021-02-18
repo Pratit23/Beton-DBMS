@@ -5,13 +5,12 @@ import LandingPage from './components/Layouts/Landing/LandingPage'
 import Cluster from './components/Layouts/Cluster'
 import ReportPage from './components/Layouts/ReportPage'
 import SignIn from './components/Auth/SignIn'
-import SignUp from './components/Auth/SignUp'
+// import SignUp from './components/Auth/SignUp'
 import SignUpRevised from './components/Auth/SignUpRevised'
 import Chonker from './components/Layouts/Chonker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import M from 'materialize-css'
-import Facts from './components/Layouts/Landing/Interactive/Facts';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -41,13 +40,14 @@ const App = (props) => {
         <div className="App" >
         <Switch>
           <Route exact path='/' component={LandingPage} />
+          <Route exact path='/login' component={SignIn} />
+          <Route exact path='/Signup' component={SignUpRevised} />
+
+          {/* auth routes below */}
           <Route exact path='/Homepage' component={Homepage} />
           <Route exact path='/Cluster' component={Cluster} />
           <Route exact path='/ReportPage' component={ReportPage} />
-          <Route exact path='/login' component={SignIn} />
-          <Route exact path='/Signup' component={SignUpRevised} />
           <Route exact path='/Chonker' component={Chonker} />
-          <Route exact path='/test' component={ Facts } />
         </Switch>
         </div>
       </BrowserRouter>

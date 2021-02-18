@@ -1,8 +1,10 @@
 import React from 'react'
 import ClusterTesting from '../Maps/ClusterTest'
 import Sidenav from '../Layouts/Sidenav'
+import { Redirect } from 'react-router-dom'
 
 const Cluster = () => {
+    if(!localStorage.getItem('token')) return <Redirect to='/login' />
     return (
         <div>
             <Sidenav />
