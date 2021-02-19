@@ -1464,13 +1464,28 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
   background-color: #000000;
 }
 
-.sidenav a {
+.sidenav a, .sidenav a li a {
   display: block;
   transition: 0.3s;
+  width: 90%;
+  margin: 4px auto;
+  background: #212121 i !important;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.sidenav a li a i{
+  margin-top: 4px;
+}
+
+.sidenav a:hover, .sidenav a li a:hover{
+  background: #272727 !important;
+  text-decoration: none !important;
+  color: #dfdfdf !important;
 }
 
 .rs-sidenav-default {
-  background-color: #212121 !important;
+  background-color: #000 !important;
 }
 
 /* .closebtn {

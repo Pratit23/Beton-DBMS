@@ -40,9 +40,9 @@ class Sidenav1 extends React.Component {
             <div className="sidenav" id="mySidenav">
                 {
                     expanded ? (
-                        <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial" }} >Beton</h3>
+                        <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial", marginTop: "15px" }} >Beton</h3>
                     ) : 
-                        <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial" }} >B</h3>
+                        <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial", marginTop: "15px" }} >B</h3>
                 }
                 <Sidenav
                     expanded={expanded}
@@ -55,7 +55,9 @@ class Sidenav1 extends React.Component {
                             {
                                 Routes.map(route=>{
                                     return (
-                                        <NavLink to={route.link} key={route.eventKey}>
+                                        <NavLink to={route.link} key={route.eventKey}
+                                            onClick={route.eventKey == 99 ? (() => localStorage.clear()) : null}
+                                        >
                                             <Nav.Item eventKey={route.eventKey} icon={<Icon className="white-text" icon={route.icon} />}>
                                                 {route.name}
                                             </Nav.Item>
@@ -68,12 +70,20 @@ class Sidenav1 extends React.Component {
                 </Sidenav>
                 {
                     expanded ? (
-                        <div className="valign-wrapper">
+                        <div className="valign-wrapper center-align" style={{
+                                position: "fixed",
+                                bottom: "20px",
+                                left: "30px"
+                        }}>
                             <p style={{display: "inline-block", width: "max-content", margin: "10px 10px 0 10px"}}>Toggle Sidebar</p>
                             <Toggle onChange={this.handleToggle} checked={expanded} />
                         </div>
                     ): 
-                    <Toggle onChange={this.handleToggle} checked={expanded} />
+                    <Toggle onChange={this.handleToggle} checked={expanded} style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        left: "2px"
+                    }}/>
                 }
             </div>
 

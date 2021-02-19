@@ -75,6 +75,7 @@ const LoginForm = (props) => {
                     console.log(result)
                     let cls = "";
                     if (result.data.login) {
+                        console.log(result.data.login)
                         cls = "success";
                         localStorage.setItem("token", result.data.login.token)
                         props.props.history.push('/homepage');

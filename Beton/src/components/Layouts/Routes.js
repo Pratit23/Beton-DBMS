@@ -20,4 +20,11 @@ export const routes = [
         icon: 'exclamation-triangle',
         eventKey: 3
     },
+    {
+        name: 'Logout',
+        link: '/',
+        icon: 'sign-out',
+        eventKey: 99
+    },
+    
 ]
