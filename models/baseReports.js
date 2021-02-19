@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
 
-const reportsSchema = new mongoose.Schema({
+const baseReportsSchema = new mongoose.Schema({
     location:{
         type:String,
         require:true
@@ -19,6 +19,14 @@ const reportsSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    resolved:{
+        type: Boolean,
+        require: true
+    },
+    noOfReports:{
+        type: Number,
+        require: true
+    },
     reportedAt: {
         type: String,
         require: true
@@ -27,11 +35,11 @@ const reportsSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    baseParent: {
+    similar: [{
         type: ObjectId,
         require: true,
-        ref: "BaseReports"
-    }
+        ref: "Reports"
+    }],
 });
 
-module.exports = mongoose.model("Reports", reportsSchema);
+module.exports = mongoose.model("BaseReports", baseReportsSchema);

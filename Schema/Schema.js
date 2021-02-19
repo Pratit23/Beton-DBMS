@@ -7,7 +7,11 @@ const jwt = require('jsonwebtoken');
 const { JWT_SEC } = require('../keys/keys');
 const geolib = require('geolib');
 const User = require('../models/user')
+const Admin = require('../models/admin')
+const Advertisers = require('../models/advertisers')
+const Coupon = require('../models/coupons')
 const Report = require('../models/reports')
+const BaseReports = require('../models/baseReports')
 
 // https://www.figma.com/file/4bAC5AKUM1VmxyAaRhiLrs/BETON-ER-Diagram?node-id=0%3A1
 
@@ -84,7 +88,18 @@ const UserType = new GraphQLObjectType({
             resolve(parent, args) {
                 let temp = []
                 parent.reports.forEach(y => {
-                    let test = _.find(reports, r => r.id === y)
+                    let test = Report.findById(y)
+                    temp.push(test)
+                })
+                return temp
+            }
+        },
+        baseReports: {
+            type: new GraphQLList(BaseReportsType),
+            resolve(parent, args){
+                let temp = []
+                parent.baseReports.forEach(y => {
+                    let test = BaseReports.findById(y)
                     temp.push(test)
                 })
                 return temp
@@ -136,6 +151,39 @@ const AdvertisersType = new GraphQLObjectType({
     })
 });
 
+
+const BaseReportsType = new GraphQLObjectType({
+    name: "BaseReports",
+    fields: () => ({
+        id: { type: GraphQLID },
+        image: { type: GraphQLString },
+        address: { type: GraphQLString },
+        location: { type: GraphQLString },
+        reportedAt: { type: GraphQLString }, // date
+        reportedOn: { type: GraphQLString }, // time
+        userID: {
+            type: UserType,
+            resolve(parent, args) {
+                //// change this. Fetch from MongoDB
+                return User.findById(parent.userID)
+            }
+        },
+        resolved: { type: GraphQLBoolean },
+        noOfReports: { type: GraphQLInt },
+        similar: {
+            type: GraphQLList(ReportsType),
+            resolve(parent, args){
+                let temp = [];
+                parent.similar.forEach(s=>{
+                    let test = Report.findById(s)
+                    temp.push(test);
+                })
+                return temp;
+            }
+        }
+    })
+})
+
 const ReportsType = new GraphQLObjectType({
     name: "Reports",
     fields: () => ({
@@ -143,14 +191,21 @@ const ReportsType = new GraphQLObjectType({
         image: { type: GraphQLString },
         address: { type: GraphQLString },
         location: { type: GraphQLString },
+        reportedAt: { type: GraphQLString }, // date
+        reportedOn: { type: GraphQLString }, // time
         userID: {
             type: UserType,
             resolve(parent, args) {
-                return _.find(users, a => a.id === parent.userID)
+                //// change this. Fetch from MongoDB
+                return User.findById(parent.userID)
             }
         },
-        resolved: { type: GraphQLBoolean },
-        noOfReports: { type: GraphQLInt }
+        baseParent: {
+            type: BaseReportsType,
+            resolve(parent, args){
+                return BaseReports.findById(parent.baseParent)
+            }
+        }
     })
 })
 
@@ -190,52 +245,54 @@ const RootQuery = new GraphQLObjectType({
             type: UserType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
-                return _.find(users, (a) => {
-                    if (a.id == args['id']) {
-                        return a
-                    }
-                });
+                // return _.find(users, (a) => {
+                //     if (a.id == args['id']) {
+                //         return a
+                //     }
+                // });
+                return User.findById(args['id'])
             }
         },
         admin: {
             type: AdminType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
-                return _.find(users, (a) => {
-                    if (a.id == args['id']) {
-                        return a
-                    }
-                });
+                // return _.find(users, (a) => {
+                //     if (a.id == args['id']) {
+                //         return a
+                //     }
+                // });
+                return Admin.findById(args['id'])
             }
         },
         users: {
             type: new GraphQLList(UserType),
             resolve(parent, args) {
-                return users;
+                return User.find();
             }
         },
         allReports: {
             type: new GraphQLList(ReportsType),
             resolve(parent, args) {
-                return reports
+                return Report.find()
             }
         },
         admins: {
             type: new GraphQLList(AdminType),
             resolve(parent, args) {
-                return admin
+                return Admin.find()
             }
         },
-        advertisers: {
+        allAdvertisers: {
             type: new GraphQLList(AdvertisersType),
             resolve(parent, args) {
-                return advertisers
+                return Advertisers.find()
             }
         },
-        coupons: {
+        allCoupons: {
             type: new GraphQLList(CouponsType),
             resolve(parent, args) {
-                return coupons
+                return Coupon.find()
             }
         },
         getReportsNearMe: {
@@ -263,8 +320,37 @@ const RootQuery = new GraphQLObjectType({
                         return true
                     }
                 })
-
                 return data;
+            }
+        },
+        getNearestCoordinate: {
+            type: BaseReportsType,
+            args: {
+                latitude: { type: GraphQLString },
+                longitude: { type: GraphQLString },
+            },
+            async resolve(parent, args){
+                let main = {
+                    latitude: Number(args['latitude']),
+                    longitude: Number(args['longitude'])
+                }
+                // one sec brb
+
+                //findNearest(point, arrayOfPoints)
+                let allCoords = await BaseReports.find({}, { location: 1 });
+                print(allCoords);
+                let cleanedCoords = allCoords.map(c=>{
+                    temp = c.split(" ")
+                    return { latitude: temp[0], longitude: temp[1]}
+                })
+                let res = geolib.findNearest(main, cleanedCoords);
+                console.log("Result", res);
+            }
+        },
+        allBaseReports: {
+            type: new GraphQLList(BaseReportsType),
+            resolve(parent, args){
+                return BaseReports.find();
             }
         }
     }
@@ -351,12 +437,13 @@ const Mutation = new GraphQLObjectType({
                 image: { type: new GraphQLNonNull(GraphQLString) },
                 address: { type: new GraphQLNonNull(GraphQLString) },
                 location: { type: new GraphQLNonNull(GraphQLString) },
+                reportedAt: { type: new GraphQLNonNull(GraphQLString) },
+                reportedOn: { type: new GraphQLNonNull(GraphQLString) },
                 userID: { type: new GraphQLNonNull(GraphQLID) },
-                resolved: { type: new GraphQLNonNull(GraphQLBoolean) },
-                noOfReports: { type: new GraphQLNonNull(GraphQLInt) }
+                baseParent: { type: new GraphQLNonNull(GraphQLID) }, // do analysing part on front end and get the base parent id.
             },
             async resolve(parent, args) {
-                if (!args.image || !args.address || !args.location || !args.userID || args.resolved || args.noOfReports) {
+                if (!args.image || !args.address || !args.location || !args.userID || !args.baseParent || !args.reportedAt || !args.reportedOn) {
                     // console.log("error?")
                     throw new Error("Kindly provide all details");
                 } else {
@@ -365,8 +452,51 @@ const Mutation = new GraphQLObjectType({
                         address: args.address,
                         location: args.location,
                         userID: args.userID,
-                        resolved: args.resolved,
-                        noOfReports: args.noOfReports
+                        baseParent: args.baseParent,
+                        reportedAt: args.reportedAt,
+                        reportedOn: args.reportedOn
+                    })
+                    // saving to db
+                    let results = await newReport.save();
+                    console.log(results);
+                    await BaseReports.findByIdAndUpdate(
+                        results.baseParent,
+                        {$push: { "similar": results._id }}
+                    )
+                    if (!results) {
+                        throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                    }
+                    return results
+                }
+            }
+        }, //depending mutation done
+        addBaseReport: {
+            type: BaseReportsType,
+            args: {
+                image: { type: new GraphQLNonNull(GraphQLString) },
+                address: { type: new GraphQLNonNull(GraphQLString) },
+                location: { type: new GraphQLNonNull(GraphQLString) },
+                reportedAt: { type: new GraphQLNonNull(GraphQLString) },
+                reportedOn: { type: new GraphQLNonNull(GraphQLString) },
+                userID: { type: new GraphQLNonNull(GraphQLID) },
+                noOfReports: { type: GraphQLNonNull(GraphQLInt) },
+            },
+            async resolve(parent, args) {
+                if (!args.image || !args.address || !args.location || !args.userID || !args.reportedAt || !args.reportedOn || !args.noOfReports) {
+                    // console.log("error?")
+                    throw new Error("Kindly provide all details");
+                } else {
+                    let newReport = new BaseReports({
+                        image: args.image,
+                        address: args.address,
+                        location: args.location,
+                        userID: args.userID,
+                        baseParent: args.baseParent,
+                        reportedAt: args.reportedAt,
+                        reportedOn: args.reportedOn,
+                        noOfReports: args.noOfReports,
+                        resolved: false,
+                        similar: []
                     })
                     // saving to db
                     let results = await newReport.save();
@@ -377,7 +507,7 @@ const Mutation = new GraphQLObjectType({
                     return results
                 }
             }
-        },
+        }
     }
 })
 
