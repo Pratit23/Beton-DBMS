@@ -337,14 +337,18 @@ const RootQuery = new GraphQLObjectType({
                 // one sec brb
 
                 //findNearest(point, arrayOfPoints)
-                let allCoords = await BaseReports.find({}, { location: 1 });
-                print(allCoords);
+                let allCoords = await BaseReports.find();
+                console.log(allCoords);
                 let cleanedCoords = allCoords.map(c=>{
-                    temp = c.split(" ")
+                    temp = c.location.split(" ")
                     return { latitude: temp[0], longitude: temp[1]}
                 })
                 let res = geolib.findNearest(main, cleanedCoords);
+                res = _.find(allCoords, (a)=>{
+                    if(a.location == `${res.latitude} ${res.longitude}`) return true
+                })
                 console.log("Result", res);
+                return res;
             }
         },
         allBaseReports: {
