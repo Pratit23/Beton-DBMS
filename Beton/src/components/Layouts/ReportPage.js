@@ -163,14 +163,13 @@ const ReportPage = (props) => {
     }, [image])
 
     if(!localStorage.getItem('token')) return <Redirect to='/login' />
-
     return (
         <div>
             <Sidenav />
             <div id="main" className="row" style={{ marginBottom: "0", height: "100%" }} >
                 <div className="col s12 m7">
                     <div className="section center-align" style={{ paddingTop: '50px' }}>
-                        <ProgressCard one="active" two="" three="" props={props} style1="81.133px" style2="81.133px" />
+                        <ProgressCard one="active" two="" three="" props={props} current={nextPress[state].text} style1="81.133px" style2="81.133px" />
                     </div>
                     <div className="divider"></div>
                     <div className="section">
@@ -181,7 +180,12 @@ const ReportPage = (props) => {
                         }
                         {
                             nextPress[state].text === 'Confirm' ?
-                                <img style={{ borderRadius: '24px', margin: '0 auto' }} id="img" className="materialboxed" src={image} />
+                                <img style={{
+                                    borderRadius: '24px',
+                                    margin: '0 auto',
+                                    height: "100%",
+                                    width: "auto"
+                                }} id="img" className="materialboxed" src={image} />
                                 : null
                         }
                         {
@@ -192,7 +196,22 @@ const ReportPage = (props) => {
                             <UploadButton img={mainImage} action={nextPress[state].action} btnText={nextPress[state].text} step="1" />
                             {
                                 (mainImage && nextPress[state].text === 'Upload') ?
-                                    <a style={{ marginLeft: '44%', marginTop: '20px' }} className="btn center-align red">Cancel</a>
+                                    <div style={{
+                                        textAlign: "center",
+                                        marginTop: '20px',
+                                    }} >
+                                        <a onClick={()=>{
+                                            if(window.confirm("Are you sure that you want to cancel this operation?")){
+                                                props.history.push("/homepage")
+                                            }
+                                        }} style = {{
+                                            // marginLeft: '44%',
+                                            textDecoration: "none",
+                                            borderRadius: "12px",
+                                            width: "110px",
+                                            margin: "0 auto"
+                                        }} className="btn center-align red white-text">Cancel</a>
+                                    </div>  
                                     : null
                             }
                         </div>

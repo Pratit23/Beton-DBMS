@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import './ProgressCard.scss';
 
-const ProgressCard = ({ props, one, two, three, style1, style2 }) => {
+const ProgressCard = ({ props, one, two, three, style1, style2, current }) => {
     console.log(props)
+    console.log("Current in progress", current)
     useEffect(()=>{
         // for progressing animation to next one
         // document.querySelectorAll('.tabbar li a')[1].dispatchEvent(new CustomEvent('click'))
         window.$('.tabbar li a').on('click', function(e) {
-
             e.preventDefault();
-        
+            // getting the index
+            console.log(window.$('.tabbar li a').index(this));
+
             let that = window.$(this),
                 li = that.parent(),
                 ul = li.parent();
