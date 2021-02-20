@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import './ProgressCard.scss';
+import M from 'materialize-css'
 
-const ProgressCard = ({ props, one, two, three, style1, style2, current }) => {
-    console.log(props)
-    console.log("Current in progress", current)
+// var step = ""
+const ProgressCard = ({ dispatch, one, two, three, style1, style2, current, machine }) => {
+    // step = current
+    // console.log("bruh", step, current)
+    
     useEffect(()=>{
         // for progressing animation to next one
         // document.querySelectorAll('.tabbar li a')[1].dispatchEvent(new CustomEvent('click'))
-        window.$('.tabbar li a').on('click', function(e) {
+        
+        window.$('.tabbar li a').on('moveIt', function(e) {
             e.preventDefault();
-            // getting the index
-            console.log(window.$('.tabbar li a').index(this));
 
             let that = window.$(this),
                 li = that.parent(),
@@ -33,6 +35,57 @@ const ProgressCard = ({ props, one, two, three, style1, style2, current }) => {
         });
         
     }, []);
+
+    useEffect(()=>{
+        window.$('.tabbar li a').on('click', function(e) {
+            e.preventDefault();
+            // getting the index
+            let index = window.$('.tabbar li a').index(this);
+            // console.log("index", index, "current", step, current)
+            switch(index){
+                case 0: {
+                    if(current == "Select" || current == "Report"){
+                        console.log("briu")
+                        // machine['initial'].action();
+                        dispatch("initial")
+                        document.querySelectorAll('.tabbar li a')[0].dispatchEvent(new CustomEvent('moveIt'))
+                    }else{
+                        M.toast({ html: "Hold your horses mate! Let's get this information first?" })
+                        // do nothing;
+                    }
+                    break;
+                }
+                case 1:{
+                    if (current == "Report"){
+                        console.log("here")
+                        dispatch("location")
+                        dispatch('next')
+                        dispatch('next')
+                        dispatch('next')
+                        document.querySelectorAll('.tabbar li a')[1].dispatchEvent(new CustomEvent('moveIt'))
+                    }else{
+                        M.toast({ html: "Hold your horses mate! We'll walk you through it. Easy" })
+                        // do nothing lmaoo
+                    }
+                    break;
+                }
+                case 2:{
+                    M.toast({ html: "See, we can't go there without taking information from here first!" })
+                    // do nothing for anything bruh
+                    break;
+                }
+                default: {
+                    // do nothing lmaoo
+                    break;
+                }
+            }
+        
+        });
+
+        return () => {
+            window.$('.tabbar li a').off('click')
+        }
+    })
 
     return (
         <>
