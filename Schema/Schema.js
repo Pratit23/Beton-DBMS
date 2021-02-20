@@ -351,6 +351,47 @@ const RootQuery = new GraphQLObjectType({
                 return res;
             }
         },
+        existingBaseCoordinate: {
+            type: BaseReportsType || GraphQLBoolean,
+            args: {
+                latitude: { type: GraphQLString },
+                longitude: { type: GraphQLString },
+            },
+            async resolve(parent, args){
+                let main = {
+                    latitude: Number(args['latitude']),
+                    longitude: Number(args['longitude'])
+                }
+                // one sec brb
+
+                //findNearest(point, arrayOfPoints)
+                let allCoords = await BaseReports.find();
+                console.log(allCoords);
+                let cleanedCoords = allCoords.map(c=>{
+                    temp = c.location.split(" ")
+                    return { latitude: temp[0], longitude: temp[1]}
+                })
+
+                // get the lat and long of the nearest coordinate
+                let res = geolib.findNearest(main, cleanedCoords);
+                res = {
+                    latitude: Number(res['latitude']),
+                    longitude: Number(res['longitude'])
+                }
+                // checking distance of this nearest coordinate with our coordinate
+                let disanceBet = geolib.getDistance(main, res)
+                console.log("Distance:", disanceBet)
+                if (disanceBet > 1000) {
+                    return false
+                } else {
+                    res = _.find(allCoords, (a)=>{
+                        if(a.location == `${res.latitude} ${res.longitude}`) return true
+                    })
+                    console.log("ress", res)
+                    return res
+                }
+            }
+        },
         allBaseReports: {
             type: new GraphQLList(BaseReportsType),
             resolve(parent, args){
