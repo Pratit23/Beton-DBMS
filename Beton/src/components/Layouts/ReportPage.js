@@ -13,12 +13,15 @@ import deets from '../../images/deets.jpg'
 import { Redirect } from 'react-router-dom';
 import M from 'materialize-css';
 import { specialOnes } from './Highways'
-// import SpamImage from '../Modals/SpamImage';
 import { Link } from 'react-router-dom';
+import { useLazyQuery } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
+import { addBaseReport, addReport, existingBaseCoordinate } from '../../queries/query'
 
 
 let classifier;
-let coords = ''
+let coords = [0 ,0]
 
 const ReportPage = (props) => {
 
@@ -28,7 +31,18 @@ const ReportPage = (props) => {
     const [predictions, setPredictions] = useState(null)
     const [state, dispatch] = useReducer(reducer, stateMachine.initial)
     const [reset, setReset] = useState(false)
+    const [addressi, setAddressi] = useState("")
 
+    // lazy query here
+    const [existingBase, {called, loading, data}] = useLazyQuery(
+        existingBaseCoordinate,
+        {
+            variables: {
+                latitude: `${coords[0]}`,
+                longitude: `${coords[1]}`
+            }
+        }
+    );
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
     Geocode.setApiKey("AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w");
 
@@ -49,31 +63,10 @@ const ReportPage = (props) => {
             setImage(URL.createObjectURL(image))
             setMainImage(image)
             document.getElementById("publishBtn").disabled = false;
-            // document.getElementById("publishBtn").addEventListener('moveIt', function(){
-            //     nextPress[state].action()
-            // })
         }
     }
     const handleUpload = async () => {
         console.log("Image selected successfully")
-        // const fileData = new FormData();
-        // console.log("Main Image", mainImage);
-        // fileData.append("file", mainImage);
-        // fileData.append("upload_preset", "levitation");
-        // fileData.append("cloud_name", "levitation");
-
-        // // saving to cloud first
-        // fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
-        //     method: "POST",
-        //     body: fileData
-        // }).then(res => res.json()).then(data => {
-        //     console.log(data.url);
-        //     setUrl(data.url)
-        //     console.log("Photo uploaded")
-        // }).catch(err => {
-        //     console.log(err);
-        //     return err
-        // })
         next()
     }
 
@@ -127,25 +120,90 @@ const ReportPage = (props) => {
 
     const selectLocation = () => {
         console.log("Selected location: ", coords)
-        Geocode.fromLatLng(coords[0], coords[1]).then(
-            response => {
-                var address = response.results[0].formatted_address;
-                console.log("Address: ", address)
-                address = address.split(" " || ",")
-                console.log("Address array: ", address)
+        if(coords[0] == 0 && coords[1] == 0){
+            M.toast({ html: "Please select a location on the map!" })
+        }else{
+            Geocode.fromLatLng(coords[0], coords[1]).then(
+                response => {
+                    var address = response.results[0].formatted_address;
+                    console.log("Address: ", address)
+                    setAddressi(address)
+                    address = address.split(" " || ",")
+                    console.log("Address array: ", address)
+    
+                    let isFound = address.filter(ai => specialOnes.includes(String(ai).toLowerCase()));
+                    if (isFound) {
+                        console.log("Valid Road")
+                    } else {
+                        console.log("Invalid Road")
+                    }
+                },
+                error => {
+                    console.error("Error fetching the land: ", error);
+                })
+            document.querySelectorAll('.tabbar li a')[2].dispatchEvent(new CustomEvent('moveIt'))
+            next()
+        }
+    }
 
-                let isFounded = address.filter(ai => specialOnes.includes(String(ai).toLowerCase()));
-                if (isFounded) {
-                    console.log("Valid Road")
-                } else {
-                    console.log("Invalid Road")
-                }
-            },
-            error => {
-                console.error("Error fetching the land: ", error);
-            })
-        document.querySelectorAll('.tabbar li a')[2].dispatchEvent(new CustomEvent('moveIt'))
-        next()
+    const uploadPhoto = () => {
+        const fileData = new FormData();
+        console.log("Main Image", mainImage);
+        fileData.append("file", mainImage);
+        fileData.append("upload_preset", "levitation");
+        fileData.append("cloud_name", "levitation");
+
+        // saving to cloud first
+        fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
+            method: "POST",
+            body: fileData
+        }).then(res => res.json()).then(data => {
+            console.log(data.url);
+            setUrl(data.url)
+            console.log("Photo uploaded")
+            return data.url;
+        }).catch(err => {
+            console.log(err);
+            return err
+        })
+    }
+
+    const HandleReport = async () => {
+        existingBase();
+        uploadPhoto();
+        console.log("Image url", url)
+        let id = localStorage.getItem("id");
+        if (loading) return M.toast({ html: "Initializing..." });
+        if (data && data.existingBaseCoordinate) {
+            if(data.existingBaseCoordinate.location == null){
+                // call base point query mutation here
+                let res = await props.addBaseReport({
+                    variables: {
+                        image: url,
+                        address: addressi,
+                        location: `${coords[0]} ${coords[1]}`,
+                        reportedAt: new Date().toDateString(),
+                        reportedOn: new Date().toLocaleString().split(", ")[1],
+                        userID: id,
+                        noOfReports: 1
+                    }
+                })
+            }else{
+                // call dependenty point query mutation here
+                let res = await props.addReport({
+                    variables: {
+                        image: url,
+                        reportedAt: new Date().toDateString(): addressi,
+                        location: `${coords[0]} ${coords[1]}`,
+                        reportedAt: new Date().toDateString(),
+                        reportedOn: new Date().toLocaleString().split(", ")[1],
+                        userID: id,
+                        baseParent: data.existingBaseCoordinate.id
+                    }
+                })
+            }
+        }
+
     }
 
     const nextPress = {
@@ -154,7 +212,7 @@ const ReportPage = (props) => {
         classifying: { text: 'Identifying', action: () => next() },
         details: { text: 'Details', action: () => { console.log("Details entered"); next() } },
         location: { text: 'Select', action: () => { selectLocation() } },
-        complete: { text: 'Report', action: () => { } },
+        complete: { text: 'Report', action: () => { HandleReport() } },
     }
 
     useEffect(() => {
@@ -170,9 +228,8 @@ const ReportPage = (props) => {
         });
 
     }, [image])
-
+    console.log(props)
     if (!localStorage.getItem('token')) return <Redirect to='/login' />
-    console.log("NextPress", nextPress, nextPress[state], state)
     return (
         <div>
             {/* modal thingy if things goes sideways */}
@@ -266,13 +323,13 @@ const ReportPage = (props) => {
                                 }}
                             />
                         ) : (
-                                    <img src={initial}
-                                        alt="Select an image"
-                                        style={{
-                                            height: "100%"
-                                        }}
-                                    />
-                                )
+                            <img src={initial}
+                                alt="Select an image"
+                                style={{
+                                    height: "100%"
+                                }}
+                            />
+                        )
                     }
 
                 </div>
@@ -282,4 +339,7 @@ const ReportPage = (props) => {
     )
 }
 
-export default ReportPage
+export default compose(
+    graphql(addBaseReport, { name: "addBaseReport" }),
+    graphql(addReport, { name: "addReport" })
+)(ReportPage)
