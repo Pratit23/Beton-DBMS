@@ -11,6 +11,11 @@ import initial from '../../images/initial.jpg'
 import location from '../../images/location.jpg'
 import deets from '../../images/deets.jpg'
 import { Redirect } from 'react-router-dom';
+import M from 'materialize-css';
+import { specialOnes } from './Highways'
+// import SpamImage from '../Modals/SpamImage';
+import { Link } from 'react-router-dom';
+
 
 let classifier;
 let coords = ''
@@ -19,7 +24,6 @@ const ReportPage = (props) => {
 
     const [image, setImage] = useState(null)
     const [mainImage, setMainImage] = useState(null)
-    const [mlImage, setMlImage] = useState(null)
     const [url, setUrl] = useState('')
     const [predictions, setPredictions] = useState(null)
     const [state, dispatch] = useReducer(reducer, stateMachine.initial)
@@ -34,18 +38,6 @@ const ReportPage = (props) => {
 
     const next = () => dispatch('next')
 
-    // const handleCancel = () => {
-    //     setImage(null)
-    //     setMainImage(null)
-    //     mlImage(null)
-        
-    //     if (reset) {
-    //         setReset(false)
-    //     } else {
-    //         setReset(true)
-    //     }
-    // }
-
     const getCoords = (coord) => {
         console.log("Check this: ", coord)
         coords = coord
@@ -56,7 +48,6 @@ const ReportPage = (props) => {
             console.log("Image: ", image)
             setImage(URL.createObjectURL(image))
             setMainImage(image)
-            setMlImage(<img src={image}></img>)
             document.getElementById("publishBtn").disabled = false;
             // document.getElementById("publishBtn").addEventListener('moveIt', function(){
             //     nextPress[state].action()
@@ -64,25 +55,25 @@ const ReportPage = (props) => {
         }
     }
     const handleUpload = async () => {
-        console.log("Handle Upload triggered")
-        const fileData = new FormData();
-        console.log("Main Image", mainImage);
-        fileData.append("file", mainImage);
-        fileData.append("upload_preset", "levitation");
-        fileData.append("cloud_name", "levitation");
+        console.log("Image selected successfully")
+        // const fileData = new FormData();
+        // console.log("Main Image", mainImage);
+        // fileData.append("file", mainImage);
+        // fileData.append("upload_preset", "levitation");
+        // fileData.append("cloud_name", "levitation");
 
-        // saving to cloud first
-        fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
-            method: "POST",
-            body: fileData
-        }).then(res => res.json()).then(data => {
-            console.log(data.url);
-            setUrl(data.url)
-            console.log("Photo uploaded")
-        }).catch(err => {
-            console.log(err);
-            return err
-        })
+        // // saving to cloud first
+        // fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
+        //     method: "POST",
+        //     body: fileData
+        // }).then(res => res.json()).then(data => {
+        //     console.log(data.url);
+        //     setUrl(data.url)
+        //     console.log("Photo uploaded")
+        // }).catch(err => {
+        //     console.log(err);
+        //     return err
+        // })
         next()
     }
 
@@ -97,24 +88,39 @@ const ReportPage = (props) => {
         classifier = ml5.imageClassifier('./model/model.json', modelLoaded);
 
         function modelLoaded() {
-            console.log('Model Loaded!');
+            M.toast({ html: "Analysing image..." })
         }
-
-        classifier.classify(mlImage, 5, function (err, results) {
+        let testDiv = document.querySelector("#ml5Image");
+        classifier.classify(testDiv, 5, function (err, results) {
             // Return the results
             console.log("Results:-- ", results)
             return results;
         }).then((results) => {
             // Set the predictions in the state
             setPredictions(results)
-            console.log("Results: ", results)
+            // console.log("Results: ", results)
+
+            // pothole prediction here
+            if (results[0].label == "Potholes" && results[0].confidence > 0.85) {
+                // its a pothole
+                M.toast({ html: "Woohoo! Pothole detected. Let's quickly complete this to get your report on the map!" })
+            } else {
+                // no pothole detected
+                setTimeout(function () {
+                    document.querySelectorAll('.tabbar li a')[0].dispatchEvent(new CustomEvent('moveIt'));
+                }, 1000);
+                document.querySelector("#spamImage").src = image;
+                window.$('.modal').modal('open');
+                setTimeout(function(){
+                    dispatch("initial");
+                    setImage(null);
+                    setMainImage(null);
+                    setPredictions(null);
+                }, 2000)
+            }
         }).catch((err) => {
             console.log("Error: ", err)
         })
-
-        // classifier.classify(document.getElementById('img'), (err, results) => {
-        //     console.log("Plis work: ", results);
-        //   });
         next()
     }
 
@@ -126,16 +132,12 @@ const ReportPage = (props) => {
                 console.log("Address: ", address)
                 address = address.split(" " || ",")
                 console.log("Address array: ", address)
-                for (var i = 0; i < address.length; i++) {
-                    if (address[i] === 'Road' || address[i] === 'road' || address[i] === 'road,' ||
-                        address[i] === 'Road,' || address[i] === 'Mahamarg' || address[i] == 'marg', address[i] === 'Mahamarg,' || address[i] == 'marg,', address[i] === 'NH' || address[i] == 'SH'
-                        || address[i] === 'Rd' || address[i] == 'rd' || address[i] === 'Rd,' || address[i] == 'rd,'
-                        || address[i] === 'Highway' || address[i] === 'highway' || address[i] === 'Highway,' || address[i] === 'highway,') {
-                        console.log("Valid Road")
-                        break
-                    } else {
-                        console.log("Road Invalid")
-                    }
+
+                let isFounded = address.filter(ai => specialOnes.includes(String(ai).toLowerCase()));
+                if (isFounded) {
+                    console.log("Valid Road")
+                } else {
+                    console.log("Invalid Road")
                 }
             },
             error => {
@@ -154,18 +156,46 @@ const ReportPage = (props) => {
         complete: { text: 'Report', action: () => { } },
     }
 
+    useEffect(() => {
+        window.$(document).ready(function () {
+            window.$('.modal').modal();
+        });
+    }, [])
 
     useEffect(() => {
         console.log("Report Page UseEffect Working")
         window.$(document).ready(function () {
             window.$('.materialboxed').materialbox();
         });
+
     }, [image])
 
-    if(!localStorage.getItem('token')) return <Redirect to='/login' />
+    if (!localStorage.getItem('token')) return <Redirect to='/login' />
     console.log("NextPress", nextPress, nextPress[state], state)
     return (
         <div>
+            {/* modal thingy if things goes sideways */}
+            <div id="modal2" className="modal">
+                <div className="modal-content" style={{ height: "100%" }}>
+                    <div className="BannerWrapper" style={{ height: "100%" }}>
+                    </div>
+                    <span id="popMoto">We can't take that!</span>
+                    <div className="row">
+                        <div className="col s12 m6">
+                            <img src="" alt="Spam image" id="spamImage" style={{ width: "100%", height: "auto" }}></img>
+                        </div>
+                        <div className="col s12 m6">
+                            <p>
+                                Sorry, we can't accept this image. This may be due to a spam image being uploaded
+                                wherein we couldn't find a pothole. However, if you think we made a mistake do let us know
+                            <Link to="/feedbackReport"> over here</Link> and our team will get back to you and credit you for the same,
+                            if accurate.
+                        </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <Sidenav />
             <div id="main" className="row" style={{ marginBottom: "0", height: "100%" }} >
                 <div className="col s12 m7">
@@ -174,6 +204,7 @@ const ReportPage = (props) => {
                     </div>
                     <div className="divider"></div>
                     <div className="section">
+                        <img src="" id="ml5Image" style={{ display: "none" }} />
                         {
                             nextPress[state].text === 'Upload' ?
                                 <DropHere handlePicture={handlePicture} />
@@ -201,19 +232,18 @@ const ReportPage = (props) => {
                                         textAlign: "center",
                                         marginTop: '20px',
                                     }} >
-                                        <a onClick={()=>{
-                                            if(window.confirm("Are you sure that you want to cancel this operation?")){
-                                                // props.history.push("/homepage")
-                                                
+                                        <a onClick={() => {
+                                            if (window.confirm("Are you sure that you want to cancel this operation?")) {
+                                                props.history.push("/homepage")
                                             }
-                                        }} style = {{
+                                        }} style={{
                                             // marginLeft: '44%',
                                             textDecoration: "none",
                                             borderRadius: "12px",
-                                            width: "110px",
+                                            width: "105px",
                                             margin: "0 auto"
                                         }} className="btn center-align red white-text">Cancel</a>
-                                    </div>  
+                                    </div>
                                     : null
                             }
                         </div>

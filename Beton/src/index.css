@@ -1523,3 +1523,66 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
 }
 
 
+
+
+/* ----------  Modal thingy  ------------ */
+
+#modal2{
+  max-height:90% !important;
+}
+
+#modal2 > .modal-content{
+  padding: 0;
+}
+
+#popMoto{
+  color: #121212;
+  border: 2px solid #121212;
+  border-radius: 6px;
+  padding: 5px;
+  position: fixed;
+  top: 5px;
+  left: 40%;
+}
+#popMotoShare{
+  color: black;
+  border: 2px solid black;
+  border-radius: 6px;
+  padding: 5px;
+  position: fixed;
+  top: 5px;
+  left: 29%;
+}
+
+.modal{
+  border-radius: 18px !important;
+  background: #23272a !important;
+  color: white !important;
+  width: 40% !important;
+}
+.modal-footer{
+  background: #3a3c3e !important;
+  color: white !important;
+}
+.modal-footer > a{
+  color: white !important;
+  margin: 5px 20px !important;
+}
+
+.modal-content .row{
+  padding: 20px;
+  margin-bottom: 0px;
+}
+
+.modal-content .row p a{
+  text-decoration: none;
+  color: #0058fb;
+}
+
+.BannerWrapper{
+  background-image: url(./images/spam.png);
+  height: 25rem !important;
+  background-position: center;
+  background-origin: content-box;
+  background-size: cover;
+}

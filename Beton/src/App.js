@@ -47,7 +47,7 @@ const App = (props) => {
           <Route exact path='/Homepage' component={Homepage} />
           <Route exact path='/Cluster' component={Cluster} />
           <Route exact path='/ReportPage' component={ReportPage} />
-          <Route exact path='/Chonker' component={Chonker} />
+          {/* <Route exact path='/Chonker' component={SpamImage} /> */}
         </Switch>
         </div>
       </BrowserRouter>

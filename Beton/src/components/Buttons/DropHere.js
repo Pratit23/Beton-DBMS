@@ -4,6 +4,8 @@ import './DropHere.css'
 export default function DropHere(props) {
 
     const handleChange = (e) => {
+        var image = document.querySelector("#ml5Image");
+        image.src = URL.createObjectURL(e.target.files[0]);
         props.handlePicture(e.target.files[0])
     }
 

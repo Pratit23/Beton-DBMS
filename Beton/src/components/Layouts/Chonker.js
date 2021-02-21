@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import MainMap from '../Maps/MainMap'
 import Geocode from "react-geocode";
+import { specialOnes } from './Highways'
 
 let coords = ''
 
@@ -16,34 +17,6 @@ export default function Chonker() {
                 console.log("Address: ", address)
                 address = address.split(" " || ",")
                 console.log("Address array: ", address)
-                let specialOnes = [
-                    'road',
-                    'road,',
-                    'Mahamarg',
-                    'marg',
-                    'Mahamarg,',
-                    'marg,',
-                    'nh',
-                    'nh,',
-                    'sh',
-                    'sh,',
-                    'rd',
-                    'rd,',
-                    'highway',
-                    'highway,',
-                    'under',
-                    'under,',
-                    'pass',
-                    'pass,',
-                    'hwy',
-                    'hwy,',
-                    'mh',
-                    'mh,',
-                    'motorway',
-                    'motorway,',
-                ]
-                
-
                 let isFounded = address.filter( ai => specialOnes.includes(String(ai).toLowerCase()) );
                 if(isFounded){
                     console.log("Valid Road")

@@ -2,15 +2,9 @@ import React, { useEffect } from 'react';
 import './ProgressCard.scss';
 import M from 'materialize-css'
 
-// var step = ""
 const ProgressCard = ({ dispatch, one, two, three, style1, style2, current, machine }) => {
-    // step = current
-    // console.log("bruh", step, current)
     
     useEffect(()=>{
-        // for progressing animation to next one
-        // document.querySelectorAll('.tabbar li a')[1].dispatchEvent(new CustomEvent('click'))
-        
         window.$('.tabbar li a').on('moveIt', function(e) {
             e.preventDefault();
 
@@ -45,8 +39,6 @@ const ProgressCard = ({ dispatch, one, two, three, style1, style2, current, mach
             switch(index){
                 case 0: {
                     if(current == "Select" || current == "Report"){
-                        console.log("briu")
-                        // machine['initial'].action();
                         dispatch("initial")
                         document.querySelectorAll('.tabbar li a')[0].dispatchEvent(new CustomEvent('moveIt'))
                     }else{
@@ -57,7 +49,6 @@ const ProgressCard = ({ dispatch, one, two, three, style1, style2, current, mach
                 }
                 case 1:{
                     if (current == "Report"){
-                        console.log("here")
                         dispatch("location")
                         dispatch('next')
                         dispatch('next')
