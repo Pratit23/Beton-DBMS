@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 import { useLazyQuery } from 'react-apollo';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
-import { addBaseReport, addReport, existingBaseCoordinate } from '../../queries/query'
+import { addBaseReport, addReport, decrypt, existingBaseCoordinate } from '../../queries/query'
 
 
 let classifier;
@@ -172,9 +172,9 @@ const ReportPage = (props) => {
         existingBase();
         uploadPhoto();
         console.log("Image url", url)
-        let id = localStorage.getItem("id");
         if (loading) return M.toast({ html: "Initializing..." });
         if (data && data.existingBaseCoordinate) {
+            console.log("Data here", data)
             if(data.existingBaseCoordinate.location == null){
                 // call base point query mutation here
                 let res = await props.addBaseReport({
@@ -184,23 +184,39 @@ const ReportPage = (props) => {
                         location: `${coords[0]} ${coords[1]}`,
                         reportedAt: new Date().toDateString(),
                         reportedOn: new Date().toLocaleString().split(", ")[1],
-                        userID: id,
+                        userID: props.decrypt.decrypt.id,
                         noOfReports: 1
                     }
                 })
+                console.log("res in base", res);
+                if(res.data.addBaseReport){
+                    M.toast({ html: "Report successfully submitted!" });
+                    props.history.push("/homepage");
+                }
+                else {
+                    M.toast({ html: "Uh-oh! Something went wrong!" })
+                }
             }else{
                 // call dependenty point query mutation here
                 let res = await props.addReport({
                     variables: {
                         image: url,
-                        reportedAt: new Date().toDateString(): addressi,
+                        address: addressi,
                         location: `${coords[0]} ${coords[1]}`,
                         reportedAt: new Date().toDateString(),
                         reportedOn: new Date().toLocaleString().split(", ")[1],
-                        userID: id,
+                        userID: props.decrypt.decrypt.id,
                         baseParent: data.existingBaseCoordinate.id
                     }
                 })
+                console.log("res in dep", res);
+                if(res.data.addReport){
+                    M.toast({ html: "Report successfully submitted!" });
+                    props.history.push("/homepage");
+                }
+                else {
+                    M.toast({ html: "Uh-oh! Something went wrong!" })
+                }
             }
         }
 
@@ -341,5 +357,15 @@ const ReportPage = (props) => {
 
 export default compose(
     graphql(addBaseReport, { name: "addBaseReport" }),
-    graphql(addReport, { name: "addReport" })
+    graphql(addReport, { name: "addReport" }),
+    graphql(decrypt, {
+        name: "decrypt",
+        options: () => {
+            return {
+                variables: {
+                    token: localStorage.getItem("token")
+                }
+            }
+        }
+    })
 )(ReportPage)

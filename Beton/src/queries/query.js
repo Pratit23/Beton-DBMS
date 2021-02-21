@@ -50,7 +50,7 @@ query($latitude: String!, $longitude: String!){
 `;
 
 const addBaseReport = gql`
-mutation($image: String!, $address: String!, $location: String!, $reportedAt: String!, $reportedOn: String!, $userID: ID!, $noOfReports: Integer!){
+mutation($image: String!, $address: String!, $location: String!, $reportedAt: String!, $reportedOn: String!, $userID: ID!, $noOfReports: Int!){
   addBaseReport(image: $image, address: $address, location: $location, reportedAt: $reportedAt, reportedOn: $reportedOn, userID: $userID, noOfReports: $noOfReports){
     id
     location
@@ -64,7 +64,7 @@ mutation($image: String!, $address: String!, $location: String!, $reportedAt: St
 
 const addReport = gql`
 mutation($image: String!, $address: String!, $location: String!, $reportedAt: String!, $reportedOn: String!, $userID: ID!, $baseParent: ID!){
-  addBaseReport(image: $image, address: $address, location: $location, reportedAt: $reportedAt, reportedOn: $reportedOn, userID: $userID, baseParent: $baseParent){
+  addReport(image: $image, address: $address, location: $location, reportedAt: $reportedAt, reportedOn: $reportedOn, userID: $userID, baseParent: $baseParent){
     id
     location
     userID{
@@ -83,11 +83,22 @@ mutation($image: String!, $address: String!, $location: String!, $reportedAt: St
 }
 `;
 
+const decrypt = gql`
+query($token: String!){
+  decrypt(token: $token){
+    name
+    email
+    id
+  }
+}
+`
+
 export {
   users,
   addUser,
   loginQuery,
   existingBaseCoordinate,
   addBaseReport,
-  addReport
+  addReport,
+  decrypt
 };

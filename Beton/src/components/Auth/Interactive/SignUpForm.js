@@ -40,8 +40,6 @@ const SignUpForm = (props) => {
                 dob
             }
         })
-
-        console.log("Res: ", res)
         if (res.data.addUser) {
             M.toast({ html: "Wohoo! You're in...Log in to get in ヽ(•‿•)ノ" });
             props.props.history.push("/login");
