@@ -106,6 +106,7 @@ const ReportPage = (props) => {
                 M.toast({ html: "Woohoo! Pothole detected. Let's quickly complete this to get your report on the map!" })
             } else {
                 // no pothole detected
+                M.toast({ html: "Oops! Something doesn't seem right." })
                 setTimeout(function () {
                     document.querySelectorAll('.tabbar li a')[0].dispatchEvent(new CustomEvent('moveIt'));
                 }, 1000);
@@ -182,17 +183,16 @@ const ReportPage = (props) => {
                     <span id="popMoto">We can't take that!</span>
                     <div className="row">
                         <div className="col s12 m6">
-                            <img src="" alt="Spam image" id="spamImage" style={{ width: "100%", height: "auto" }}></img>
+                            <img src="" alt="Spam image" id="spamImage" style={{ width: "100%", height: "auto", borderRadius: "18px" }}></img>
                         </div>
                         <div className="col s12 m6">
                             <p>
                                 Sorry, we can't accept this image. This may be due to a spam image being uploaded
-                                wherein we couldn't find a pothole. However, if you think we made a mistake do let us know
-                            <Link to="/feedbackReport"> over here</Link> and our team will get back to you and credit you for the same,
-                            if accurate.
-                        </p>
+                                wherein we couldn't find a pothole. <br/> However, if you think we made a mistake do let us know <Link to="/feedbackReport"> over here</Link>
+                                and our team will get back to you and credit you for the same,
+                                if accurate.
+                            </p>
                         </div>
-
                     </div>
                 </div>
             </div>
