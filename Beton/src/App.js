@@ -11,6 +11,7 @@ import Chonker from './components/Layouts/Chonker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import M from 'materialize-css'
+import FeedbackReport from './components/Layouts/FeedbackReport.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -47,6 +48,7 @@ const App = (props) => {
           <Route exact path='/Homepage' component={Homepage} />
           <Route exact path='/Cluster' component={Cluster} />
           <Route exact path='/ReportPage' component={ReportPage} />
+          <Route exact path='/feedback/report' component={FeedbackReport} />
           {/* <Route exact path='/Chonker' component={SpamImage} /> */}
         </Switch>
         </div>

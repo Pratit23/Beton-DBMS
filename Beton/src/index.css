@@ -1586,3 +1586,14 @@ font awesome icon slicing effect from https://codepen.io/suez/pen/KpwEeg
   background-origin: content-box;
   background-size: cover;
 }
+
+/* feed back shit */
+
+#feedbackButton{
+  margin-top: 20px;
+}
+
+connection {
+  border: 2px dotted #181818;
+  border-radius: 100px;
+}

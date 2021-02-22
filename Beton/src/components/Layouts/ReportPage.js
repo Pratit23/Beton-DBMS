@@ -22,6 +22,8 @@ import { addBaseReport, addReport, decrypt, existingBaseCoordinate } from '../..
 
 let classifier;
 let coords = [0 ,0]
+var tempUrl = "";
+var tempImage;
 
 const ReportPage = (props) => {
 
@@ -105,6 +107,9 @@ const ReportPage = (props) => {
                 }, 1000);
                 document.querySelector("#spamImage").src = image;
                 window.$('.modal').modal('open');
+                tempUrl = image;
+                tempImage = mainImage;
+                console.log("TempImage", tempImage, JSON.stringify(image))
                 setTimeout(function(){
                     dispatch("initial");
                     setImage(null);
@@ -261,7 +266,11 @@ const ReportPage = (props) => {
                         <div className="col s12 m6">
                             <p>
                                 Sorry, we can't accept this image. This may be due to a spam image being uploaded
-                                wherein we couldn't find a pothole. <br/> However, if you think we made a mistake do let us know <Link to="/feedbackReport"> over here</Link>
+                                wherein we couldn't find a pothole. <br/> However, if you think we made a mistake do let us know <Link 
+                                    onClick={()=>{
+                                        localStorage.setItem("image", JSON.stringify(tempImage));
+                                    }}
+                                to="/feedback/report"> over here</Link>
                                 and our team will get back to you and credit you for the same,
                                 if accurate.
                             </p>
