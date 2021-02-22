@@ -115,7 +115,8 @@ const UserType = new GraphQLObjectType({
                 })
                 return temp
             }
-        }
+        },
+        level: { type: GraphQLString }
     })
 });
 
@@ -362,11 +363,14 @@ const RootQuery = new GraphQLObjectType({
                     latitude: Number(args['latitude']),
                     longitude: Number(args['longitude'])
                 }
-                // one sec brb
+                console.log("args", main)
 
                 //findNearest(point, arrayOfPoints)
                 let allCoords = await BaseReports.find();
                 console.log(allCoords);
+                if(allCoords.length == 0){
+                    return false
+                }
                 let cleanedCoords = allCoords.map(c=>{
                     temp = c.location.split(" ")
                     return { latitude: temp[0], longitude: temp[1]}
@@ -396,6 +400,18 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(BaseReportsType),
             resolve(parent, args){
                 return BaseReports.find();
+            }
+        },
+        decrypt: {
+            type: UserType,
+            args: {
+                token:  {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args){
+                let res = jwt.verify(args.token, JWT_SEC);
+                return User.findById(res._id);
             }
         }
     }
@@ -486,12 +502,14 @@ const Mutation = new GraphQLObjectType({
                 reportedOn: { type: new GraphQLNonNull(GraphQLString) },
                 userID: { type: new GraphQLNonNull(GraphQLID) },
                 baseParent: { type: new GraphQLNonNull(GraphQLID) }, // do analysing part on front end and get the base parent id.
+                level: { type: new GraphQLNonNull(GraphQLString) } // can be beginner(1), intermediate(5), pro(10)
             },
             async resolve(parent, args) {
                 if (!args.image || !args.address || !args.location || !args.userID || !args.baseParent || !args.reportedAt || !args.reportedOn) {
                     // console.log("error?")
                     throw new Error("Kindly provide all details");
                 } else {
+                    console.log("ARgs", args);
                     let newReport = new Report({
                         image: args.image,
                         address: args.address,
@@ -503,11 +521,28 @@ const Mutation = new GraphQLObjectType({
                     })
                     // saving to db
                     let results = await newReport.save();
-                    console.log(results);
+                    let points = 0;
+                    if(String(args.level).toLowerCase() == "beginner"){
+                        points = 1
+                    }else if(String(args.level).toLowerCase() == "intermediate"){
+                        points = 5;
+                    }else{
+                        points = 10;
+                    }
+
+                    // adding to the base reports data
                     await BaseReports.findByIdAndUpdate(
                         results.baseParent,
-                        {$push: { "similar": results._id }}
-                    )
+                        {
+                            $push: { "similar": results._id },
+                            $inc: { "noOfReports": points }
+                        }
+                    );
+                    
+                    // adding to users data
+                    await User.findByIdAndUpdate(args.userID,{
+                        $push: { "reports": results._id }
+                    })
                     if (!results) {
                         throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
                     }
@@ -528,6 +563,7 @@ const Mutation = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 if (!args.image || !args.address || !args.location || !args.userID || !args.reportedAt || !args.reportedOn || !args.noOfReports) {
+                    console.log("Args", args)
                     // console.log("error?")
                     throw new Error("Kindly provide all details");
                 } else {
@@ -546,6 +582,11 @@ const Mutation = new GraphQLObjectType({
                     // saving to db
                     let results = await newReport.save();
                     console.log(results);
+
+                    // adding to users data
+                    await User.findByIdAndUpdate(args.userID,{
+                        $push: { "baseReports": results._id }
+                    })
                     if (!results) {
                         throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
                     }

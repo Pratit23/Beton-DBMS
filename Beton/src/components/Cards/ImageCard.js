@@ -11,7 +11,7 @@ const ImageCard = ({ src, filename, size, uploaded }) => {
                         <div className="hover_content">
                             <p>
                                 Size: {size} kb <br />
-                                Uploaded on: {uploaded}
+                                Uploaded on: {JSON.stringify(uploaded)}
                             </p>
                         </div>
                 </div>

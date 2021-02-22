@@ -18,6 +18,8 @@ import { useLazyQuery } from 'react-apollo';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { addBaseReport, addReport, decrypt, existingBaseCoordinate } from '../../queries/query'
+import Summary from './Landing/Summary';
+import ImageCard from '../Cards/ImageCard';
 
 
 let classifier;
@@ -131,11 +133,8 @@ const ReportPage = (props) => {
             Geocode.fromLatLng(coords[0], coords[1]).then(
                 response => {
                     var address = response.results[0].formatted_address;
-                    console.log("Address: ", address)
                     setAddressi(address)
                     address = address.split(" " || ",")
-                    console.log("Address array: ", address)
-    
                     let isFound = address.filter(ai => specialOnes.includes(String(ai).toLowerCase()));
                     if (isFound) {
                         console.log("Valid Road")
@@ -159,12 +158,12 @@ const ReportPage = (props) => {
         fileData.append("cloud_name", "levitation");
 
         // saving to cloud first
-        fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
+        return fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
             method: "POST",
             body: fileData
         }).then(res => res.json()).then(data => {
             console.log(data.url);
-            setUrl(data.url)
+            // setUrl(data.url)
             console.log("Photo uploaded")
             return data.url;
         }).catch(err => {
@@ -174,53 +173,57 @@ const ReportPage = (props) => {
     }
 
     const HandleReport = async () => {
-        existingBase();
-        uploadPhoto();
-        console.log("Image url", url)
-        if (loading) return M.toast({ html: "Initializing..." });
+        console.log("Coords", coords)
+        await existingBase();
+        if (called && loading) return M.toast({ html: "Initializing..." });
         if (data && data.existingBaseCoordinate) {
             console.log("Data here", data)
-            if(data.existingBaseCoordinate.location == null){
-                // call base point query mutation here
-                let res = await props.addBaseReport({
-                    variables: {
-                        image: url,
-                        address: addressi,
-                        location: `${coords[0]} ${coords[1]}`,
-                        reportedAt: new Date().toDateString(),
-                        reportedOn: new Date().toLocaleString().split(", ")[1],
-                        userID: props.decrypt.decrypt.id,
-                        noOfReports: 1
+            let url = await uploadPhoto();
+            console.log("Image url", url)
+            if(url != ""){
+                if(data.existingBaseCoordinate.location == null){
+                    // call base point query mutation here
+                    let res = await props.addBaseReport({
+                        variables: {
+                            image: url,
+                            address: addressi,
+                            location: `${coords[0]} ${coords[1]}`,
+                            reportedAt: new Date().toDateString(),
+                            reportedOn: new Date().toLocaleString().split(", ")[1],
+                            userID: props.decrypt.decrypt.id,
+                            noOfReports: 1
+                        }
+                    })
+                    console.log("res in base", res);
+                    if(res && res.data && res.data.addBaseReport){
+                        M.toast({ html: "Report successfully submitted!" });
+                        props.history.push("/homepage");
                     }
-                })
-                console.log("res in base", res);
-                if(res.data.addBaseReport){
-                    M.toast({ html: "Report successfully submitted!" });
-                    props.history.push("/homepage");
-                }
-                else {
-                    M.toast({ html: "Uh-oh! Something went wrong!" })
-                }
-            }else{
-                // call dependenty point query mutation here
-                let res = await props.addReport({
-                    variables: {
-                        image: url,
-                        address: addressi,
-                        location: `${coords[0]} ${coords[1]}`,
-                        reportedAt: new Date().toDateString(),
-                        reportedOn: new Date().toLocaleString().split(", ")[1],
-                        userID: props.decrypt.decrypt.id,
-                        baseParent: data.existingBaseCoordinate.id
+                    else {
+                        M.toast({ html: "Uh-oh! Something went wrong!" })
                     }
-                })
-                console.log("res in dep", res);
-                if(res.data.addReport){
-                    M.toast({ html: "Report successfully submitted!" });
-                    props.history.push("/homepage");
-                }
-                else {
-                    M.toast({ html: "Uh-oh! Something went wrong!" })
+                }else{
+                    // call dependenty point query mutation here
+                    let res = await props.addReport({
+                        variables: {
+                            image: url,
+                            address: addressi,
+                            location: `${coords[0]} ${coords[1]}`,
+                            reportedAt: new Date().toDateString(),
+                            reportedOn: new Date().toLocaleString().split(", ")[1],
+                            userID: props.decrypt.decrypt.id,
+                            baseParent: data.existingBaseCoordinate.id,
+                            level: props.decrypt.decrypt.level
+                        }
+                    })
+                    console.log("res in dep", res);
+                    if(res && res.data && res.data.addReport){
+                        M.toast({ html: "Report successfully submitted!" });
+                        props.history.push("/homepage");
+                    }
+                    else {
+                        M.toast({ html: "Uh-oh! Something went wrong!" })
+                    }
                 }
             }
         }
@@ -249,7 +252,6 @@ const ReportPage = (props) => {
         });
 
     }, [image])
-    console.log(props)
     if (!localStorage.getItem('token')) return <Redirect to='/login' />
     return (
         <div>
@@ -305,6 +307,10 @@ const ReportPage = (props) => {
                         {
                             nextPress[state].text === 'Select' ?
                                 <MainMap getCoords={getCoords} /> : null
+                        }
+                        {
+                            nextPress[state].text === 'Report' ?
+                            <Summary src={image} address={addressi} filename={mainImage.name} size={mainImage.size} uploaded={mainImage.lastModifiedDate} /> : null
                         }
                         <div className="section" style={{ paddingTop: '70px' }}>
                             <UploadButton img={mainImage} action={nextPress[state].action} btnText={nextPress[state].text} step="1" />
