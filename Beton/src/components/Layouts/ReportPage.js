@@ -19,8 +19,6 @@ import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { addBaseReport, addReport, decrypt, existingBaseCoordinate } from '../../queries/query'
 import Summary from './Landing/Summary';
-import ImageCard from '../Cards/ImageCard';
-
 
 let classifier;
 let coords = [0 ,0]
