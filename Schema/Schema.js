@@ -540,6 +540,7 @@ const Mutation = new GraphQLObjectType({
                             category: args.category,
                             password: hashedPwd,
                             coupons: [],
+                            advertisments: []
                         })
                         // saving to db
                         let results = await newUser.save();
@@ -551,7 +552,35 @@ const Mutation = new GraphQLObjectType({
                     }
                 })
             }
-        },
+        }, // * Advertiser signup done
+
+        // * Advertiser login
+        loginAdvertiser: {
+            type: AdvertisersType,
+            args: {
+                email: { type: new GraphQLNonNull(GraphQLString) },
+                password: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            async resolve(parent, args) {
+                if (!args.email || !args.password) {
+                    // console.log("error?")
+                    throw new Error("Kindly provide all details");
+                }
+                return await Advertisers.findOne({ email: args.email }).then(async (res) => {
+                    if (!res) {
+                        throw new Error("Yayzow! We can't find an account with that email. You gotta register first, you know ¯\_(ツ)_/¯");
+                    }
+                    // checking the password comparison
+                    let didMatch = await bcrypt.compare(args.password, res.password)
+                    if (!didMatch) {
+                        throw new Error("Invalid Email and Password combination :(")
+                    }
+                    const token = jwt.sign({ _id: res._id }, JWT_SEC);
+                    res['token'] = token;
+                    return res;
+                })
+            }
+        }, // * Advertiser login done
         login: {
             type: UserType,
             args: {
