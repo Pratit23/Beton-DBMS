@@ -12,6 +12,7 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import M from 'materialize-css'
 import FeedbackReport from './components/Layouts/FeedbackReport.js';
+import Coupons from './components/Layouts/Coupons.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -49,7 +50,7 @@ const App = (props) => {
           <Route exact path='/Cluster' component={Cluster} />
           <Route exact path='/ReportPage' component={ReportPage} />
           <Route exact path='/feedback/report' component={FeedbackReport} />
-          {/* <Route exact path='/Chonker' component={SpamImage} /> */}
+          <Route exact path='/:token/coupons' component={Coupons} />
         </Switch>
         </div>
       </BrowserRouter>
