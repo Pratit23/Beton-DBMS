@@ -17,7 +17,6 @@ mutation($name: String!, $email: String!, $password: String!, $dob: String!, $ad
       name
       email
       password
-      address
     }
 }
 `
@@ -28,7 +27,6 @@ const loginQuery = gql`
       name
       email
       password
-      address
       dob
       token
     }
@@ -98,8 +96,13 @@ query($token: String!){
 `
 
 const addAdvertiser = gql`
-{
-
+mutation($company: String!, $email: String!, $password: String!, $website: String!, $category: String!){
+  addAdvertiser(company: $company, email: $email, password: $password, website: $website, category: $category){
+    email
+    company
+    website
+    category
+  }
 }
 `
 
