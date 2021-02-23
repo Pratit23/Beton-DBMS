@@ -98,7 +98,7 @@ const UserType = new GraphQLObjectType({
         },
         baseReports: {
             type: new GraphQLList(BaseReportsType),
-            resolve(parent, args){
+            resolve(parent, args) {
                 let temp = []
                 parent.baseReports.forEach(y => {
                     let test = BaseReports.findById(y)
@@ -171,7 +171,7 @@ const AdvertisersType = new GraphQLObjectType({
                 })
                 return temp
             }
-            
+
         }
     })
 });
@@ -197,9 +197,9 @@ const BaseReportsType = new GraphQLObjectType({
         noOfReports: { type: GraphQLInt },
         similar: {
             type: GraphQLList(ReportsType),
-            resolve(parent, args){
+            resolve(parent, args) {
                 let temp = [];
-                parent.similar.forEach(s=>{
+                parent.similar.forEach(s => {
                     let test = Report.findById(s)
                     temp.push(test);
                 })
@@ -227,7 +227,7 @@ const ReportsType = new GraphQLObjectType({
         },
         baseParent: {
             type: BaseReportsType,
-            resolve(parent, args){
+            resolve(parent, args) {
                 return BaseReports.findById(parent.baseParent)
             }
         }
@@ -372,7 +372,7 @@ const RootQuery = new GraphQLObjectType({
                 latitude: { type: GraphQLString },
                 longitude: { type: GraphQLString },
             },
-            async resolve(parent, args){
+            async resolve(parent, args) {
                 let main = {
                     latitude: Number(args['latitude']),
                     longitude: Number(args['longitude'])
@@ -382,13 +382,13 @@ const RootQuery = new GraphQLObjectType({
                 //findNearest(point, arrayOfPoints)
                 let allCoords = await BaseReports.find();
                 console.log(allCoords);
-                let cleanedCoords = allCoords.map(c=>{
+                let cleanedCoords = allCoords.map(c => {
                     temp = c.location.split(" ")
-                    return { latitude: temp[0], longitude: temp[1]}
+                    return { latitude: temp[0], longitude: temp[1] }
                 })
                 let res = geolib.findNearest(main, cleanedCoords);
-                res = _.find(allCoords, (a)=>{
-                    if(a.location == `${res.latitude} ${res.longitude}`) return true
+                res = _.find(allCoords, (a) => {
+                    if (a.location == `${res.latitude} ${res.longitude}`) return true
                 })
                 console.log("Result", res);
                 return res;
@@ -400,7 +400,7 @@ const RootQuery = new GraphQLObjectType({
                 latitude: { type: GraphQLString },
                 longitude: { type: GraphQLString },
             },
-            async resolve(parent, args){
+            async resolve(parent, args) {
                 let main = {
                     latitude: Number(args['latitude']),
                     longitude: Number(args['longitude'])
@@ -410,12 +410,12 @@ const RootQuery = new GraphQLObjectType({
                 //findNearest(point, arrayOfPoints)
                 let allCoords = await BaseReports.find();
                 console.log(allCoords);
-                if(allCoords.length == 0){
+                if (allCoords.length == 0) {
                     return false
                 }
-                let cleanedCoords = allCoords.map(c=>{
+                let cleanedCoords = allCoords.map(c => {
                     temp = c.location.split(" ")
-                    return { latitude: temp[0], longitude: temp[1]}
+                    return { latitude: temp[0], longitude: temp[1] }
                 })
 
                 // get the lat and long of the nearest coordinate
@@ -430,8 +430,8 @@ const RootQuery = new GraphQLObjectType({
                 if (disanceBet > 1000) {
                     return false
                 } else {
-                    res = _.find(allCoords, (a)=>{
-                        if(a.location == `${res.latitude} ${res.longitude}`) return true
+                    res = _.find(allCoords, (a) => {
+                        if (a.location == `${res.latitude} ${res.longitude}`) return true
                     })
                     console.log("ress", res)
                     return res
@@ -440,18 +440,18 @@ const RootQuery = new GraphQLObjectType({
         },
         allBaseReports: {
             type: new GraphQLList(BaseReportsType),
-            resolve(parent, args){
+            resolve(parent, args) {
                 return BaseReports.find();
             }
         },
         decrypt: {
             type: UserType,
             args: {
-                token:  {
+                token: {
                     type: GraphQLString
                 }
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 let res = jwt.verify(args.token, JWT_SEC);
                 return User.findById(res._id);
             }
@@ -519,7 +519,7 @@ const Mutation = new GraphQLObjectType({
                 website: { type: new GraphQLNonNull(GraphQLString) },
                 category: { type: new GraphQLNonNull(GraphQLString) },
             },
-            resolve(parent, args){
+            resolve(parent, args) {
                 if (!args.email || !args.company || !args.password || !args.website || !args.category) {
                     // console.log("error?")
                     throw new Error("Kindly provide all details");
@@ -606,7 +606,74 @@ const Mutation = new GraphQLObjectType({
                     return res;
                 })
             }
-        }, //login mutation done
+        }, //* login mutation done
+        // * Add an advertisment
+        addAdvertisment: {
+            type: AdvertisementType,
+            args: {
+                title: { type: GraphQLString },
+                link: { type: GraphQLString },
+                screentime: { type: GraphQLString },
+                when: { type: GraphQLString },
+                advertiserID: { type: GraphQLID },
+                outreach: { type: GraphQLInt }
+            },
+            async resolve(parent, args) {
+                let newAdvertisment = new Advertisement({
+                    title: args.title,
+                    link: args.link,
+                    screentime: 0,
+                    when: args.when,
+                    advertiserID: args.advertiserID,
+                    outreach: 0
+                });
+
+                let results = await newAdvertisment.save();
+
+                // ? Saving this record in the advertisers record too
+                await Advertisers.findByIdAndUpdate(args.advertiserID, {
+                    $push: { "advertisments": results._id }
+                })
+                console.log(results);
+                if (!results) {
+                    throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                }
+                return results
+            }
+        }, //* add an advertisment done
+
+        // * add a new coupon
+        addCoupon: {
+            type: CouponsType,
+            args: {
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                amount: { type: new GraphQLNonNull(GraphQLString) },
+                validity: { type: new GraphQLNonNull(GraphQLString) },
+                assigned: { type: new GraphQLNonNull(GraphQLBoolean) },
+                advertiserID: { type: new GraphQLNonNull(GraphQLID) },
+            },
+            resolve(parent, args) {
+                let newCoupon = new Coupon({
+                    name: args.name,
+                    amount: args.amount,
+                    validity: args.validity,
+                    assigned: args.assigned,
+                    advertiserID: args.advertiserID,
+                    userID: ""
+                });
+                let results = newCoupon.save();
+
+                // ? Saving this record in the advertisers record too
+                await Advertisers.findByIdAndUpdate(args.advertiserID, {
+                    $push: { "coupons": results._id }
+                })
+                console.log(results);
+                if (!results) {
+                    throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                }
+                return results
+            }
+        },
         addReport: {
             type: ReportsType,
             args: {
@@ -637,11 +704,11 @@ const Mutation = new GraphQLObjectType({
                     // saving to db
                     let results = await newReport.save();
                     let points = 0;
-                    if(String(args.level).toLowerCase() == "beginner"){
+                    if (String(args.level).toLowerCase() == "beginner") {
                         points = 1
-                    }else if(String(args.level).toLowerCase() == "intermediate"){
+                    } else if (String(args.level).toLowerCase() == "intermediate") {
                         points = 5;
-                    }else{
+                    } else {
                         points = 10;
                     }
 
@@ -653,9 +720,9 @@ const Mutation = new GraphQLObjectType({
                             $inc: { "noOfReports": points }
                         }
                     );
-                    
+
                     // adding to users data
-                    await User.findByIdAndUpdate(args.userID,{
+                    await User.findByIdAndUpdate(args.userID, {
                         $push: { "reports": results._id }
                     })
                     if (!results) {
@@ -699,7 +766,7 @@ const Mutation = new GraphQLObjectType({
                     console.log(results);
 
                     // adding to users data
-                    await User.findByIdAndUpdate(args.userID,{
+                    await User.findByIdAndUpdate(args.userID, {
                         $push: { "baseReports": results._id }
                     })
                     if (!results) {
