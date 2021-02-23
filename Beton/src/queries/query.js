@@ -95,6 +95,17 @@ query($token: String!){
 }
 `
 
+const decryptAdvertiser = gql`
+query($token: String!){
+  decryptAdvertiser(token: $token){
+    name
+    email
+    id
+    level
+  }
+}
+`
+
 const addAdvertiser = gql`
 mutation($company: String!, $email: String!, $password: String!, $website: String!, $category: String!){
   addAdvertiser(company: $company, email: $email, password: $password, website: $website, category: $category){
@@ -102,6 +113,18 @@ mutation($company: String!, $email: String!, $password: String!, $website: Strin
     company
     website
     category
+  }
+}
+`
+
+const loginAdvertiser = gql`
+mutation($email:String!, $password: String!){
+  loginAdvertiser(email:$email, password:$password){
+    email
+    company
+    website
+    category
+    token
   }
 }
 `
@@ -114,5 +137,7 @@ export {
   addBaseReport,
   addReport,
   decrypt,
-  addAdvertiser
+  addAdvertiser,
+  loginAdvertiser,
+  decryptAdvertiser
 };

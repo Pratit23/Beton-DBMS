@@ -150,6 +150,7 @@ const AdvertisersType = new GraphQLObjectType({
         company: { type: GraphQLString },
         website: { type: GraphQLString },
         category: { type: GraphQLString },
+        token: { type: GraphQLString },
         coupons: {
             type: new GraphQLList(CouponsType),
             resolve(parent, args) {
@@ -454,6 +455,18 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 let res = jwt.verify(args.token, JWT_SEC);
                 return User.findById(res._id);
+            }
+        },
+        decryptAdvertiser: {
+            type: AdvertisersType,
+            args: {
+                token: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
+                let res = jwt.verify(args.token, JWT_SEC);
+                return Advertisers.findById(res._id);
             }
         },
     }
