@@ -14,10 +14,10 @@ const advertiserSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    website:[{
+    website:{
         type: String,
         require: true
-    }],
+    },
     company:{
         type: String,
         require: true

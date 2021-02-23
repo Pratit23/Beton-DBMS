@@ -13,7 +13,6 @@ const Coupon = require('../models/coupons')
 const Advertisement = require('../models/advertisments')
 const Report = require('../models/reports')
 const BaseReports = require('../models/baseReports');
-const { default: Coupons } = require('../Beton/src/components/Layouts/Coupons');
 
 // https://www.figma.com/file/4bAC5AKUM1VmxyAaRhiLrs/BETON-ER-Diagram?node-id=0%3A1
 
@@ -532,12 +531,13 @@ const Mutation = new GraphQLObjectType({
                 website: { type: new GraphQLNonNull(GraphQLString) },
                 category: { type: new GraphQLNonNull(GraphQLString) },
             },
-            resolve(parent, args) {
+            async resolve(parent, args) {
                 if (!args.email || !args.company || !args.password || !args.website || !args.category) {
                     // console.log("error?")
                     throw new Error("Kindly provide all details");
                 }
                 return await Advertisers.findOne({ email: args.email }).then(async (res) => {
+                    console.log(args)
                     if (res) {
                         throw new Error("An account with the same email already exist! Try Logging in!");
                     } else {
@@ -665,7 +665,7 @@ const Mutation = new GraphQLObjectType({
                 assigned: { type: new GraphQLNonNull(GraphQLBoolean) },
                 advertiserID: { type: new GraphQLNonNull(GraphQLID) },
             },
-            resolve(parent, args) {
+            async resolve(parent, args) {
                 let newCoupon = new Coupon({
                     name: args.name,
                     amount: args.amount,

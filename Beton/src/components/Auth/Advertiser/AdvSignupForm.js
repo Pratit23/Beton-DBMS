@@ -17,60 +17,61 @@ const AdvSignup = (props) => {
     const handleSubmit = async (e) => {
         setShowLoader(true)
         e.preventDefault();
-        const name = document.getElementById("company-name-signup").value
+        const company = document.getElementById("company-name-signup").value
         const password = document.getElementById("password-signup").value
         const email = document.getElementById("signup-email").value
         const url = document.getElementById("website-url").value
         const category = document.getElementById("category-signup").value
         let res = await props.addAdvertiser({
             variables: {
-                name,
                 email,
                 password,
-                address,
-                dob
+                company,
+                category,
+                website: url
             }
         })
-        if (res.data.addUser) {
+        if (res && res.data && res.data.addAdvertiser) {
             M.toast({ html: "Wohoo! You're in...Log in to get in ヽ(•‿•)ノ" });
-            props.props.history.push("/login");
+            props.props.history.push("/advertiser/login");
         }
         else {
             M.toast({ html: "Oopsie! Something went wrong!" })
             setShowLoader(false)
         }
     }
-    console.log(props)
     return (
-        <form id="signup-form" className="row">
-            <h2 className="white-text center-align"
+        <form id="signup-form" className="row adv-signup">
+            <h2 className="black-text center-align"
                 style={{ marginBottom: "20px" }}
             >
                 Sign Up
             </h2>
             {/* name */}
-            <GeneralInput placeholder="Company name" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="text" id="company-name-signup" />
+            <GeneralInput placeholder="Company name" classy="col s10 offset-s1 m9 offset-m2 l6 offset-l3" type="text" id="company-name-signup" />
 
             {/* category */}
-            <GeneralInput placeholder="Category" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="text" id="category-signup" />
+            <GeneralInput placeholder="Category" classy="col s10 offset-s1 m9 offset-m2 l6 offset-l3" type="text" id="category-signup" />
 
             {/* email */}
-            <GeneralEmail classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" />
+            <GeneralEmail classy="col s10 offset-s1 m9 offset-m2 l6 offset-l3" />
 
             {/* pass */}
-            <GeneralInput placeholder="Your password" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="password" id="password-signup" />
+            <GeneralInput placeholder="Your password" classy="col s10 offset-s1 m9 offset-m2 l6 offset-l3" type="password" id="password-signup" />
 
             {/* website */}
-            <URL classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2"/>
+            <URL classy="col s10 offset-s1 m9 offset-m2 l6 offset-l3"/>
             {
                 showLoader ? (
-                    <div className="col s10 offset-s1 m9 offset-m2 l8 offset-l2">
+                    <div className="col s10 offset-s1 m9 offset-m2 l6 offset-l3">
                         <div className="progress">
                             <div className="indeterminate blue"></div>
                         </div>
                     </div>
                 ) : 
-                <SubmitButton text="Create" id="signup" func={handleSubmit} />
+                <div className="col s10 offset-s1 m9 offset-m2 l6 offset-l3">
+                    <SubmitButton text="Create" id="signup-adv" func={handleSubmit} />
+                </div>
             }
         </form>
     )

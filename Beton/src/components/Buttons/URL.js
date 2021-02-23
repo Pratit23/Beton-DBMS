@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import './URL.scss'
+import gsap from 'gsap'
 
 const URL = ({ classy }) => {
 
@@ -228,7 +229,7 @@ const URL = ({ classy }) => {
                 <div className="favicon"></div>
             </div>
             <div className="text">
-                <input type="text" placeholder="Your URL" id="website-url"/>
+                <input className="browser-default" type="text" placeholder="Your Website URL" id="website-url"/>
             </div>
             <button className="clear">
                 <svg viewBox="0 0 24 24">

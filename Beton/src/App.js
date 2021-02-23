@@ -13,6 +13,8 @@ import { ApolloProvider } from 'react-apollo';
 import M from 'materialize-css'
 import FeedbackReport from './components/Layouts/FeedbackReport.js';
 import Coupons from './components/Layouts/Coupons.js';
+import AdvSignupPage from './components/Auth/AdvSignupPage.js';
+import AdvLoginPage from './components/Auth/AdvLoginPage.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -49,6 +51,8 @@ const App = (props) => {
           <Route exact path='/Homepage' component={Homepage} />
           <Route exact path='/Cluster' component={Cluster} />
           <Route exact path='/ReportPage' component={ReportPage} />
+          <Route exact path='/advertiser/signup' component={AdvSignupPage} />
+          <Route exact path='/advertiser/login' component={AdvLoginPage} />
           <Route exact path='/feedback/report' component={FeedbackReport} />
           <Route exact path='/:token/coupons' component={Coupons} />
         </Switch>
