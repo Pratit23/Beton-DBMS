@@ -10,10 +10,6 @@ const advertiserSchema = new mongoose.Schema({
         type:String,
         require:true,
     },
-    name:{
-        type: String,
-        require: true
-    },
     category:{
         type: String,
         require: true
@@ -26,6 +22,14 @@ const advertiserSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    coupons: [{
+        type: ObjectId,
+        ref: "Coupons"
+    }],
+    advertisments: [{
+        type: ObjectId,
+        ref: "Advertisments"
+    }]
 });
 
 module.exports = mongoose.model("Advertisers", advertiserSchema);

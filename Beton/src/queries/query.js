@@ -97,6 +97,12 @@ query($token: String!){
 }
 `
 
+const addAdvertiser = gql`
+{
+
+}
+`
+
 export {
   users,
   addUser,
@@ -104,5 +110,6 @@ export {
   existingBaseCoordinate,
   addBaseReport,
   addReport,
-  decrypt
+  decrypt,
+  addAdvertiser
 };

@@ -10,8 +10,10 @@ const User = require('../models/user')
 const Admin = require('../models/admin')
 const Advertisers = require('../models/advertisers')
 const Coupon = require('../models/coupons')
+const Advertisement = require('../models/advertisments')
 const Report = require('../models/reports')
-const BaseReports = require('../models/baseReports')
+const BaseReports = require('../models/baseReports');
+const { default: Coupons } = require('../Beton/src/components/Layouts/Coupons');
 
 // https://www.figma.com/file/4bAC5AKUM1VmxyAaRhiLrs/BETON-ER-Diagram?node-id=0%3A1
 
@@ -62,10 +64,10 @@ let reports = [
 ]
 
 let advertisers = [
-    { id: "50", company: "gencoin", password: "pass123", category: "cryptocurrency", email: "gencoin@hotmail.com", name: "user123", website: "youtube.com" },
-    { id: "51", company: "yahoo", password: "pass1234", category: "information", email: "yahoo@hotmail.com", name: "user12345", website: "youtube.com" },
-    { id: "52", company: "google", password: "pass12345", category: "search-engine", email: "google@hotmail.com", name: "user123456", website: "youtube.com" },
-    { id: "53", company: "tesla", password: "pass12345", category: "automobile", email: "tesla@hotmail.com", name: "user123457", website: "youtube.com" },
+    { id: "50", company: "gencoin", password: "pass123", category: "cryptocurrency", email: "gencoin@hotmail.com", website: "youtube.com" },
+    { id: "51", company: "yahoo", password: "pass1234", category: "information", email: "yahoo@hotmail.com", website: "youtube.com" },
+    { id: "52", company: "google", password: "pass12345", category: "search-engine", email: "google@hotmail.com", website: "youtube.com" },
+    { id: "53", company: "tesla", password: "pass12345", category: "automobile", email: "tesla@hotmail.com", website: "youtube.com" },
 ]
 
 
@@ -110,7 +112,7 @@ const UserType = new GraphQLObjectType({
             resolve(parent, args) {
                 let temp = []
                 parent.coupons.forEach(y => {
-                    let test = _.find(coupons, r => r.id === y)
+                    let test = Coupon.findById(y);
                     temp.push(test)
                 })
                 return temp
@@ -140,15 +142,37 @@ const ContractorsType = new GraphQLObjectType({
 });
 
 const AdvertisersType = new GraphQLObjectType({
-    name: "Contractor",
+    name: "Advertisers",
     fields: () => ({
         id: { type: GraphQLID },
         email: { type: GraphQLString },
         password: { type: GraphQLString },
         company: { type: GraphQLString },
-        name: { type: GraphQLString },
         website: { type: GraphQLString },
         category: { type: GraphQLString },
+        coupons: {
+            type: new GraphQLList(CouponsType),
+            resolve(parent, args) {
+                let temp = []
+                parent.coupons.forEach(y => {
+                    let test = Coupon.findById(y);
+                    temp.push(test)
+                })
+                return temp
+            }
+        },
+        advertisments: {
+            type: new GraphQLList(AdvertisementType),
+            resolve(parent, args) {
+                let temp = []
+                parent.coupons.forEach(y => {
+                    let test = Advertisement.findById(y);
+                    temp.push(test)
+                })
+                return temp
+            }
+            
+        }
     })
 });
 
@@ -217,21 +241,39 @@ const CouponsType = new GraphQLObjectType({
         name: { type: GraphQLString },
         amount: { type: GraphQLString },
         validity: { type: GraphQLString },
+        assigned: { type: GraphQLBoolean },
         advertiserID: {
             type: AdvertisersType,
             resolve(parent, args) {
-                return _.find(advertisers, a => a.id === parent.advertiserID)
+                return Advertisers.findById(parent.advertiserID)
             }
         },
         userID: {
             type: UserType,
             resolve(parent, args) {
-                return _.find(users, a => a.id === parent.userID)
+                return User.findById(parent.userID)
             }
         },
     })
 })
 
+const AdvertisementType = new GraphQLObjectType({
+    name: "Advertisement",
+    fields: () => ({
+        id: { type: GraphQLID },
+        title: { type: GraphQLString }, // title
+        link: { type: GraphQLString }, //url
+        screentime: { type: GraphQLString }, //count total screen time?
+        when: { type: GraphQLBoolean }, //date and time
+        advertiserID: {
+            type: AdvertisersType,
+            resolve(parent, args) {
+                return Advertisers.findById(parent.advertiserID)
+            }
+        },
+        outreach: { type: GraphQLInt },  // to how many users it is shown to
+    })
+})
 
 
 
@@ -413,7 +455,7 @@ const RootQuery = new GraphQLObjectType({
                 let res = jwt.verify(args.token, JWT_SEC);
                 return User.findById(res._id);
             }
-        }
+        },
     }
 })
 
@@ -466,6 +508,50 @@ const Mutation = new GraphQLObjectType({
 
             }
         }, //add user mutation
+
+        // TODO: this is Advertiser signup
+        addAdvertiser: {
+            type: AdvertisersType,
+            args: {
+                password: { type: new GraphQLNonNull(GraphQLString) },
+                email: { type: new GraphQLNonNull(GraphQLString) },
+                company: { type: new GraphQLNonNull(GraphQLString) },
+                website: { type: new GraphQLNonNull(GraphQLString) },
+                category: { type: new GraphQLNonNull(GraphQLString) },
+            },
+            resolve(parent, args){
+                if (!args.email || !args.company || !args.password || !args.website || !args.category) {
+                    // console.log("error?")
+                    throw new Error("Kindly provide all details");
+                }
+                return await Advertisers.findOne({ email: args.email }).then(async (res) => {
+                    if (res) {
+                        throw new Error("An account with the same email already exist! Try Logging in!");
+                    } else {
+                        // hashing passwords
+                        let hashedPwd = await bcrypt.hash(args.password, 15)
+                        if (!hashedPwd) {
+                            throw new Error('Our servers seems to be a lil busy today. Try again later?')
+                        }
+                        let newUser = new Advertisers({
+                            email: args.email,
+                            company: args.company,
+                            website: args.website,
+                            category: args.category,
+                            password: hashedPwd,
+                            coupons: [],
+                        })
+                        // saving to db
+                        let results = await newUser.save();
+                        console.log(results);
+                        if (!results) {
+                            throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                        }
+                        return results
+                    }
+                })
+            }
+        },
         login: {
             type: UserType,
             args: {

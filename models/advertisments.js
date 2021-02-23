@@ -6,30 +6,30 @@ const couponsSchema = new mongoose.Schema({
         type: String,
         require:true
     },
-    name :{
+    title :{
         type: String,
         require:true,
     },
-    amount :{
+    link :{
         type: String,
         require:true,
     },
-    validity:{
-        type: String,
+    screentime:{
+        type: Number,
         require: true
     },
-    assigned: {
-        type: Boolean,
+    when: {
+        type: String,
         require: true
     },
     advertiserID: {
         type: ObjectId,
         ref: "Advertisers"
     },
-    userID: {
-        type: ObjectId,
-        ref: "User"        
+    outreach: {
+        type: Number,
+        require: true
     }
 });
 
-module.exports = mongoose.model("Coupons", couponsSchema);
+module.exports = mongoose.model("Advertisments", couponsSchema);
