@@ -9,6 +9,10 @@ function Coupons() {
             <Sidenav />
             <div id="main" className="row" style={{ marginBottom: "0", height: "100%" }} >
                 <ScratchOff></ScratchOff>
+                <ScratchOff></ScratchOff>
+                <ScratchOff></ScratchOff>
+                <ScratchOff></ScratchOff>
+                <ScratchOff></ScratchOff>
             </div>
         </div>
     )
