@@ -25,7 +25,7 @@ const MarkerCarrierIcon = ({ lac, handleClick }) => {
       icon={{
         url: `/img/carriersIcons/pothole.png`,
         size: new google.maps.Size(256, 256),
-        condition: lac.condition,
+        condition: lac.condition ,
       }}
       defaultPosition={{ lat: lac.lat, lng: lac.lon }}
     >

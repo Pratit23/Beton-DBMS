@@ -129,6 +129,27 @@ mutation($email:String!, $password: String!){
 }
 `
 
+const allBaseReports = gql`
+{
+  allBaseReports{
+    id
+    location
+    similar{
+      id
+      reportedAt
+      reportedOn
+      location
+      userID{
+        name
+  			id
+        email
+      }
+      address
+    }
+  }
+}
+`
+
 export {
   users,
   addUser,
@@ -139,5 +160,6 @@ export {
   decrypt,
   addAdvertiser,
   loginAdvertiser,
-  decryptAdvertiser
+  decryptAdvertiser,
+  allBaseReports
 };

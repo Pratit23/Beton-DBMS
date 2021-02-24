@@ -9,6 +9,10 @@ import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerC
 
 import MarkerCarrierIcon from './MarkerCarrierIcon'
 import list from './list'
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
+import { allBaseReports } from '../../queries/query'
+
 
 const ClusterTest = withScriptjs(
   withGoogleMap(props => {
@@ -31,7 +35,7 @@ const ClusterTest = withScriptjs(
         },
       })
     }
-
+    
     return (
       <GoogleMap
         zoom={zoom}
@@ -296,7 +300,9 @@ const ClusterTest = withScriptjs(
   }),
 )
 
-export default ClusterTest
+export default compose(
+  graphql(allBaseReports, { name: "allBaseReports" })
+)(ClusterTest)
 
 // https://nooshu.github.io/blog/2012/10/03/marker-cluster-calculator-for-google-maps-v3/
 const markerClustererCalculator = (markers, numStyles) => {
