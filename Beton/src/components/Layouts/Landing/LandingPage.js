@@ -6,10 +6,17 @@ import PreFooter from './PreFooter';
 import Footer from './Footer';
 import WhatTheyDoRevised from './WhatTheyDoRevised';
 import Options from './Interactive/Options';
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
+import { decrypt } from '../../../queries/query';
+import { Redirect } from 'react-router-dom';
 
-const LandingPage = () => {
 
-    return (
+const LandingPage = (props) => {
+
+  if(localStorage.getItem('token') && (props && props.decrypt && props.decrypt.loading == false && props.decrypt.decrypt && props.decrypt.decrypt.id) ) return <Redirect to='/homepage' />
+
+  return (
         <div style={{overflowX: "hidden"}}>
           {/* starting globe section */}
             <Globe />
@@ -47,4 +54,16 @@ const LandingPage = () => {
     )
 }
 
-export default LandingPage
+export default compose(
+  graphql(decrypt, {
+    name: "decrypt",
+    options: () => {
+        let temp = localStorage.getItem("token") || "";
+        return {
+            variables: {
+                token: temp
+            }
+        }
+    }
+  })
+)(LandingPage)

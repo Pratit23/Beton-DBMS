@@ -250,7 +250,7 @@ const ReportPage = (props) => {
         });
 
     }, [image])
-    if (!localStorage.getItem('token')) return <Redirect to='/login' />
+    if((!localStorage.getItem('token')) || (props && props.decrypt && props.decrypt.loading == false && (!props.decrypt.decrypt || !props.decrypt.decrypt.id)) ) return <Redirect to='/login' />
     return (
         <div>
             {/* modal thingy if things goes sideways */}
@@ -374,9 +374,10 @@ export default compose(
     graphql(decrypt, {
         name: "decrypt",
         options: () => {
+            let temp = localStorage.getItem("token") || "";
             return {
                 variables: {
-                    token: localStorage.getItem("token")
+                    token: temp
                 }
             }
         }

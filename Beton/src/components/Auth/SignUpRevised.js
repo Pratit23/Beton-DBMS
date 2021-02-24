@@ -2,8 +2,16 @@ import React from 'react'
 import SignUpCover2 from './img/SignUp/SignUpCover2.png'
 import SignUpCover from './img/SignUp/SignUpCover.png'
 import SignUpForm from './Interactive/SignUpForm';
+import { decrypt } from '../../queries/query';
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
+import { Redirect } from 'react-router-dom';
+
 
 const SignUpRevised = (props) => {
+    
+    if(localStorage.getItem('token') && (props && props.decrypt && props.decrypt.loading == false && props.decrypt.decrypt && props.decrypt.decrypt.id) ) return <Redirect to='/homepage' />
+
     return (
         <>
            <div className="row" style={{
@@ -30,4 +38,16 @@ const SignUpRevised = (props) => {
     )
 }
 
-export default SignUpRevised
+export default compose(
+    graphql(decrypt, {
+        name: "decrypt",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    token: temp
+                }
+            }
+        }
+    })
+)(SignUpRevised)

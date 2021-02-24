@@ -452,6 +452,7 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
+                if(args.token == "") return null;
                 let res = jwt.verify(args.token, JWT_SEC);
                 return User.findById(res._id);
             }
