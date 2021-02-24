@@ -15,6 +15,7 @@ import FeedbackReport from './components/Layouts/FeedbackReport.js';
 import Coupons from './components/Layouts/Coupons.js';
 import AdvSignupPage from './components/Auth/AdvSignupPage.js';
 import AdvLoginPage from './components/Auth/AdvLoginPage.js';
+import AdvertiserHomepage from './components/Layouts/AdvertiserHomepage.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -53,8 +54,9 @@ const App = (props) => {
           <Route exact path='/ReportPage' component={ReportPage} />
           <Route exact path='/advertiser/signup' component={AdvSignupPage} />
           <Route exact path='/advertiser/login' component={AdvLoginPage} />
+          <Route exact path='/advertiser/homepage' component={AdvertiserHomepage} />
           <Route exact path='/feedback/report' component={FeedbackReport} />
-          <Route exact path='/:token/coupons' component={Coupons} />
+          <Route exact path='/coupons' component={Coupons} />
         </Switch>
         </div>
       </BrowserRouter>

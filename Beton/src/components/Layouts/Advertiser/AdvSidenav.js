@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sidenav, Toggle, Nav, Icon, Dropdown } from 'rsuite';
+import { Sidenav, Toggle, Nav, Icon } from 'rsuite';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { NavLink } from 'react-router-dom'
 import { routes as Routes } from './Routes';
