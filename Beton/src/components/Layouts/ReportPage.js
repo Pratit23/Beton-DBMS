@@ -46,6 +46,7 @@ const ReportPage = (props) => {
             }
         }
     );
+    
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
     Geocode.setApiKey("AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w");
 
