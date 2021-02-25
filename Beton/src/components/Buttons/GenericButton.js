@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 const GenericButton = ({ text, id, link }) => {
     return (
         <>
-            <NavLink to={`/${link}`}>
+            <NavLink to={`/${link}`} target={id == "download" ? "__blank" : null} >
                 <div className="last" id={id}>
                     <button className="generic-btn">
                         <span>{text}</span>
