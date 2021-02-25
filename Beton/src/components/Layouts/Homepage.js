@@ -5,13 +5,14 @@ import { Redirect } from 'react-router-dom'
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { decrypt } from '../../queries/query'
+import HomepageSide from './HomepageSide';
 
 const Homepage = (props) => {
     if((!localStorage.getItem('token')) || (props && props.decrypt && props.decrypt.loading == false && (!props.decrypt.decrypt || !props.decrypt.decrypt.id)) ) return <Redirect to='/login' />
     return (
         <div>
             <Sidenav />
-            <RefreshHome />
+            <HomepageSide props={props}/>
         </div>
     )
 }

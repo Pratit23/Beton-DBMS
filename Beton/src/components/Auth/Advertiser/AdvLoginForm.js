@@ -25,7 +25,7 @@ const AdvLogin = (props) => {
             }
         })
         if (res && res.data && res.data.loginAdvertiser) {
-            M.toast({ html: "Wohoo! You're in...Log in to get in ヽ(•‿•)ノ" });
+            M.toast({ html: "Wohoo! You're in...ヽ(•‿•)ノ" });
             props.props.history.push("/advertiser/homepage");
         }
         else {
