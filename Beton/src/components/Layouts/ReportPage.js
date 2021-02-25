@@ -20,6 +20,7 @@ import { flowRight as compose } from 'lodash';
 import { addBaseReport, addReport, decrypt, existingBaseCoordinate } from '../../queries/query'
 import Summary from './Landing/Summary';
 
+
 let classifier;
 let coords = [0 ,0]
 var tempUrl = "";
@@ -31,7 +32,7 @@ const ReportPage = (props) => {
     const [mainImage, setMainImage] = useState(null)
     const [url, setUrl] = useState('')
     const [predictions, setPredictions] = useState(null)
-    const [state, dispatch] = useReducer(reducer, stateMachine.initial)
+    const [state, dispatch] = useReducer(reducer, stateMachine.initial) 
     const [reset, setReset] = useState(false)
     const [addressi, setAddressi] = useState("")
 
