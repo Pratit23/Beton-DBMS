@@ -32,6 +32,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "mongoose": "^5.11.15",
+    "react-chartjs-2": "^2.11.1",
     "react-scratchcard": "^1.1.2"
   }
 }

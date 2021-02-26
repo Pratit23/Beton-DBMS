@@ -351,17 +351,12 @@ const RefreshHome = (props) => {
 
     }, [])
 
-    console.log("Props,", props.coords)
-
     if (props.coords !== null) {
         console.log("latitude:", props.coords)
         Geocode.fromLatLng(props.coords.latitude, props.coords.longitude).then(
             response => {
                 var address = response.results[0].formatted_address;
-                console.log("Address: ", address)
                 address = address.split(",")
-                console.log("Address array: ", address)
-                console.log("City: ", address[address.length - 3])
                 setCity(address[address.length - 3])
             },
             error => {

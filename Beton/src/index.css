@@ -1603,3 +1603,11 @@ connection {
 .adv-signup > * {
   margin: 10px auto;
 }
+
+/* info graphics */
+.infographics{
+  height: 100%;
+}
+.infographics span{
+  padding: 5px 0;
+}
