@@ -452,7 +452,6 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                console.log("Check", args.token)
                 if(args.token == "") return null;
                 let res = jwt.verify(args.token, JWT_SEC);
                 return User.findById(res._id);
@@ -470,6 +469,18 @@ const RootQuery = new GraphQLObjectType({
                 return Advertisers.findById(res._id);
             }
         },
+        findUsingZipCode: {
+            type: new GraphQLList(BaseReportsType),
+            args: { zip: { type: GraphQLString } },
+            async resolve(parent, args){
+                console.log(args.zip)
+                var regEx = new RegExp(args.zip, 'gi');
+
+                let res = await BaseReports.find({ "address": regEx }).exec();
+                console.log(res)
+                return res
+            }
+        }
     }
 })
 
