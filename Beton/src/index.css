@@ -1616,7 +1616,7 @@ connection {
 
 .advStatCard{
   border-radius: 20px;
-  height: 210px;
+  height: 30vh;
   box-shadow: 0 12px 26px rgba(0,0,0,0.16), 0 8px 8px rgba(66, 51, 51, 0.15);
 }
 
@@ -1643,4 +1643,22 @@ connection {
 .advStat p{
   text-align: start;
   padding: 5px 35px;
+}
+
+.advChart{
+  box-shadow: 0 12px 26px rgba(0,0,0,0.16), 0 8px 8px rgba(66, 51, 51, 0.15);
+  border-radius: 20px;
+}
+
+.advChart canvas{
+  display: block;
+  /* height: 406px; */
+  /* width: 813px; */
+  height: auto !important;
+  width: 75% !important;
+  margin: 0 auto;
+}
+
+.advStatsInfographics .card-panel{
+  margin: 20px;
 }
