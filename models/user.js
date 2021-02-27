@@ -34,8 +34,8 @@ const userSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "BaseReports"
     }],
-    level: {
-        type: String,
+    karma: {
+        type: Number,
         require: true
     }
 });

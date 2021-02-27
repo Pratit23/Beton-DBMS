@@ -134,6 +134,12 @@ const allBaseReports = gql`
   allBaseReports{
     id
     location
+    noOfReports
+    userID{
+      name
+      id
+      email
+    }
     similar{
       id
       reportedAt

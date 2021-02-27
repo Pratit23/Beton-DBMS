@@ -117,7 +117,8 @@ const UserType = new GraphQLObjectType({
                 return temp
             }
         },
-        level: { type: GraphQLString }
+        level: { type: GraphQLString },
+        karma: { type: GraphQLInt }
     })
 });
 
@@ -519,7 +520,8 @@ const Mutation = new GraphQLObjectType({
                             dob: args.dob,
                             password: hashedPwd,
                             coupons: [],
-                            reports: []
+                            reports: [],
+                            karma: 1
                         })
                         // saving to db
                         let results = await newUser.save();
@@ -710,7 +712,7 @@ const Mutation = new GraphQLObjectType({
                 reportedOn: { type: new GraphQLNonNull(GraphQLString) },
                 userID: { type: new GraphQLNonNull(GraphQLID) },
                 baseParent: { type: new GraphQLNonNull(GraphQLID) }, // do analysing part on front end and get the base parent id.
-                level: { type: new GraphQLNonNull(GraphQLString) } // can be beginner(1), intermediate(5), pro(10)
+                karma: { type: new GraphQLNonNull(GraphQLInt) } // can be beginner(1), intermediate(5), pro(10)
             },
             async resolve(parent, args) {
                 if (!args.image || !args.address || !args.location || !args.userID || !args.baseParent || !args.reportedAt || !args.reportedOn) {
@@ -730,9 +732,12 @@ const Mutation = new GraphQLObjectType({
                     // saving to db
                     let results = await newReport.save();
                     let points = 0;
-                    if (String(args.level).toLowerCase() == "beginner") {
+                    // ? <25 - Beginner
+                    // ? <65 - Intermediate
+                    // ? >65 - Pro
+                    if (args.karma <= 25) {
                         points = 1
-                    } else if (String(args.level).toLowerCase() == "intermediate") {
+                    } else if (args.karma <= 65) {
                         points = 5;
                     } else {
                         points = 10;
@@ -749,7 +754,8 @@ const Mutation = new GraphQLObjectType({
 
                     // adding to users data
                     await User.findByIdAndUpdate(args.userID, {
-                        $push: { "reports": results._id }
+                        $push: { "reports": results._id },
+                        $inc: { "karma": 1 }
                     })
                     if (!results) {
                         throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
@@ -793,7 +799,8 @@ const Mutation = new GraphQLObjectType({
 
                     // adding to users data
                     await User.findByIdAndUpdate(args.userID, {
-                        $push: { "baseReports": results._id }
+                        $push: { "baseReports": results._id },
+                        $inc: { "karma": 1 }
                     })
                     if (!results) {
                         throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')

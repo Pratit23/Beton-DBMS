@@ -45,12 +45,17 @@ const MapWithAMarkerClusterer = compose(
             enableRetinaIcons
             gridSize={60}
         >
-            {props.markers.map(marker => (
-                <Marker
-                    key={marker.photo_id}
-                    position={{ lat: marker.latitude, lng: marker.longitude }}
-                />
-            ))}
+            {props.markers.length != 0 && props.markers.map(marker => {
+                if(marker == undefined){
+                    return;
+                }
+                return (
+                    <Marker
+                        key={marker.photo_id}
+                        position={{ lat: marker.latitude, lng: marker.longitude }}
+                    />
+                )
+            })}
         </MarkerClusterer>
     </GoogleMap>
 );
@@ -62,6 +67,10 @@ const DemoApp = (props) => {
             let temp = []
 
             temp = props.allBaseReports.allBaseReports.map(i => {
+                console.log("i", i)
+                if(i.noOfReports < 12){
+                    return;
+                }
                 let test = {
                     ...i,
                     key: i.id,
