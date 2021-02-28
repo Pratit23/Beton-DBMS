@@ -13,6 +13,7 @@ const Coupon = require('../models/coupons')
 const Advertisement = require('../models/advertisments')
 const Report = require('../models/reports')
 const BaseReports = require('../models/baseReports');
+const Polyutil = require('polyline-encoded');
 
 // https://www.figma.com/file/4bAC5AKUM1VmxyAaRhiLrs/BETON-ER-Diagram?node-id=0%3A1
 
@@ -535,6 +536,62 @@ const Mutation = new GraphQLObjectType({
 
             }
         }, //add user mutation
+        
+        isOnLine: {
+            type: BaseReportsType || GraphQLBoolean,
+            args: {
+                // location: { type: GraphQLString },
+                encoded: { type: new GraphQLList(GraphQLString) }
+            },
+            async resolve(parent, args){
+                console.log(args)
+                var enc = args.encoded.map((e, key) => {
+                    // console.log("E: ", e, typeof (e))
+                    return Polyutil.decode(e)
+                })
+                // TODO: Convert this to object
+
+                console.log("Enc1", enc)
+                enc = enc.map(e=>{
+                    var objs = e.map(function(x) { 
+                        return { 
+                          latitude: x[0], 
+                          longitude: x[1] 
+                        }; 
+                    });
+                    return objs
+                })
+                enc = [].concat.apply([], enc);
+                console.log("Enc", enc)
+                // return true;
+                var res = await BaseReports.find();
+                console.log(res)
+                res.forEach(r=>{
+                    let temp = {
+                        latitude: Number(r.location.split(" ")[0]),
+                        longitude: Number(r.location.split(" ")[1])
+                    }
+                    console.log("temp", temp)
+                    let awaiting = geolib.findNearest(temp, enc);
+                    let temp_awaiting = {
+                        latitude: Number(awaiting['latitude']),
+                        longitude: Number(awaiting['longitude'])
+                    }
+                    console.log("temp-awiting", temp_awaiting)
+                    // checking distance of this nearest coordinate with our coordinate
+                    let disanceBet = geolib.getDistance(temp, temp_awaiting)
+                    console.log("Distance:", disanceBet)
+                    if (disanceBet < 200) {
+                        console.log("eksiiiiiititttttttttttttiiiiiiitititttttttt")
+                        return true
+                    } else {
+                        console.log("nbaaaaaaaaaaaaaaaaaaaawdawnnnnnnndawdawndawndnawd")
+                        return false
+                    }
+                })
+                return res
+            }
+        },
 
         // TODO: this is Advertiser signup
         addAdvertiser: {

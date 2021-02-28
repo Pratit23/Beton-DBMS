@@ -85,7 +85,7 @@ mutation($image: String!, $address: String!, $location: String!, $reportedAt: St
 `;
 
 const decrypt = gql`
-query($token: String!){
+query($token: String){
   decrypt(token: $token){
     name
     email
@@ -156,6 +156,35 @@ const allBaseReports = gql`
 }
 `
 
+const findUsingZipCode = gql`
+query($zip:String!) {
+  findUsingZipCode(zip: $zip) {
+    id
+    location
+    similar{
+      id
+      reportedAt
+      reportedOn
+      location
+      userID{
+        name
+  			id
+        email
+      }
+      address
+    }
+  }
+}
+`
+
+const isOnLine = gql`
+mutation($encoded: [String]){
+  isOnLine(encoded: $encoded){
+    location
+  }
+}
+`
+
 export {
   users,
   addUser,
@@ -167,5 +196,7 @@ export {
   addAdvertiser,
   loginAdvertiser,
   decryptAdvertiser,
-  allBaseReports
+  allBaseReports,
+  findUsingZipCode,
+  isOnLine
 };
