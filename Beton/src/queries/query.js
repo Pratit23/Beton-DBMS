@@ -185,6 +185,37 @@ mutation($encoded: [String]){
 }
 `
 
+const allAdvertisers = gql`
+{
+  allAdvertisers{
+    id
+    email
+    company
+    website
+    coupons{
+      id
+      name
+      amount
+      validity
+      assigned
+      userID{
+        email
+        name
+        id
+      }
+    }
+    advertisments{
+      id
+      title
+      link
+      screentime
+      outreach
+      when
+    }
+  }
+}
+`
+
 export {
   users,
   addUser,
@@ -198,5 +229,6 @@ export {
   decryptAdvertiser,
   allBaseReports,
   findUsingZipCode,
-  isOnLine
+  isOnLine,
+  allAdvertisers
 };

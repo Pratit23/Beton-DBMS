@@ -16,10 +16,11 @@ import Coupons from './components/Layouts/Coupons.js';
 import AdvSignupPage from './components/Auth/AdvSignupPage.js';
 import AdvLoginPage from './components/Auth/AdvLoginPage.js';
 import AdvertiserHomepage from './components/Layouts/AdvertiserHomepage.js';
+import AllAdvertisments from './components/Layouts/Advertiser/AllAdvertisments.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: 'http://localhost:1000/graphql',
   onError:({ response, operation,graphQLErrors,networkError }) => {
     if (operation.operationName === "IgnoreErrorsQuery") {
       response.errors = null;
@@ -52,11 +53,12 @@ const App = (props) => {
           <Route exact path='/Homepage' component={Homepage} />
           <Route exact path='/Cluster' component={Cluster} />
           <Route exact path='/ReportPage' component={ReportPage} />
+          <Route exact path='/feedback/report' component={FeedbackReport} />
+          <Route exact path='/coupons' component={Coupons} />
           <Route exact path='/advertiser/signup' component={AdvSignupPage} />
           <Route exact path='/advertiser/login' component={AdvLoginPage} />
           <Route exact path='/advertiser/homepage' component={AdvertiserHomepage} />
-          <Route exact path='/feedback/report' component={FeedbackReport} />
-          <Route exact path='/coupons' component={Coupons} />
+          <Route exact path='/advertiser/advertisments' component={AllAdvertisments} />
         </Switch>
         </div>
       </BrowserRouter>
