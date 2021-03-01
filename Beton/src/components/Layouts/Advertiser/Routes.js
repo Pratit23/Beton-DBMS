@@ -15,10 +15,16 @@ export const routes = [
         eventKey: 2
     },
     {
+        name: 'Add ads',
+        link: '/advertiser/add/advertisments',
+        icon: 'plus-circle',
+        eventKey: 3
+    },
+    {
         name: 'Coupons',
         link: '/advertiser/coupons',
         icon: 'ticket',
-        eventKey: 3
+        eventKey: 4
     },
     {
         name: 'Logout',

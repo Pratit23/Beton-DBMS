@@ -62,8 +62,8 @@ mutation($image: String!, $address: String!, $location: String!, $reportedAt: St
 `;
 
 const addReport = gql`
-mutation($image: String!, $address: String!, $location: String!, $reportedAt: String!, $reportedOn: String!, $userID: ID!, $baseParent: ID!, $level: String!){
-  addReport(image: $image, address: $address, location: $location, reportedAt: $reportedAt, reportedOn: $reportedOn, userID: $userID, baseParent: $baseParent, level: $level){
+mutation($image: String!, $address: String!, $location: String!, $reportedAt: String!, $reportedOn: String!, $userID: ID!, $baseParent: ID!, $karma: Int!){
+  addReport(image: $image, address: $address, location: $location, reportedAt: $reportedAt, reportedOn: $reportedOn, userID: $userID, baseParent: $baseParent, karma: $karma){
     id
     location
     userID{
@@ -90,7 +90,7 @@ query($token: String){
     name
     email
     id
-    level
+    karma
   }
 }
 `

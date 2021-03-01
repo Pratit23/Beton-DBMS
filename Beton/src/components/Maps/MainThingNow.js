@@ -67,7 +67,6 @@ const DemoApp = (props) => {
             let temp = []
 
             temp = props.allBaseReports.allBaseReports.map(i => {
-                console.log("i", i)
                 if(i.noOfReports < 12){
                     return;
                 }

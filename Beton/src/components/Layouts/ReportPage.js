@@ -183,6 +183,7 @@ const ReportPage = (props) => {
             if(url != ""){
                 if(data.existingBaseCoordinate.location == null){
                     // call base point query mutation here
+                    console.log("prarp", props)
                     let res = await props.addBaseReport({
                         variables: {
                             image: url,
@@ -191,7 +192,7 @@ const ReportPage = (props) => {
                             reportedAt: new Date().toDateString(),
                             reportedOn: new Date().toLocaleString().split(", ")[1],
                             userID: props.decrypt.decrypt.id,
-                            noOfReports: 1
+                            noOfReports: props.decrypt.decrypt.karma
                         }
                     })
                     console.log("res in base", res);
@@ -213,7 +214,7 @@ const ReportPage = (props) => {
                             reportedOn: new Date().toLocaleString().split(", ")[1],
                             userID: props.decrypt.decrypt.id,
                             baseParent: data.existingBaseCoordinate.id,
-                            level: props.decrypt.decrypt.level
+                            karma: props.decrypt.decrypt.karma
                         }
                     })
                     console.log("res in dep", res);
