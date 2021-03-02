@@ -55,7 +55,7 @@ const AddCoupons = () => {
                         </div>
                         <UploadCSV setState={setCoupon} />
                         <div className="col s12" style={{ textAlign: "center", marginTop: "20px" }}>
-                            <button className="btn orange" type="submit" name="action">Submit
+                            <button className="btn orange" type="submit" name="action" style={{ borderRadius: "18px" }} >Submit
                                 <i className="material-icons right">send</i>
                             </button>
                         </div>

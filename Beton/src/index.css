@@ -1662,3 +1662,8 @@ connection {
 .advStatsInfographics .card-panel{
   margin: 20px;
 }
+
+
+.secretAdv > div {
+  margin-bottom: 20px !important;
+}
