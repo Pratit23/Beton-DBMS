@@ -3,6 +3,7 @@ import UploadCSV from '../../Buttons/UploadCSV'
 import AdvSidenav from './AdvSidenav';
 import CouponCover from '../../../images/coupons.png';
 import instructionCover from '../../../images/instructionCover.jpg';
+import FormatCover from '../../../images/FormatCover.png';
 
 const AddCoupons = () => {
 
@@ -36,7 +37,7 @@ const AddCoupons = () => {
                                 display: "inline-block",
                                 whiteSpace: "nowrap"
                             }} >
-                                1. Add CSV <br /><a href="#">(Check format)</a>
+                                1. Add CSV <br /><a href={FormatCover} target="__blank">(Check format)</a>
                             </p>
                             
                             <p className="white-text col s4 center-align" style={{
