@@ -26,6 +26,7 @@ const AdvLogin = (props) => {
         })
         if (res && res.data && res.data.loginAdvertiser) {
             M.toast({ html: "Wohoo! You're in...ヽ(•‿•)ノ" });
+            localStorage.setItem("token", res.data.loginAdvertiser.token)
             props.props.history.push("/advertiser/homepage");
         }
         else {

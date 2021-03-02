@@ -265,6 +265,7 @@ const AdvertisementType = new GraphQLObjectType({
         id: { type: GraphQLID },
         title: { type: GraphQLString }, // title
         link: { type: GraphQLString }, //url
+        image: { type: GraphQLString }, //image url
         screentime: { type: GraphQLString }, //count total screen time?
         when: { type: GraphQLBoolean }, //date and time
         advertiserID: {
@@ -698,15 +699,18 @@ const Mutation = new GraphQLObjectType({
             args: {
                 title: { type: GraphQLString },
                 link: { type: GraphQLString },
-                screentime: { type: GraphQLString },
+                image: { type: GraphQLString },
                 when: { type: GraphQLString },
                 advertiserID: { type: GraphQLID },
-                outreach: { type: GraphQLInt }
             },
             async resolve(parent, args) {
+                if(!args.title || !args.link || !args.image || !image.when || !image.advertiserID){
+                    throw new Error("Kindly provide all details");
+                }
                 let newAdvertisment = new Advertisement({
                     title: args.title,
                     link: args.link,
+                    image: args.image,
                     screentime: 0,
                     when: args.when,
                     advertiserID: args.advertiserID,

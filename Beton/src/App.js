@@ -19,6 +19,7 @@ import AdvertiserHomepage from './components/Layouts/AdvertiserHomepage.js';
 import AllAdvertisments from './components/Layouts/Advertiser/AllAdvertisments.js';
 import AddCoupons from './components/Layouts/Advertiser/AddCoupons.js';
 import AllCoupons from './components/Layouts/Advertiser/AllCoupons.js';
+import AddAdvertisment from './components/Layouts/Advertiser/AddAdvertisment.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -61,6 +62,7 @@ const App = (props) => {
           <Route exact path='/advertiser/login' component={AdvLoginPage} />
           <Route exact path='/advertiser/homepage' component={AdvertiserHomepage} />
           <Route exact path='/advertiser/advertisments' component={AllAdvertisments} />
+          <Route exact path='/advertiser/add/advertisments' component={AddAdvertisment} />
           <Route exact path='/advertiser/add/coupons' component={AddCoupons} />
           <Route exact path='/advertiser/coupons' component={AllCoupons} />
         </Switch>

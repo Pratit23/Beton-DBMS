@@ -31,7 +31,7 @@ const AllCoupons = () => {
                                     <td>200</td>
                                     <td>1</td>
                                     <td>No</td>
-                                    <td>Zomato</td>
+                                    <td>Twitter</td>
                                     <td>-</td>
                                 </tr>
                                 

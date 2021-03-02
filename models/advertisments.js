@@ -14,6 +14,10 @@ const couponsSchema = new mongoose.Schema({
         type: String,
         require:true,
     },
+    image :{
+        type: String,
+        require:true,
+    },
     screentime:{
         type: Number,
         require: true
