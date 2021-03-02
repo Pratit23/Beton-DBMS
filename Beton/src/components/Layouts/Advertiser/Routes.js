@@ -9,16 +9,22 @@ export const routes = [
         eventKey: 1
     },
     {
+        name: 'Add ads',
+        link: '/advertiser/add/advertisments',
+        icon: 'plus-circle',
+        eventKey: 3
+    },
+    {
         name: 'Advertisments',
         link: '/advertiser/advertisments',
         icon: 'image',
         eventKey: 2
     },
     {
-        name: 'Add ads',
-        link: '/advertiser/add/advertisments',
-        icon: 'plus-circle',
-        eventKey: 3
+        name: 'Add coupons',
+        link: '/advertiser/add/coupons',
+        icon: 'plus',
+        eventKey: 4
     },
     {
         name: 'Coupons',
