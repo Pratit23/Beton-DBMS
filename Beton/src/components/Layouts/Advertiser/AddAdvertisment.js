@@ -4,10 +4,51 @@ import AddAdvCover from '../../../images/AddAdvCover.png';
 import FormatCover from '../../../images/FormatCover2.png';
 import GeneralInput from '../../Buttons/GeneralInput';
 import URL from '../../Buttons/URL';
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
+import { addAdvertisment, decryptAdvertiser } from '../../../queries/query';
 
-const AddAdvertisment = () => {
+const AddAdvertisment = (props) => {
 
-    const [coupon, setCoupon] = useState([])
+    const [image, setImage] = useState([])
+
+    const handleComplete = () => {
+        const title = document.querySelector("#add-title").value;
+        const link = document.querySelector(".advLink input").value;
+        console.log(props)
+        const fileData = new FormData();
+        fileData.append("file", image);
+        fileData.append("upload_preset", "levitation");
+        fileData.append("cloud_name", "levitation");
+
+        // saving to cloud first
+        fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
+            method: "POST",
+            body: fileData
+        }).then(res => res.json()).then(async (data) => {
+            console.log(data.url);
+            console.log("Photo uploaded");
+            console.log(title, link, data.url, new Date().toLocaleDateString(), props.decryptAdvertiser.decryptAdvertiser.id)
+            let res = await props.addAdvertisment({
+                variables: {
+                    title,
+                    link,
+                    image: data.url,
+                    when: new Date().toLocaleDateString(),
+                    advertiserID: props.decryptAdvertiser.decryptAdvertiser.id
+                }
+            })
+            if(res && res.data && res.data.addAdvertisment){
+                console.log("Your advertisment is now live!")
+                props.history.push("/advertiser/homepage");
+            }else{
+                console.log("Uh-oh! Something went wrong. Try again")
+            }
+        }).catch(err => {
+            console.log(err);
+            return err
+        })
+    }
 
     return (
         <div>
@@ -61,13 +102,13 @@ const AddAdvertisment = () => {
                             <GeneralInput placeholder="Catchy line for your ad" classy="col s10 offset-s1 m9 offset-m2 l6 offset-l3" type="text" id="add-title" />
                             
                             {/* link */}
-                            <URL classy="col s10 offset-s1 m9 offset-m2 l6 offset-l3"/>
+                            <URL classy="advLink col s10 offset-s1 m9 offset-m2 l6 offset-l3"/>
 
                             {/* image */}
                             <div className="file-field input-field col s10 offset-s1 m9 offset-m2 l6 offset-l3">
                                 <div className="btn">
                                     <span>File</span>
-                                    <input type="file" />
+                                    <input type="file" onChange={(e)=>setImage(e.target.files[0])}/>
                                 </div>
                                 <div className="file-path-wrapper">
                                     <input className="file-path validate" type="text" />
@@ -77,7 +118,8 @@ const AddAdvertisment = () => {
                         </div>
 
                         <div className="col s12" style={{ textAlign: "center", marginTop: "20px" }}>
-                            <button className="btn pink" type="submit" name="action" style={{ borderRadius: "18px" }} >Submit
+                            <button className="btn pink" onClick={handleComplete}
+                             type="submit" name="action" style={{ borderRadius: "18px" }} >Submit
                                 <i className="material-icons right">send</i>
                             </button>
                         </div>
@@ -88,4 +130,17 @@ const AddAdvertisment = () => {
     )
 }
 
-export default AddAdvertisment
+export default compose(
+    graphql(addAdvertisment, { name: "addAdvertisment" }),
+    graphql(decryptAdvertiser, {
+        name: "decryptAdvertiser",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    token: temp
+                }
+            }
+        }
+    })
+)(AddAdvertisment)

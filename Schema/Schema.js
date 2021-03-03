@@ -14,6 +14,7 @@ const Advertisement = require('../models/advertisments')
 const Report = require('../models/reports')
 const BaseReports = require('../models/baseReports');
 const Polyutil = require('polyline-encoded');
+const { resolve } = require('path');
 
 // https://www.figma.com/file/4bAC5AKUM1VmxyAaRhiLrs/BETON-ER-Diagram?node-id=0%3A1
 
@@ -266,8 +267,8 @@ const AdvertisementType = new GraphQLObjectType({
         title: { type: GraphQLString }, // title
         link: { type: GraphQLString }, //url
         image: { type: GraphQLString }, //image url
-        screentime: { type: GraphQLString }, //count total screen time?
-        when: { type: GraphQLBoolean }, //date and time
+        screentime: { type: GraphQLInt }, //count total screen time?
+        when: { type: GraphQLString }, //date and time
         advertiserID: {
             type: AdvertisersType,
             resolve(parent, args) {
@@ -468,6 +469,8 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
+                console.log(args)
+                if(args.token == "") return null;
                 let res = jwt.verify(args.token, JWT_SEC);
                 return Advertisers.findById(res._id);
             }
@@ -476,12 +479,20 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(BaseReportsType),
             args: { zip: { type: GraphQLString } },
             async resolve(parent, args){
-                console.log(args.zip)
                 var regEx = new RegExp(args.zip, 'gi');
 
                 let res = await BaseReports.find({ "address": regEx }).exec();
                 console.log(res)
                 return res
+            }
+        },
+        allMyAds: {
+            type: new GraphQLList(AdvertisementType),
+            args: { token: { type: GraphQLString } },
+            async resolve(parent, args){
+                if(args.token == "") return null;
+                let res = jwt.verify(args.token, JWT_SEC);
+                return await Advertisement.find({ "advertiserID": res._id });
             }
         }
     }
@@ -704,7 +715,8 @@ const Mutation = new GraphQLObjectType({
                 advertiserID: { type: GraphQLID },
             },
             async resolve(parent, args) {
-                if(!args.title || !args.link || !args.image || !image.when || !image.advertiserID){
+                console.log(args)
+                if(!args.title || !args.link || !args.image || !args.when || !args.advertiserID){
                     throw new Error("Kindly provide all details");
                 }
                 let newAdvertisment = new Advertisement({
@@ -716,7 +728,7 @@ const Mutation = new GraphQLObjectType({
                     advertiserID: args.advertiserID,
                     outreach: 0
                 });
-
+                console.log("none onge", newAdvertisment)
                 let results = await newAdvertisment.save();
 
                 // ? Saving this record in the advertisers record too

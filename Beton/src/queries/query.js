@@ -91,17 +91,20 @@ query($token: String){
     email
     id
     karma
+    reports {
+      reportedAt
+      reportedOn
+    }
   }
 }
 `
 
 const decryptAdvertiser = gql`
-query($token: String!){
+query($token: String){
   decryptAdvertiser(token: $token){
-    name
+    company
     email
     id
-    level
   }
 }
 `
@@ -216,6 +219,30 @@ const allAdvertisers = gql`
 }
 `
 
+const addAdvertisment = gql`
+mutation($title: String!, $link: String!, $image: String!, $when: String!, $advertiserID: ID!){
+  addAdvertisment(title: $title, link: $link, image: $image, when: $when, advertiserID: $advertiserID){
+    title
+    link
+    image
+    when
+  }
+}
+`
+
+const allMyAds = gql`
+query($token: String!){
+  allMyAds(token: $token){
+    title
+    link
+    image
+    screentime
+    when
+    outreach
+  }
+}
+`
+
 export {
   users,
   addUser,
@@ -230,5 +257,7 @@ export {
   allBaseReports,
   findUsingZipCode,
   isOnLine,
-  allAdvertisers
+  allAdvertisers,
+  addAdvertisment,
+  allMyAds
 };
