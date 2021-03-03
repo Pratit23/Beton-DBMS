@@ -105,6 +105,22 @@ query($token: String){
     company
     email
     id
+    website
+    category
+    advertisments{
+      id
+      title
+      image
+      link
+      screentime
+      outreach
+    }
+    coupons{
+      id
+      name
+      validity
+      amount
+    }
   }
 }
 `
@@ -243,6 +259,27 @@ query($token: String!){
 }
 `
 
+const addCoupon = gql`
+mutation($name: String!, $amount: String!, $validity: String!, $advertiserID: ID!){
+  addCoupon(name: $name, amount: $amount, validity: $validity, advertiserID: $advertiserID){
+    name
+    amount
+    validity
+    assigned
+    advertiserID{
+      company
+      email
+      id
+    }
+    userID{
+      name
+      email
+      id
+    }
+  }
+}
+`
+
 export {
   users,
   addUser,
@@ -259,5 +296,6 @@ export {
   isOnLine,
   allAdvertisers,
   addAdvertisment,
-  allMyAds
+  allMyAds,
+  addCoupon
 };

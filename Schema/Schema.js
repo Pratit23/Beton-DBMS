@@ -168,7 +168,8 @@ const AdvertisersType = new GraphQLObjectType({
             type: new GraphQLList(AdvertisementType),
             resolve(parent, args) {
                 let temp = []
-                parent.coupons.forEach(y => {
+                console.log(parent)
+                parent.advertisments.forEach(y => {
                     let test = Advertisement.findById(y);
                     temp.push(test)
                 })
@@ -342,34 +343,35 @@ const RootQuery = new GraphQLObjectType({
                 return Coupon.find()
             }
         },
-        getReportsNearMe: {
-            type: new GraphQLList(ReportsType),
-            args: {
-                latitude: { type: GraphQLString },
-                longitude: { type: GraphQLString },
-            },
-            resolve(parent, args) {
-                let main = {
-                    latitude: Number(args['latitude']),
-                    longitude: Number(args['longitude'])
-                }
-                let data = reports.filter(r => {
-                    let coords = r.location.split(" ");
-                    let tempPoint = {
-                        latitude: Number(coords[0]),
-                        longitude: Number(coords[1])
-                    }
-                    let disanceBet = geolib.getDistance(main, tempPoint)
-                    console.log("Distance:", disanceBet)
-                    if (disanceBet > 5000) {
-                        return false
-                    } else {
-                        return true
-                    }
-                })
-                return data;
-            }
-        },
+        // ! Deprecated Query - Uses dummy value so removed it
+        // getReportsNearMe: {
+        //     type: new GraphQLList(ReportsType),
+        //     args: {
+        //         latitude: { type: GraphQLString },
+        //         longitude: { type: GraphQLString },
+        //     },
+        //     resolve(parent, args) {
+        //         let main = {
+        //             latitude: Number(args['latitude']),
+        //             longitude: Number(args['longitude'])
+        //         }
+        //         let data = reports.filter(r => {
+        //             let coords = r.location.split(" ");
+        //             let tempPoint = {
+        //                 latitude: Number(coords[0]),
+        //                 longitude: Number(coords[1])
+        //             }
+        //             let disanceBet = geolib.getDistance(main, tempPoint)
+        //             console.log("Distance:", disanceBet)
+        //             if (disanceBet > 5000) {
+        //                 return false
+        //             } else {
+        //                 return true
+        //             }
+        //         })
+        //         return data;
+        //     }
+        // },
         getNearestCoordinate: {
             type: BaseReportsType,
             args: {
@@ -708,6 +710,7 @@ const Mutation = new GraphQLObjectType({
         addAdvertisment: {
             type: AdvertisementType,
             args: {
+                id: { type: GraphQLID },
                 title: { type: GraphQLString },
                 link: { type: GraphQLString },
                 image: { type: GraphQLString },
@@ -750,7 +753,6 @@ const Mutation = new GraphQLObjectType({
                 name: { type: new GraphQLNonNull(GraphQLString) },
                 amount: { type: new GraphQLNonNull(GraphQLString) },
                 validity: { type: new GraphQLNonNull(GraphQLString) },
-                assigned: { type: new GraphQLNonNull(GraphQLBoolean) },
                 advertiserID: { type: new GraphQLNonNull(GraphQLID) },
             },
             async resolve(parent, args) {
@@ -758,7 +760,7 @@ const Mutation = new GraphQLObjectType({
                     name: args.name,
                     amount: args.amount,
                     validity: args.validity,
-                    assigned: args.assigned,
+                    assigned: false,
                     advertiserID: args.advertiserID,
                     userID: ""
                 });

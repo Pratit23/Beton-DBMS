@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
 
 const couponsSchema = new mongoose.Schema({
-    id:{
-        type: String,
-        require:true
-    },
     name :{
         type: String,
         require:true,

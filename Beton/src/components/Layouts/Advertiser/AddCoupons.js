@@ -4,11 +4,41 @@ import AdvSidenav from './AdvSidenav';
 import CouponCover from '../../../images/coupons.png';
 import instructionCover from '../../../images/instructionCover.jpg';
 import FormatCover from '../../../images/FormatCover.png';
+import { graphql } from 'react-apollo'
+import { decryptAdvertiser, addCoupon } from '../../../queries/query';
+import { flowRight as compose } from 'lodash'
+import M from 'materialize-css';
 
-const AddCoupons = () => {
+const AddCoupons = (props) => {
 
     const [coupon, setCoupon] = useState([])
-
+    const handleSubmit = () => {
+        console.log("Coupons", coupon);
+        let count = 0;
+        coupon.data.forEach(async (c)=> {
+            let res = await props.addCoupon({
+                variables: {
+                    name: c.name,
+                    amount: c.amount,
+                    validity: c.validity,
+                    advertiserID: props.decryptAdvertiser.decryptAdvertiser.id
+                }
+            });
+            if(res && res.data && res.data.addCoupon){
+                count += 1;
+            }
+        });
+        if(count != 0){
+            if(count == coupon.data.length){
+                M.toast({ html: `All coupons added! Now you can go make an advertisment` });
+            }else if(count != coupon.data.length){
+                M.toast({ html: `Uh-oh! Not all coupons could be added. ${count}/${coupon.data.length} coupons added successfull!` });
+            }
+            props.history.push("/advertiser/homepage");
+        }else{
+            M.toast({ html: `Something wasn't right. Couldn't process your request :/` });
+        }
+    }
     return (
         <div>
             <AdvSidenav />
@@ -55,7 +85,7 @@ const AddCoupons = () => {
                         </div>
                         <UploadCSV setState={setCoupon} />
                         <div className="col s12" style={{ textAlign: "center", marginTop: "20px" }}>
-                            <button className="btn orange" type="submit" name="action" style={{ borderRadius: "18px" }} >Submit
+                            <button className="btn orange" type="submit" onClick={handleSubmit} name="action" style={{ borderRadius: "18px" }} >Submit
                                 <i className="material-icons right">send</i>
                             </button>
                         </div>
@@ -66,4 +96,17 @@ const AddCoupons = () => {
     )
 }
 
-export default AddCoupons
+export default compose(
+    graphql(addCoupon, { name: "addCoupon" }),
+    graphql(decryptAdvertiser, {
+        name: "decryptAdvertiser",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    token: temp
+                }
+            }
+        }
+    })   
+)(AddCoupons)
