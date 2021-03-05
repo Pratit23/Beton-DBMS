@@ -21,6 +21,7 @@ const { resolve } = require('path');
 const {
     GraphQLID,
     GraphQLObjectType,
+    GraphQLInputObjectType,
     GraphQLSchema,
     GraphQLString,
     GraphQLInt,
@@ -280,6 +281,14 @@ const AdvertisementType = new GraphQLObjectType({
     })
 })
 
+const CouponsInput = new GraphQLInputObjectType({
+    name: "CouponsInput",
+    fields: () => ({
+        name: { type: GraphQLString },
+        amount: { type: GraphQLString },
+        validity: { type: GraphQLString }
+    })
+})
 
 
 
@@ -471,7 +480,6 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                console.log(args)
                 if(args.token == "") return null;
                 let res = jwt.verify(args.token, JWT_SEC);
                 return Advertisers.findById(res._id);
@@ -750,30 +758,32 @@ const Mutation = new GraphQLObjectType({
         addCoupon: {
             type: CouponsType,
             args: {
-                name: { type: new GraphQLNonNull(GraphQLString) },
-                amount: { type: new GraphQLNonNull(GraphQLString) },
-                validity: { type: new GraphQLNonNull(GraphQLString) },
-                advertiserID: { type: new GraphQLNonNull(GraphQLID) },
+                // name: { type: new GraphQLNonNull(GraphQLString) },
+                // amount: { type: new GraphQLNonNull(GraphQLString) },
+                // validity: { type: new GraphQLNonNull(GraphQLString) },
+                // advertiserID: { type: new GraphQLNonNull(GraphQLID) },
+                coupons: { type: new GraphQLList(CouponsInput) }
             },
             async resolve(parent, args) {
-                let newCoupon = new Coupon({
-                    name: args.name,
-                    amount: args.amount,
-                    validity: args.validity,
-                    assigned: false,
-                    advertiserID: args.advertiserID,
-                    userID: ""
-                });
-                let results = newCoupon.save();
+                console.log(args);
+                // let newCoupon = new Coupon({
+                //     name: args.name,
+                //     amount: args.amount,
+                //     validity: args.validity,
+                //     assigned: false,
+                //     advertiserID: args.advertiserID,
+                //     userID: null
+                // });
+                // let results = newCoupon.save();
 
-                // ? Saving this record in the advertisers record too
-                await Advertisers.findByIdAndUpdate(args.advertiserID, {
-                    $push: { "coupons": results._id }
-                })
-                console.log(results);
-                if (!results) {
-                    throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
-                }
+                // // ? Saving this record in the advertisers record too
+                // await Advertisers.findByIdAndUpdate(args.advertiserID, {
+                //     $push: { "coupons": results._id }
+                // })
+                // console.log(results);
+                // if (!results) {
+                //     throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                // }
                 return results
             }
         },

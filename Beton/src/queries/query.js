@@ -260,8 +260,8 @@ query($token: String!){
 `
 
 const addCoupon = gql`
-mutation($name: String!, $amount: String!, $validity: String!, $advertiserID: ID!){
-  addCoupon(name: $name, amount: $amount, validity: $validity, advertiserID: $advertiserID){
+mutation($coupons: [CouponsInput]!){
+  addCoupon(coupons: $coupons){
     name
     amount
     validity
@@ -279,6 +279,27 @@ mutation($name: String!, $amount: String!, $validity: String!, $advertiserID: ID
   }
 }
 `
+
+// const addCoupon = gql`
+// mutation($name: String!, $amount: String!, $validity: String!, $advertiserID: ID!){
+//   addCoupon(name: $name, amount: $amount, validity: $validity, advertiserID: $advertiserID){
+//     name
+//     amount
+//     validity
+//     assigned
+//     advertiserID{
+//       company
+//       email
+//       id
+//     }
+//     userID{
+//       name
+//       email
+//       id
+//     }
+//   }
+// }
+// `
 
 export {
   users,

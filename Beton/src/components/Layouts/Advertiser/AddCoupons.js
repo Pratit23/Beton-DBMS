@@ -12,32 +12,43 @@ import M from 'materialize-css';
 const AddCoupons = (props) => {
 
     const [coupon, setCoupon] = useState([])
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log("Coupons", coupon);
         let count = 0;
-        coupon.data.forEach(async (c)=> {
-            let res = await props.addCoupon({
-                variables: {
-                    name: c.name,
-                    amount: c.amount,
-                    validity: c.validity,
-                    advertiserID: props.decryptAdvertiser.decryptAdvertiser.id
-                }
-            });
-            if(res && res.data && res.data.addCoupon){
-                count += 1;
+        // coupon.data.forEach(async (c)=> {
+        //     if(c.name == "" || c.amount == "" || c.validity == ""){
+        //         // skip
+        //     }else{
+        //         console.log(c)
+        //         let res = await props.addCoupon({
+        //             variables: {
+        //                 name: c.name,
+        //                 amount: c.amount,
+        //                 validity: c.validity,
+        //                 advertiserID: props.decryptAdvertiser.decryptAdvertiser.id
+        //             }
+        //         });
+        //         if(res && res.data && res.data.addCoupon){
+        //             count += 1;
+        //         }
+        //     }
+        // });
+        // if(count != 0){
+        //     if(count == coupon.data.length){
+        //         M.toast({ html: `All coupons added! Now you can go make an advertisment` });
+        //     }else if(count != coupon.data.length){
+        //         M.toast({ html: `Uh-oh! Not all coupons could be added. ${count}/${coupon.data.length} coupons added successfull!` });
+        //     }
+        //     props.history.push("/advertiser/homepage");
+        // }else{
+        //     M.toast({ html: `Something wasn't right. Couldn't process your request :/` });
+        // }
+        console.log(coupon.data.slice(0, 3), typeof([...(coupon.data.slice(0, 3))]))
+        await props.addCoupon({
+            variables: {
+                coupons: coupon.data
             }
-        });
-        if(count != 0){
-            if(count == coupon.data.length){
-                M.toast({ html: `All coupons added! Now you can go make an advertisment` });
-            }else if(count != coupon.data.length){
-                M.toast({ html: `Uh-oh! Not all coupons could be added. ${count}/${coupon.data.length} coupons added successfull!` });
-            }
-            props.history.push("/advertiser/homepage");
-        }else{
-            M.toast({ html: `Something wasn't right. Couldn't process your request :/` });
-        }
+        })
     }
     return (
         <div>

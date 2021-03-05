@@ -7,15 +7,19 @@ import URL from '../../Buttons/URL';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { addAdvertisment, decryptAdvertiser } from '../../../queries/query';
+import M from 'materialize-css'
 
 const AddAdvertisment = (props) => {
 
     const [image, setImage] = useState([])
 
     const handleComplete = () => {
+        if(props.decryptAdvertiser && !props.decryptAdvertiser.loading &&  props.decryptAdvertiser.decryptAdvertiser.coupons.length == 0){
+            M.toast({ html: "You must add coupons to your account to add advertisment!" })
+            return;
+        }
         const title = document.querySelector("#add-title").value;
         const link = document.querySelector(".advLink input").value;
-        console.log(props)
         const fileData = new FormData();
         fileData.append("file", image);
         fileData.append("upload_preset", "levitation");
@@ -49,7 +53,6 @@ const AddAdvertisment = (props) => {
             return err
         })
     }
-
     return (
         <div>
             <AdvSidenav />
@@ -58,6 +61,18 @@ const AddAdvertisment = (props) => {
                     height: "100%",
                     marginBottom: "0"
                 }} >
+                    {
+                        props.decryptAdvertiser && !props.decryptAdvertiser.loading &&
+                        props.decryptAdvertiser.decryptAdvertiser && props.decryptAdvertiser.decryptAdvertiser.coupons.length != 0 ? (
+                            null
+                        ) : (
+                            <div className="col s12 pink center-align valign-wrapper" style={{ height: "50px" }}>
+                                <p className="white-text" style={{
+                                    margin: "0 auto"
+                                }} >You cannot add ads without adding any coupons to your account!</p>
+                            </div>
+                        )
+                    }
                     <div className="col s12 m4 l6" style={{
                         backgroundImage: `url(${AddAdvCover})`,
                         height: "100%",
