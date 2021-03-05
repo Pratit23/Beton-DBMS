@@ -180,6 +180,8 @@ query($zip:String!) {
   findUsingZipCode(zip: $zip) {
     id
     location
+    reportedAt
+    reportedOn
     similar{
       id
       reportedAt
@@ -299,3 +301,8 @@ export {
   allMyAds,
   addCoupon
 };
+
+
+
+
+
