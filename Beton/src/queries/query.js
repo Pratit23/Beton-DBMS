@@ -260,14 +260,14 @@ query($token: String!){
 `
 
 const addCoupon = gql`
-mutation($coupons: [CouponsInput]!){
-  addCoupon(coupons: $coupons){
+mutation($name: String!, $amount: String!, $validity: String!, $advertiserID: ID!){
+  addCoupon(name: $name, amount: $amount, validity: $validity, advertiserID: $advertiserID){
     name
     amount
     validity
     assigned
     advertiserID{
-      company
+      company 
       email
       id
     }
@@ -280,26 +280,11 @@ mutation($coupons: [CouponsInput]!){
 }
 `
 
-// const addCoupon = gql`
-// mutation($name: String!, $amount: String!, $validity: String!, $advertiserID: ID!){
-//   addCoupon(name: $name, amount: $amount, validity: $validity, advertiserID: $advertiserID){
-//     name
-//     amount
-//     validity
-//     assigned
-//     advertiserID{
-//       company
-//       email
-//       id
-//     }
-//     userID{
-//       name
-//       email
-//       id
-//     }
-//   }
-// }
-// `
+const AddAccReport = gql`
+mutation($coords: [InputAccReport]!){
+  AddAccReport(coords: $coords)
+}
+`
 
 export {
   users,
@@ -318,7 +303,8 @@ export {
   allAdvertisers,
   addAdvertisment,
   allMyAds,
-  addCoupon
+  addCoupon,
+  AddAccReport
 };
 
 

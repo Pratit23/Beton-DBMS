@@ -11,6 +11,7 @@ const Admin = require('../models/admin')
 const Advertisers = require('../models/advertisers')
 const Coupon = require('../models/coupons')
 const Advertisement = require('../models/advertisments')
+const AccReport = require('../models/AccReport')
 const Report = require('../models/reports')
 const BaseReports = require('../models/baseReports');
 const Polyutil = require('polyline-encoded');
@@ -20,13 +21,13 @@ const { resolve } = require('path');
 const {
     GraphQLID,
     GraphQLObjectType,
-    GraphQLInputObjectType,
     GraphQLSchema,
     GraphQLString,
     GraphQLInt,
     GraphQLList,
     GraphQLNonNull,
-    GraphQLBoolean
+    GraphQLBoolean,
+    GraphQLInputObjectType
 } = graphql
 
 // dummy data
@@ -235,6 +236,33 @@ const ReportsType = new GraphQLObjectType({
             }
         }
     })
+});
+
+
+const InputAccReport = new GraphQLInputObjectType({
+    name: "InputAccReport",
+    fields: () => ({
+        location: { type: GraphQLString },
+        userID: { type: GraphQLID },
+        reportedAt: { type: GraphQLString },
+        reportedOn: { type: GraphQLString },
+    })
+})
+
+const AccReports = new GraphQLObjectType({
+    name: "AccReports",
+    fields: () => ({
+        id: { type: GraphQLID },
+        location: { type: GraphQLString },
+        userID: {
+            type: UserType,
+            async resolve(parent, args){
+                return await User.findById(parent.userID);
+            }
+        },
+        reportedAt: { type: GraphQLString }, // date
+        reportedOn: { type: GraphQLString }  // time
+    })
 })
 
 const CouponsType = new GraphQLObjectType({
@@ -279,14 +307,6 @@ const AdvertisementType = new GraphQLObjectType({
     })
 })
 
-const CouponsInput = new GraphQLInputObjectType({
-    name: "CouponsInput",
-    fields: () => ({
-        name: { type: GraphQLString },
-        amount: { type: GraphQLString },
-        validity: { type: GraphQLString }
-    })
-})
 
 
 
@@ -348,6 +368,12 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(CouponsType),
             resolve(parent, args) {
                 return Coupon.find()
+            }
+        },
+        allAccReports: {
+            type: new GraphQLList(AccReports),
+            async resolve(parent, args){
+                return await AccReport.find();
             }
         },
         // getReportsNearMe: {
@@ -477,7 +503,7 @@ const RootQuery = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-                if(args.token == "") return null;
+                if (args.token == "") return null;
                 let res = jwt.verify(args.token, JWT_SEC);
                 return Advertisers.findById(res._id);
             }
@@ -524,7 +550,7 @@ const RootQuery = new GraphQLObjectType({
                             latitude: x[0],
                             longitude: x[1]
                         };
-                    });
+                    });3
                     return objs
                 })
                 enc = [].concat.apply([], enc);
@@ -754,33 +780,60 @@ const Mutation = new GraphQLObjectType({
         addCoupon: {
             type: CouponsType,
             args: {
-                // name: { type: new GraphQLNonNull(GraphQLString) },
-                // amount: { type: new GraphQLNonNull(GraphQLString) },
-                // validity: { type: new GraphQLNonNull(GraphQLString) },
-                // advertiserID: { type: new GraphQLNonNull(GraphQLID) },
-                coupons: { type: new GraphQLList(CouponsInput) }
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                amount: { type: new GraphQLNonNull(GraphQLString) },
+                validity: { type: new GraphQLNonNull(GraphQLString) },
+                assigned: { type: new GraphQLNonNull(GraphQLBoolean) },
+                advertiserID: { type: new GraphQLNonNull(GraphQLID) },
             },
             async resolve(parent, args) {
-                console.log(args);
-                // let newCoupon = new Coupon({
-                //     name: args.name,
-                //     amount: args.amount,
-                //     validity: args.validity,
-                //     assigned: false,
-                //     advertiserID: args.advertiserID,
-                //     userID: null
-                // });
-                // let results = newCoupon.save();
+                let newCoupon = new Coupon({
+                    name: args.name,
+                    amount: args.amount,
+                    validity: args.validity,
+                    assigned: false,
+                    advertiserID: args.advertiserID,
+                    userID: ""
+                });
+                let results = newCoupon.save();
 
-                // // ? Saving this record in the advertisers record too
-                // await Advertisers.findByIdAndUpdate(args.advertiserID, {
-                //     $push: { "coupons": results._id }
-                // })
-                // console.log(results);
-                // if (!results) {
-                //     throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
-                // }
+                // ? Saving this record in the advertisers record too
+                await Advertisers.findByIdAndUpdate(args.advertiserID, {
+                    $push: { "coupons": results._id }
+                })
+                console.log(results);
+                if (!results) {
+                    throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                }
                 return results
+            }
+        },
+        // * adding AccReport
+        AddAccReport: {
+            type: GraphQLBoolean,
+            args: {     
+                coords: { type: new GraphQLList(InputAccReport) }
+            },
+            async resolve(parent, args){
+                console.log("pargsg", args);
+                if(args.coords == []) return false;
+                let newItems = args.coords.map(c=>{
+                    let temp = {
+                        insertOne: {
+                            "document": {
+                                ...c
+                            }
+                        }
+                    }
+                    return temp;
+                });
+                let result = await AccReport.bulkWrite(newItems);
+                console.log("resulty boahhh", result);
+                if (!result) {
+                    // throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                    return false;
+                }
+                return true;
             }
         },
         addReport: {
