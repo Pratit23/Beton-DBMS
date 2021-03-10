@@ -1,8 +1,13 @@
 import React from 'react';
 import AdvSidenav from './AdvSidenav';
+import { graphql } from 'react-apollo'
+import { decryptAdvertiser } from '../../../queries/query';
+import { flowRight as compose } from 'lodash'
+import { Datagrid } from '@material-ui/data-grid';
 
 
-const AllCoupons = () => {
+const AllCoupons = (props) => {
+    console.log(props)
     return (
         <div>
             <AdvSidenav />
@@ -26,6 +31,9 @@ const AllCoupons = () => {
                             </thead>
 
                             <tbody>
+                                {
+
+                                }
                                 <tr>
                                     <td>FOODIE</td>
                                     <td>200</td>
@@ -46,4 +54,16 @@ const AllCoupons = () => {
     )
 }
 
-export default AllCoupons
+export default compose(
+    graphql(decryptAdvertiser, {
+        name: "decryptAdvertiser",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    token: temp
+                }
+            }
+        }
+    }) 
+)(AllCoupons)

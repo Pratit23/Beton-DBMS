@@ -53,6 +53,7 @@ const AddAdvertisment = (props) => {
             return err
         })
     }
+    console.log("poropor", props)
     return (
         <div>
             <AdvSidenav />

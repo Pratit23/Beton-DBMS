@@ -14,41 +14,26 @@ const AddCoupons = (props) => {
     const [coupon, setCoupon] = useState([])
     const handleSubmit = async () => {
         console.log("Coupons", coupon);
-        let count = 0;
-        // coupon.data.forEach(async (c)=> {
-        //     if(c.name == "" || c.amount == "" || c.validity == ""){
-        //         // skip
-        //     }else{
-        //         console.log(c)
-        //         let res = await props.addCoupon({
-        //             variables: {
-        //                 name: c.name,
-        //                 amount: c.amount,
-        //                 validity: c.validity,
-        //                 advertiserID: props.decryptAdvertiser.decryptAdvertiser.id
-        //             }
-        //         });
-        //         if(res && res.data && res.data.addCoupon){
-        //             count += 1;
-        //         }
-        //     }
-        // });
-        // if(count != 0){
-        //     if(count == coupon.data.length){
-        //         M.toast({ html: `All coupons added! Now you can go make an advertisment` });
-        //     }else if(count != coupon.data.length){
-        //         M.toast({ html: `Uh-oh! Not all coupons could be added. ${count}/${coupon.data.length} coupons added successfull!` });
-        //     }
-        //     props.history.push("/advertiser/homepage");
-        // }else{
-        //     M.toast({ html: `Something wasn't right. Couldn't process your request :/` });
-        // }
-        console.log(coupon.data.slice(0, 3), typeof([...(coupon.data.slice(0, 3))]))
-        await props.addCoupon({
-            variables: {
-                coupons: coupon.data
+        if(!coupon.data || coupon.data.length == 0){
+            M.toast({ html: "Hold on mate! Let's have the CSV file for processing!" })
+            return;
+        }
+        if(props.decryptAdvertiser && !props.decryptAdvertiser.loading && props.decryptAdvertiser.decryptAdvertiser){
+            let res = await props.addCoupon({
+                variables: {
+                    coupons: coupon.data,
+                    advertiserID: props.decryptAdvertiser.decryptAdvertiser.id
+                }
+            })
+            if (res && res.data && res.data.addCoupon){
+                M.toast({ html: `All coupons added! Now you can go make an advertisment` });
+                props.history.push("/advertiser/homepage");
+            }else{
+                M.toast({ html: `Something wasn't right. Couldn't process your request :/` });
             }
-        })
+        }else{
+            M.toast({ html: "Okay okay. Easy now. You're moving a bit too quick. Authenticating..." })
+        }
     }
     return (
         <div>
