@@ -169,7 +169,7 @@ const AdvertisersType = new GraphQLObjectType({
             type: new GraphQLList(AdvertisementType),
             resolve(parent, args) {
                 let temp = []
-                parent.coupons.forEach(y => {
+                parent.advertisments.forEach(y => {
                     let test = Advertisement.findById(y);
                     temp.push(test)
                 })
@@ -249,6 +249,17 @@ const InputAccReport = new GraphQLInputObjectType({
     })
 })
 
+
+const CouponsInput = new GraphQLInputObjectType({
+    name: "CouponsInput",
+    fields: () => ({
+        name: { type: GraphQLString },
+        amount: { type: GraphQLString },
+        validity: { type: GraphQLString }
+    })
+})
+
+
 const AccReports = new GraphQLObjectType({
     name: "AccReports",
     fields: () => ({
@@ -280,8 +291,9 @@ const CouponsType = new GraphQLObjectType({
             }
         },
         userID: {
-            type: UserType,
+            type: UserType || GraphQLString,
             resolve(parent, args) {
+                if(parent.userID == "") return "-";
                 return User.findById(parent.userID)
             }
         },
@@ -778,34 +790,53 @@ const Mutation = new GraphQLObjectType({
 
         // * add a new coupon
         addCoupon: {
-            type: CouponsType,
+            type: GraphQLBoolean,
             args: {
-                name: { type: new GraphQLNonNull(GraphQLString) },
-                amount: { type: new GraphQLNonNull(GraphQLString) },
-                validity: { type: new GraphQLNonNull(GraphQLString) },
-                assigned: { type: new GraphQLNonNull(GraphQLBoolean) },
                 advertiserID: { type: new GraphQLNonNull(GraphQLID) },
+                coupons: { type: new GraphQLList(CouponsInput) }
             },
             async resolve(parent, args) {
-                let newCoupon = new Coupon({
-                    name: args.name,
-                    amount: args.amount,
-                    validity: args.validity,
-                    assigned: false,
-                    advertiserID: args.advertiserID,
-                    userID: ""
-                });
-                let results = newCoupon.save();
-
-                // ? Saving this record in the advertisers record too
-                await Advertisers.findByIdAndUpdate(args.advertiserID, {
-                    $push: { "coupons": results._id }
-                })
-                console.log(results);
-                if (!results) {
-                    throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                // ? Looping through all coupons
+                if(args.coupons.length !== 0){
+                    let coco = [];
+                    args.coupons.forEach( async (c) => {
+                        if(!c.name || !c.amount || !c.validity || c.name == "" || c.amount == "" || c.validity == ""){
+                            // * do nothing lmao
+                        }else{
+                            let temp = {
+                                insertOne: {
+                                    "document": {
+                                        name: c.name,
+                                        amount: c.amount,
+                                        validity: c.validity,
+                                        assigned: false,
+                                        advertiserID: args.advertiserID,
+                                        userID: ""
+                                    }
+                                }
+                            }
+                            coco.push(temp);
+                        }
+                    })
+                    // * pushing all the items to the db
+                    let res = await Coupon.bulkWrite(coco);
+                    console.log("resulty boahhh", res);
+                    let ids = Object.values(res.insertedIds);
+                    if (!res) {
+                        // throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                        return false
+                    }
+                    // ? Saving this record in the advertisers record too
+                    let results = await Advertisers.findByIdAndUpdate(args.advertiserID, {
+                        $push: { "coupons": ids}
+                    })
+                    console.log(results);
+                    if (!results) {
+                        return false
+                        // throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                    }
+                    return true;
                 }
-                return results
             }
         },
         // * adding AccReport
@@ -815,7 +846,6 @@ const Mutation = new GraphQLObjectType({
                 coords: { type: new GraphQLList(InputAccReport) }
             },
             async resolve(parent, args){
-                console.log("pargsg", args);
                 if(args.coords == []) return false;
                 let newItems = args.coords.map(c=>{
                     let temp = {
