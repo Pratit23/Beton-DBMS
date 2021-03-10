@@ -120,6 +120,10 @@ query($token: String){
       name
       validity
       amount
+      assigned
+      userID{
+        name
+      }
     }
   }
 }

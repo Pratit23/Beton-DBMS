@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo'
 import { decryptAdvertiser } from '../../../queries/query';
 import { flowRight as compose } from 'lodash'
 import { Datagrid } from '@material-ui/data-grid';
+import CouponTable from './CouponTable';
 
 
 const AllCoupons = (props) => {
@@ -18,7 +19,7 @@ const AllCoupons = (props) => {
                         <hr className="divider" />
                     </div>
                     <div className="col s12">
-                        <table className="responsive-table centered highlight striped" >
+                        {/* <table className="responsive-table centered highlight striped" >
                             <thead>
                             <tr>
                                 <th>Name</th>
@@ -31,21 +32,15 @@ const AllCoupons = (props) => {
                             </thead>
 
                             <tbody>
-                                {
-
-                                }
-                                <tr>
-                                    <td>FOODIE</td>
-                                    <td>200</td>
-                                    <td>1</td>
-                                    <td>No</td>
-                                    <td>Twitter</td>
-                                    <td>-</td>
-                                </tr>
-                                
+                                                               
                             </tbody>
                         </table>
-                    
+                     */}
+                        {
+                            props.decryptAdvertiser && !props.decryptAdvertiser.loading && props.decryptAdvertiser.decryptAdvertiser ? (
+                                <CouponTable rows={[...props.decryptAdvertiser.decryptAdvertiser.coupons]} />
+                            ) : null
+                        }
 
                     </div>
                 </div>
@@ -65,5 +60,5 @@ export default compose(
                 }
             }
         }
-    }) 
+    })
 )(AllCoupons)
