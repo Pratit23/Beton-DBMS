@@ -893,6 +893,20 @@ const Mutation = new GraphQLObjectType({
                     throw new Error("Kindly provide all details");
                 } else {
                     console.log("ARgs", args);
+                    let basey = await BaseReports.findById(args.baseParent);
+                    if(basey['userID'] == args.userID && basey['resolved'] == false){
+                        throw new Error("Uh oh! You can't report twice in an area")
+                    }
+                    let decision = false;
+                    basey['similar'].forEach(async (b) => {
+                        let temp = await Report.findById(b);
+                        if(temp['userID'] == args.userID){
+                            decision = true;
+                        }
+                    });
+                    if(decision){
+                        throw new Error("Uh oh! You can't report twice in an area")
+                    }
                     let newReport = new Report({
                         image: args.image,
                         address: args.address,
