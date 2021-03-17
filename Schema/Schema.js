@@ -257,6 +257,14 @@ const CouponsInput = new GraphQLInputObjectType({
         amount: { type: GraphQLString },
         validity: { type: GraphQLString }
     })
+});
+
+const LocationObject = new GraphQLObjectType({
+    name: "Location",
+    fields: () => ({
+        latitude: { type: GraphQLString },
+        longitude: { type: GraphQLString }
+    })
 })
 
 
@@ -542,7 +550,7 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         isOnLine: {
-            type: GraphQLInt,
+            type: new GraphQLList(LocationObject),
             args: {
                 // location: { type: GraphQLString },
                 encoded: { type: new GraphQLList(GraphQLString) }
@@ -570,6 +578,7 @@ const RootQuery = new GraphQLObjectType({
                 // return true;
                 var res = await BaseReports.find();
                 console.log(res)
+                let allResults = [];
                 res.forEach(r => {
                     let temp = {
                         latitude: Number(r.location.split(" ")[0]),
@@ -587,12 +596,12 @@ const RootQuery = new GraphQLObjectType({
                     console.log("Distance:", disanceBet)
                     if (disanceBet < 200) {
                         console.log("The pothole is on the path")
-                        noOfPotholes = noOfPotholes + 1
+                        allResults.push(temp_awaiting);
                     } else {
                         console.log("Pothole not on the path")
                     }
                 })
-                return noOfPotholes
+                return allResults
             }
         },
     }

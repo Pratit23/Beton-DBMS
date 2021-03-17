@@ -204,7 +204,10 @@ query($zip:String!) {
 
 const isOnLine = gql`
 query($encoded: [String]){
-  isOnLine(encoded: $encoded)
+  isOnLine(encoded: $encoded){
+    latitude
+    longitude
+  }
 }
 `
 
