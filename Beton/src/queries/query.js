@@ -92,6 +92,8 @@ query($token: String){
     id
     karma
     reports {
+      id
+      location
       address
       reportedAt
       reportedOn
