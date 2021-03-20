@@ -240,6 +240,7 @@ const allAdvertisers = gql`
       screentime
       outreach
       when
+      image
     }
   }
 }
