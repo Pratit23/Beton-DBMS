@@ -12,8 +12,8 @@ const users = gql`
 `
 
 const addUser = gql`
-mutation($name: String!, $email: String!, $password: String!, $dob: String!, $address: String!){
-    addUser(name: $name, email: $email, password: $password, dob: $dob, address: $address){
+mutation($name: String!, $email: String!, $password: String!, $dob: String!, $address: String!, $profile: String!){
+    addUser(name: $name, email: $email, password: $password, dob: $dob, address: $address, profile: $profile){
       name
       email
       password

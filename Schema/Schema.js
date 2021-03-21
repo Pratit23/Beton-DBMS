@@ -84,6 +84,7 @@ const UserType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
+        profile: { type: GraphQLString },
         email: { type: GraphQLString },
         password: { type: GraphQLString },
         address: { type: GraphQLString },
@@ -632,13 +633,14 @@ const Mutation = new GraphQLObjectType({
             type: UserType,
             args: {
                 name: { type: new GraphQLNonNull(GraphQLString) },
+                profile: { type: new GraphQLNonNull(GraphQLString) },
                 password: { type: new GraphQLNonNull(GraphQLString) },
                 email: { type: new GraphQLNonNull(GraphQLString) },
                 dob: { type: new GraphQLNonNull(GraphQLString) },
                 address: { type: new GraphQLNonNull(GraphQLString) },
             },
             async resolve(parent, args) {
-                if (!args.email || !args.name || !args.password || !args.dob || !args.address) {
+                if (!args.email || !args.name || !args.password || !args.dob || !args.address || !args.profile) {
                     // console.log("error?")
                     throw new Error("Kindly provide all details");
                 }
@@ -659,7 +661,8 @@ const Mutation = new GraphQLObjectType({
                             password: hashedPwd,
                             coupons: [],
                             reports: [],
-                            karma: 1
+                            karma: 1,
+                            profile: args.profile
                         })
                         // saving to db
                         let results = await newUser.save();
