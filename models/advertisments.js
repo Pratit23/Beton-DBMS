@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
 
 const couponsSchema = new mongoose.Schema({
-    title :{
+    title: {
         type: String,
-        require:true,
+        require: true,
     },
-    link :{
+    link: {
         type: String,
-        require:true,
+        require: true,
     },
-    image :{
+    image: {
         type: String,
-        require:true,
+        require: true,
     },
-    screentime:{
-        type: Number,
+    screentime: {
+        type: Number, // * milliseconds
         require: true
     },
     when: {
@@ -27,7 +27,7 @@ const couponsSchema = new mongoose.Schema({
         ref: "Advertisers"
     },
     outreach: {
-        type: Number,
+        type: Number, // * incremental 1
         require: true
     }
 });

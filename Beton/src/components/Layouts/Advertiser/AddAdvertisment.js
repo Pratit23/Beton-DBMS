@@ -6,7 +6,7 @@ import GeneralInput from '../../Buttons/GeneralInput';
 import URL from '../../Buttons/URL';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
-import { addAdvertisment, decryptAdvertiser } from '../../../queries/query';
+import { addAdvertisment, allMyAds, decryptAdvertiser } from '../../../queries/query';
 import M from 'materialize-css'
 
 const AddAdvertisment = (props) => {
@@ -14,7 +14,8 @@ const AddAdvertisment = (props) => {
     const [image, setImage] = useState([])
 
     const handleComplete = () => {
-        if(props.decryptAdvertiser && !props.decryptAdvertiser.loading &&  props.decryptAdvertiser.decryptAdvertiser.coupons.length == 0){
+        M.toast({ html: "Processing your request!" })
+        if (props.decryptAdvertiser && !props.decryptAdvertiser.loading && props.decryptAdvertiser.decryptAdvertiser.coupons.length == 0) {
             M.toast({ html: "You must add coupons to your account to add advertisment!" })
             return;
         }
@@ -30,9 +31,11 @@ const AddAdvertisment = (props) => {
             method: "POST",
             body: fileData
         }).then(res => res.json()).then(async (data) => {
+            M.toast({ html: "Almost done. Finishing up..." })
             console.log(data.url);
             console.log("Photo uploaded");
             console.log(title, link, data.url, new Date().toLocaleDateString(), props.decryptAdvertiser.decryptAdvertiser.id)
+            let temp = localStorage.getItem("token") || "";
             let res = await props.addAdvertisment({
                 variables: {
                     title,
@@ -40,13 +43,19 @@ const AddAdvertisment = (props) => {
                     image: data.url,
                     when: new Date().toLocaleDateString(),
                     advertiserID: props.decryptAdvertiser.decryptAdvertiser.id
-                }
+                },
+                refetchQueries: [{
+                    query: allMyAds,
+                    variables: {
+                        token: temp
+                    }
+                }]
             })
-            if(res && res.data && res.data.addAdvertisment){
-                console.log("Your advertisment is now live!")
+            if (res && res.data && res.data.addAdvertisment) {
+                M.toast({ html: "Your advertisment is now live!" });
                 props.history.push("/advertiser/homepage");
-            }else{
-                console.log("Uh-oh! Something went wrong. Try again")
+            } else {
+                M.toast({ html: "Uh-oh! Something went wrong. Try again" });
             }
         }).catch(err => {
             console.log(err);
@@ -64,7 +73,7 @@ const AddAdvertisment = (props) => {
                 }} >
                     {
                         props.decryptAdvertiser && !props.decryptAdvertiser.loading &&
-                        props.decryptAdvertiser.decryptAdvertiser && props.decryptAdvertiser.decryptAdvertiser.coupons.length != 0 ? (
+                            props.decryptAdvertiser.decryptAdvertiser && props.decryptAdvertiser.decryptAdvertiser.coupons.length != 0 ? (
                             null
                         ) : (
                             <div className="col s12 pink center-align valign-wrapper" style={{ height: "50px" }}>
@@ -98,12 +107,12 @@ const AddAdvertisment = (props) => {
                             }} >
                                 1. Fill the form
                             </p>
-                            
+
                             <p className="white-text col s4 center-align" style={{
                                 display: "inline-block",
                                 whiteSpace: "nowrap"
                             }} >
-                                2. Make sure you've added<br/> coupons from this account 
+                                2. Make sure you've added<br /> coupons from this account
                             </p>
                             <p className="white-text col s4 center-align" style={{
                                 display: "inline-block",
@@ -112,19 +121,19 @@ const AddAdvertisment = (props) => {
                                 3. Submit
                             </p>
                         </div>
-                        
+
                         <div className="secretAdv">
                             {/* title */}
                             <GeneralInput placeholder="Catchy line for your ad" classy="col s10 offset-s1 m9 offset-m2 l6 offset-l3" type="text" id="add-title" />
-                            
+
                             {/* link */}
-                            <URL classy="advLink col s10 offset-s1 m9 offset-m2 l6 offset-l3"/>
+                            <URL classy="advLink col s10 offset-s1 m9 offset-m2 l6 offset-l3" />
 
                             {/* image */}
                             <div className="file-field input-field col s10 offset-s1 m9 offset-m2 l6 offset-l3">
                                 <div className="btn">
                                     <span>File</span>
-                                    <input type="file" onChange={(e)=>setImage(e.target.files[0])}/>
+                                    <input type="file" onChange={(e) => setImage(e.target.files[0])} />
                                 </div>
                                 <div className="file-path-wrapper">
                                     <input className="file-path validate" type="text" />
@@ -135,7 +144,7 @@ const AddAdvertisment = (props) => {
 
                         <div className="col s12" style={{ textAlign: "center", marginTop: "20px" }}>
                             <button className="btn pink" onClick={handleComplete}
-                             type="submit" name="action" style={{ borderRadius: "18px" }} >Submit
+                                type="submit" name="action" style={{ borderRadius: "18px" }} >Submit
                                 <i className="material-icons right">send</i>
                             </button>
                         </div>

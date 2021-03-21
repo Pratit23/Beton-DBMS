@@ -16,6 +16,8 @@ const Report = require('../models/reports')
 const BaseReports = require('../models/baseReports');
 const Polyutil = require('polyline-encoded');
 const { resolve } = require('path');
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema.Types;
 // https://www.figma.com/file/4bAC5AKUM1VmxyAaRhiLrs/BETON-ER-Diagram?node-id=0%3A1
 
 const {
@@ -156,24 +158,28 @@ const AdvertisersType = new GraphQLObjectType({
         token: { type: GraphQLString },
         coupons: {
             type: new GraphQLList(CouponsType),
-            resolve(parent, args) {
-                let temp = []
-                parent.coupons.forEach(y => {
-                    let test = Coupon.findById(y);
-                    temp.push(test)
+            async resolve(parent, args) {
+                return await Coupon.find({
+                    _id: {
+                        $in: parent.coupons
+                    }
                 })
-                return temp
             }
         },
         advertisments: {
             type: new GraphQLList(AdvertisementType),
-            resolve(parent, args) {
-                let temp = []
-                parent.advertisments.forEach(y => {
-                    let test = Advertisement.findById(y);
-                    temp.push(test)
+            async resolve(parent, args) {
+                // let temp = []
+                // parent.advertisments.forEach(y => {
+                //     let test = Advertisement.findById(y);
+                //     temp.push(test)
+                // })
+                // return temp
+                return await Advertisement.find({
+                    _id: {
+                        $in: parent.advertisments
+                    }
                 })
-                return temp
             }
 
         }
@@ -275,7 +281,7 @@ const AccReports = new GraphQLObjectType({
         location: { type: GraphQLString },
         userID: {
             type: UserType,
-            async resolve(parent, args){
+            async resolve(parent, args) {
                 return await User.findById(parent.userID);
             }
         },
@@ -301,7 +307,7 @@ const CouponsType = new GraphQLObjectType({
         userID: {
             type: UserType || GraphQLString,
             resolve(parent, args) {
-                if(parent.userID == "") return "-";
+                if (parent.userID == "") return "-";
                 return User.findById(parent.userID)
             }
         },
@@ -392,7 +398,7 @@ const RootQuery = new GraphQLObjectType({
         },
         allAccReports: {
             type: new GraphQLList(AccReports),
-            async resolve(parent, args){
+            async resolve(parent, args) {
                 return await AccReport.find();
             }
         },
@@ -570,7 +576,7 @@ const RootQuery = new GraphQLObjectType({
                             latitude: x[0],
                             longitude: x[1]
                         };
-                    });3
+                    }); 3
                     return objs
                 })
                 enc = [].concat.apply([], enc);
@@ -604,6 +610,16 @@ const RootQuery = new GraphQLObjectType({
                 return allResults
             }
         },
+        getRandomAd: {
+            type: AdvertisementType,
+            async resolve(parent, args) {
+                let res = await Advertisement.aggregate([{
+                    $sample: { size: 1 }
+                }])
+                res[0]["id"] = res[0]["_id"];
+                return res[0];
+            }
+        }
     }
 })
 
@@ -770,7 +786,7 @@ const Mutation = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 console.log(args)
-                if(!args.title || !args.link || !args.image || !args.when || !args.advertiserID){
+                if (!args.title || !args.link || !args.image || !args.when || !args.advertiserID) {
                     throw new Error("Kindly provide all details");
                 }
                 let newAdvertisment = new Advertisement({
@@ -806,12 +822,12 @@ const Mutation = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 // ? Looping through all coupons
-                if(args.coupons.length !== 0){
+                if (args.coupons.length !== 0) {
                     let coco = [];
-                    args.coupons.forEach( async (c) => {
-                        if(!c.name || !c.amount || !c.validity || c.name == "" || c.amount == "" || c.validity == ""){
+                    args.coupons.forEach(async (c) => {
+                        if (!c.name || !c.amount || !c.validity || c.name == "" || c.amount == "" || c.validity == "") {
                             // * do nothing lmao
-                        }else{
+                        } else {
                             let temp = {
                                 insertOne: {
                                     "document": {
@@ -837,7 +853,7 @@ const Mutation = new GraphQLObjectType({
                     }
                     // ? Saving this record in the advertisers record too
                     let results = await Advertisers.findByIdAndUpdate(args.advertiserID, {
-                        $push: { "coupons": ids}
+                        $push: { "coupons": ids }
                     })
                     console.log(results);
                     if (!results) {
@@ -851,12 +867,12 @@ const Mutation = new GraphQLObjectType({
         // * adding AccReport
         AddAccReport: {
             type: GraphQLBoolean,
-            args: {     
+            args: {
                 coords: { type: new GraphQLList(InputAccReport) }
             },
-            async resolve(parent, args){
-                if(args.coords == []) return false;
-                let newItems = args.coords.map(c=>{
+            async resolve(parent, args) {
+                if (args.coords == []) return false;
+                let newItems = args.coords.map(c => {
                     let temp = {
                         insertOne: {
                             "document": {
@@ -893,6 +909,20 @@ const Mutation = new GraphQLObjectType({
                     throw new Error("Kindly provide all details");
                 } else {
                     console.log("ARgs", args);
+                    let basey = await BaseReports.findById(args.baseParent);
+                    if (basey['userID'] == args.userID && basey['resolved'] == false) {
+                        throw new Error("Uh oh! You can't report twice in an area")
+                    }
+                    let decision = false;
+                    basey['similar'].forEach(async (b) => {
+                        let temp = await Report.findById(b);
+                        if (temp['userID'] == args.userID) {
+                            decision = true;
+                        }
+                    });
+                    if (decision) {
+                        throw new Error("Uh oh! You can't report twice in an area")
+                    }
                     let newReport = new Report({
                         image: args.image,
                         address: args.address,
@@ -936,7 +966,7 @@ const Mutation = new GraphQLObjectType({
                     return results
                 }
             }
-        }, //depending mutation done
+        }, // *depending mutation done
         addBaseReport: {
             type: BaseReportsType,
             args: {
@@ -981,7 +1011,40 @@ const Mutation = new GraphQLObjectType({
                     return results
                 }
             }
-        }
+        }, // * addBaseReport done
+        deleteThisAdd: {
+            type: GraphQLBoolean,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) },
+                advertiserID: { type: new GraphQLNonNull(GraphQLID) }
+            },
+            async resolve(parent, args) {
+                // remove ad from Advertiser
+                console.log("args", args)
+                let update = await Advertisers.findByIdAndUpdate(args.advertiserID, {
+                    $pull: {
+                        "advertisments": args.id
+                    }
+                });
+                let res = await Advertisement.findByIdAndDelete(args.id);
+                if (res) {
+                    return true;
+                }
+                return false;
+            }
+        }, // * delete add done
+        updateAdd: {
+            type: AdvertisementType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) },
+                screentime: { type: new GraphQLNonNull(GraphQLInt) },
+            },
+            async resolve(parent, args) {
+                return await Advertisement.findByIdAndUpdate(args.id, {
+                    $inc: { "outreach": 1, "screentime": args.screentime }
+                });
+            }
+        } // * update add done here
     }
 })
 

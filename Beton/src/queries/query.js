@@ -253,15 +253,44 @@ mutation($title: String!, $link: String!, $image: String!, $when: String!, $adve
 }
 `
 
-const allMyAds = gql`
-query($token: String!){
-  allMyAds(token: $token){
+const deleteThisAdd = gql`
+mutation($id: ID!, $advertiserID: ID!){
+  deleteThisAdd(id: $id, advertiserID: $advertiserID)
+}
+`
+
+const getRandomAd = gql`
+{
+  getRandomAd{
+    id
     title
     link
     image
     screentime
     when
     outreach
+    advertiserID{
+      id
+      email
+    }
+  }
+}
+`
+
+const allMyAds = gql`
+query($token: String!){
+  allMyAds(token: $token){
+    id
+    title
+    link
+    image
+    screentime
+    when
+    outreach
+    advertiserID{
+      id
+      email
+    }
   }
 }
 `
@@ -277,6 +306,25 @@ mutation($coords: [InputAccReport]!){
   AddAccReport(coords: $coords)
 }
 `
+
+const updateAdd = gql`
+mutation($id: ID!, $screentime: Int!){
+  updateAdd(id: $id, screentime: $screentime){
+    id
+    title
+    link
+    image
+    screentime
+    when
+    outreach
+    advertiserID{
+      id
+      email
+    }
+  }
+}
+`
+
 
 export {
   users,
@@ -296,7 +344,10 @@ export {
   addAdvertisment,
   allMyAds,
   addCoupon,
-  AddAccReport
+  AddAccReport,
+  deleteThisAdd,
+  getRandomAd,
+  updateAdd
 };
 
 
