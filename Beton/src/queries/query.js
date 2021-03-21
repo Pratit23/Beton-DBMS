@@ -92,6 +92,9 @@ query($token: String){
     id
     karma
     reports {
+      id
+      location
+      address
       reportedAt
       reportedOn
     }
@@ -237,6 +240,7 @@ const allAdvertisers = gql`
       screentime
       outreach
       when
+      image
     }
   }
 }
