@@ -9,6 +9,7 @@ import { flowRight as compose } from 'lodash';
 import { users, addUser } from '../../../queries/query'
 import M from 'materialize-css'
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const SignUpForm = (props) => {
     const [showLoader, setShowLoader] = useState(false);
@@ -64,6 +65,11 @@ const SignUpForm = (props) => {
     console.log(props)
     return (
         <form id="signup-form" className="row">
+            <h4>
+                <Link to="/" style={{ textDecoration: "none", color: "inherit" }} >
+                    Beton
+                </Link>
+            </h4>
             <h2 className="black-text center-align"
                 style={{ marginBottom: "20px" }}
             >

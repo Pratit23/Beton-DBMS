@@ -11,6 +11,7 @@ const Admin = require('../models/admin')
 const Advertisers = require('../models/advertisers')
 const Coupon = require('../models/coupons')
 const Advertisement = require('../models/advertisments')
+const FeedbackReport = require('../models/FeedbackReport')
 const AccReport = require('../models/AccReport')
 const Report = require('../models/reports')
 const BaseReports = require('../models/baseReports');
@@ -217,6 +218,25 @@ const BaseReportsType = new GraphQLObjectType({
                 return temp;
             }
         }
+    })
+})
+const FeedbackReportType = new GraphQLObjectType({
+    name: "FeedbackReport",
+    fields: () => ({
+        id: { type: GraphQLID },
+        image: { type: GraphQLString },
+        address: { type: GraphQLString },
+        location: { type: GraphQLString },
+        reportedAt: { type: GraphQLString }, // date
+        reportedOn: { type: GraphQLString }, // time
+        userID: {
+            type: UserType,
+            resolve(parent, args) {
+                //// change this. Fetch from MongoDB
+                return User.findById(parent.userID)
+            }
+        },
+        noOfReports: { type: GraphQLInt }
     })
 })
 
@@ -1015,6 +1035,45 @@ const Mutation = new GraphQLObjectType({
                 }
             }
         }, // * addBaseReport done
+        addFeedbackReport: {
+            type: FeedbackReportType,
+            args: {
+                image: { type: new GraphQLNonNull(GraphQLString) },
+                address: { type: new GraphQLNonNull(GraphQLString) },
+                location: { type: new GraphQLNonNull(GraphQLString) },
+                reportedAt: { type: new GraphQLNonNull(GraphQLString) },
+                reportedOn: { type: new GraphQLNonNull(GraphQLString) },
+                userID: { type: new GraphQLNonNull(GraphQLID) },
+                noOfReports: { type: GraphQLNonNull(GraphQLInt) },
+            },
+            async resolve(parent, args) {
+                if (!args.image || !args.address || !args.location || !args.userID || !args.reportedAt || !args.reportedOn || !args.noOfReports) {
+                    console.log("Args", args)
+                    // console.log("error?")
+                    throw new Error("Kindly provide all details");
+                } else {
+                    let newReport = new FeedbackReport({
+                        image: args.image,
+                        address: args.address,
+                        location: args.location,
+                        userID: args.userID,
+                        baseParent: args.baseParent,
+                        reportedAt: args.reportedAt,
+                        reportedOn: args.reportedOn,
+                        noOfReports: args.noOfReports,
+                    })
+                    // saving to db
+                    let results = await newReport.save();
+                    console.log(results);
+
+                    // adding to users data
+                    if (!results) {
+                        throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                    }
+                    return results
+                }
+            }
+        }, // * addFeedbackReport done
         deleteThisAdd: {
             type: GraphQLBoolean,
             args: {

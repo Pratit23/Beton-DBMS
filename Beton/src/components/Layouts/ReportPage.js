@@ -19,10 +19,11 @@ import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { addBaseReport, addReport, decrypt, existingBaseCoordinate } from '../../queries/query'
 import Summary from './Landing/Summary';
+import AdCard from '../Cards/AdCard';
 
 
 let classifier;
-let coords = [0 ,0]
+let coords = [0, 0]
 var tempUrl = "";
 var tempImage;
 
@@ -32,12 +33,12 @@ const ReportPage = (props) => {
     const [mainImage, setMainImage] = useState(null)
     const [url, setUrl] = useState('')
     const [predictions, setPredictions] = useState(null)
-    const [state, dispatch] = useReducer(reducer, stateMachine.initial) 
+    const [state, dispatch] = useReducer(reducer, stateMachine.initial)
     const [reset, setReset] = useState(false)
     const [addressi, setAddressi] = useState("")
 
     // lazy query here
-    const [existingBase, {called, loading, data}] = useLazyQuery(
+    const [existingBase, { called, loading, data }] = useLazyQuery(
         existingBaseCoordinate,
         {
             variables: {
@@ -46,7 +47,7 @@ const ReportPage = (props) => {
             }
         }
     );
-    
+
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
     Geocode.setApiKey("AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w");
 
@@ -107,17 +108,30 @@ const ReportPage = (props) => {
                 setTimeout(function () {
                     document.querySelectorAll('.tabbar li a')[0].dispatchEvent(new CustomEvent('moveIt'));
                 }, 1000);
-                document.querySelector("#spamImage").src = image;
-                window.$('.modal').modal('open');
-                tempUrl = image;
-                tempImage = mainImage;
-                console.log("TempImage", tempImage, JSON.stringify(image))
-                setTimeout(function(){
-                    dispatch("initial");
-                    setImage(null);
-                    setMainImage(null);
-                    setPredictions(null);
-                }, 2000)
+                const fileData = new FormData();
+                console.log("Main Image", mainImage);
+                fileData.append("file", mainImage);
+                fileData.append("upload_preset", "levitation");
+                fileData.append("cloud_name", "levitation");
+
+                fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
+                    method: "POST",
+                    body: fileData
+                }).then(res => res.json()).then(data => {
+                    localStorage.setItem("image", data.url);
+                    document.querySelector("#spamImage").src = image;
+                    window.$('.modal').modal('open');
+                    setTimeout(function () {
+                        dispatch("initial");
+                        setImage(null);
+                        setMainImage(null);
+                        setPredictions(null);
+                    }, 2000)
+                }).catch(err => {
+                    console.log(err);
+                    return err
+                })
+
             }
         }).catch((err) => {
             console.log("Error: ", err)
@@ -127,9 +141,9 @@ const ReportPage = (props) => {
 
     const selectLocation = () => {
         console.log("Selected location: ", coords)
-        if(coords[0] == 0 && coords[1] == 0){
+        if (coords[0] == 0 && coords[1] == 0) {
             M.toast({ html: "Please select a location on the map!" })
-        }else{
+        } else {
             Geocode.fromLatLng(coords[0], coords[1]).then(
                 response => {
                     var address = response.results[0].formatted_address;
@@ -180,8 +194,8 @@ const ReportPage = (props) => {
             console.log("Data here", data)
             let url = await uploadPhoto();
             console.log("Image url", url)
-            if(url != ""){
-                if(data.existingBaseCoordinate.location == null){
+            if (url != "") {
+                if (data.existingBaseCoordinate.location == null) {
                     // call base point query mutation here
                     console.log("prarp", props)
                     let res = await props.addBaseReport({
@@ -196,14 +210,14 @@ const ReportPage = (props) => {
                         }
                     })
                     console.log("res in base", res);
-                    if(res && res.data && res.data.addBaseReport){
+                    if (res && res.data && res.data.addBaseReport) {
                         M.toast({ html: "Report successfully submitted!" });
                         props.history.push("/homepage");
                     }
                     else {
                         M.toast({ html: "Uh-oh! Something went wrong!" })
                     }
-                }else{
+                } else {
                     // call dependenty point query mutation here
                     let res = await props.addReport({
                         variables: {
@@ -218,7 +232,7 @@ const ReportPage = (props) => {
                         }
                     })
                     console.log("res in dep", res);
-                    if(res && res.data && res.data.addReport){
+                    if (res && res.data && res.data.addReport) {
                         M.toast({ html: "Report successfully submitted!" });
                         props.history.push("/homepage");
                     }
@@ -253,7 +267,7 @@ const ReportPage = (props) => {
         });
 
     }, [image])
-    if((!localStorage.getItem('token')) || (props && props.decrypt && props.decrypt.loading == false && (!props.decrypt.decrypt || !props.decrypt.decrypt.id)) ) return <Redirect to='/login' />
+    if ((!localStorage.getItem('token')) || (props && props.decrypt && props.decrypt.loading == false && (!props.decrypt.decrypt || !props.decrypt.decrypt.id))) return <Redirect to='/login' />
     return (
         <div>
             {/* modal thingy if things goes sideways */}
@@ -269,11 +283,9 @@ const ReportPage = (props) => {
                         <div className="col s12 m6">
                             <p>
                                 Sorry, we can't accept this image. This may be due to a spam image being uploaded
-                                wherein we couldn't find a pothole. <br/> However, if you think we made a mistake do let us know <Link 
-                                    onClick={()=>{
-                                        localStorage.setItem("image", JSON.stringify(tempImage));
-                                    }}
-                                to="/feedback/report"> over here</Link>
+                                wherein we couldn't find a pothole. <br /> However, if you think we made a mistake do let us know <Link
+
+                                    to="/feedback/report"> over here </Link>
                                 and our team will get back to you and credit you for the same,
                                 if accurate.
                             </p>
@@ -311,7 +323,7 @@ const ReportPage = (props) => {
                         }
                         {
                             nextPress[state].text === 'Report' ?
-                            <Summary src={image} address={addressi} filename={mainImage.name} size={mainImage.size} uploaded={mainImage.lastModifiedDate} /> : null
+                                <Summary src={image} address={addressi} filename={mainImage.name} size={mainImage.size} uploaded={mainImage.lastModifiedDate} /> : null
                         }
                         <div className="section" style={{ paddingTop: '70px' }}>
                             <UploadButton img={mainImage} action={nextPress[state].action} btnText={nextPress[state].text} step="1" />
@@ -366,6 +378,7 @@ const ReportPage = (props) => {
 
                 </div>
             </div>
+            <AdCard />
         </div>
 
     )

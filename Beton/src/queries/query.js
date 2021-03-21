@@ -60,6 +60,19 @@ mutation($image: String!, $address: String!, $location: String!, $reportedAt: St
   }
 }
 `;
+const addFeedbackReport = gql`
+mutation($image: String!, $address: String!, $location: String!, $reportedAt: String!, $reportedOn: String!, $userID: ID!, $noOfReports: Int!){
+  addFeedbackReport(image: $image, address: $address, location: $location, reportedAt: $reportedAt, reportedOn: $reportedOn, userID: $userID, noOfReports: $noOfReports){
+    id
+    location
+    userID{
+      id
+      name
+      email
+    }
+  }
+}
+`;
 
 const addReport = gql`
 mutation($image: String!, $address: String!, $location: String!, $reportedAt: String!, $reportedOn: String!, $userID: ID!, $baseParent: ID!, $karma: Int!){
@@ -351,7 +364,8 @@ export {
   AddAccReport,
   deleteThisAdd,
   getRandomAd,
-  updateAdd
+  updateAdd,
+  addFeedbackReport
 };
 
 
