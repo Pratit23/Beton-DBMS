@@ -6,10 +6,6 @@ import { flowRight as compose } from 'lodash';
 import { getRandomAd, updateAdd } from '../../queries/query';
 
 
-// function time(ms) {
-//     return new Date(ms).toISOString().slice(11, -1);
-// }
-
 var idey = null;
 const AdCard = (props) => {
     const [start, setStart] = useState(new Date() * 1);

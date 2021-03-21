@@ -3,6 +3,10 @@ import { allMyAds, deleteThisAdd } from '../../queries/query';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 
+// * function to show the milliseconds in proper time format
+function time(ms) {
+    return new Date(ms).toISOString().slice(11, -1);
+}
 
 const AdvertismentCard = ({ data, deleteThisAdd, removeAdd }) => {
 
@@ -25,11 +29,11 @@ const AdvertismentCard = ({ data, deleteThisAdd, removeAdd }) => {
                     <p><a href={data.link} target="__blank" >Click here</a></p>
                     <hr className="divider" />
                     <p>
-                        Advertisement is live since: {data.when}
+                        Advertisement is live since: <strong>{data.when}</strong>
                         <br />
-                        Total views: {data.outreach}
+                        Total views: <strong>{data.outreach}</strong>
                         <br />
-                        Total screentime: {data.screentime}
+                        Total screentime: <strong>{time(data.screentime)}</strong> (hh:mm:ss)
                     </p>
                 </div>
                 <div className="card-action">
