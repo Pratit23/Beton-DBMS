@@ -10,35 +10,43 @@ import { getRandomAd, updateAdd } from '../../queries/query';
 //     return new Date(ms).toISOString().slice(11, -1);
 // }
 
+var idey = null;
 const AdCard = (props) => {
     const [start, setStart] = useState(new Date() * 1);
-
     useEffect(() => {
         return () => {
             if (window.$(".homepage_cad").length == 0) {
-                console.log("going now")
+                // console.log("going now")
             } else {
                 // do ze thing
                 let end = new Date() * 1;
                 let diff = end - start;
-                (async () => {
-                    await props.updateAdd({
-                        variables: {
-                            id: props.getRandomAd.getRandomAd.id,
-                            screentime: diff
-                        }
-                    })
-                    console.log("Updated!")
-                })()
-
+                if (idey != null) {
+                    (async () => {
+                        await props.updateAdd({
+                            variables: {
+                                id: idey,
+                                screentime: diff
+                            }
+                        })
+                        console.log("Updated!")
+                        idey = null;
+                    })()
+                }
             }
         }
     }, [])
 
+    useEffect(() => {
+        if (props.getRandomAd && !props.getRandomAd.loading && props.getRandomAd.getRandomAd) {
+            idey = props.getRandomAd.getRandomAd.id;
+        }
+    }, [props])
+
     return (
         <>
             {
-                props.getRandomAd && props.getRandomAd.getRandomAd ? (
+                props.getRandomAd && !props.getRandomAd.loading && props.getRandomAd.getRandomAd ? (
                     <div className="homepage_cad">
                         <div className="ad_card row">
                             <div className="col s6">

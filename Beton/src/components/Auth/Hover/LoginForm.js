@@ -114,13 +114,13 @@ const LoginForm = (props) => {
                         <h1>Log In</h1>
 
                         <div className="input email">
-                            <input type="text" placeholder="" id="login-email" required />
+                            <input autoComplete="off" type="text" placeholder="" id="login-email" required />
                             <label>Email</label>
                         </div>
 
                         <div className="input password">
                             <div className="dots"></div>
-                            <input type="password" placeholder="" required />
+                            <input autoComplete="off" type="password" placeholder="" required />
                             <label>Password</label>
                             <div className="cursor"></div>
                             <div className="line">
