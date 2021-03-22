@@ -111,6 +111,12 @@ query($token: String){
       reportedAt
       reportedOn
     }
+    coupons{
+      id
+      name
+      amount
+      validity
+    }
   }
 }
 `
@@ -342,6 +348,20 @@ mutation($id: ID!, $screentime: Int!){
 }
 `
 
+const allMyReports = gql`
+query($token: String!){
+  allMyReports(token: $token){
+    id
+    reportedAt
+    reportedOn
+    address
+    baseParent{
+      noOfReports
+    }
+  }
+}
+`
+
 
 export {
   users,
@@ -365,7 +385,8 @@ export {
   deleteThisAdd,
   getRandomAd,
   updateAdd,
-  addFeedbackReport
+  addFeedbackReport,
+  allMyReports
 };
 
 

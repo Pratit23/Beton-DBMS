@@ -1,12 +1,12 @@
 import React from 'react'
 
-function StatsCard({props, text}) {
+function StatsCard({ props, text, value = 0 }) {
     return (
         <div class="card white" style={{ borderRadius: "18px" }}>
             <div class="card-content black-text valign-wrapper" style={{ height: "140px" }} >
                 <div className="center-align" style={{ width: "100%" }}>
-                    <span class="card-title center-align" style={{ color: "#10364e", fontWeight: "bolder" }} >03</span>
-                    <p className="center-align" style={{ color: "#10364e"}}>
+                    <span class="card-title center-align" style={{ color: "#10364e", fontWeight: "bolder" }} >{value}</span>
+                    <p className="center-align" style={{ color: "#10364e" }}>
                         {text}
                     </p>
                 </div>

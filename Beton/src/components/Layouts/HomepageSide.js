@@ -1,20 +1,67 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import StatsCard from '../Cards/StatsCard'
 import DownloadApp from '../../images/horizontal.jpg'
 import GenericButton from '../Buttons/GenericButton'
-import { graphql } from 'react-apollo';
+import { graphql, useLazyQuery } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
-import { decrypt } from '../../queries/query';
+import { allMyReports, decrypt, findUsingZipCode, users } from '../../queries/query';
 import HorizontalGraph from '../Graphs/HorizontalGraph';
 import MinimalImageCard from '../Cards/MinimalImageCard';
 import One from '../../images/one.png'
 import Two from '../../images/two.png'
 import Third from '../../images/three.png'
 import AdCard from '../Cards/AdCard';
+import { geolocated } from "react-geolocated";
+import Geocode from "react-geocode";
 
+let zupzip, area;
 
 const HomepageSide = (props) => {
+    // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+    Geocode.setApiKey("AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w");
 
+    // set response language. Defaults to english.
+    Geocode.setLanguage("en");
+
+    // lazy query here
+    const [zippy, { called, loading, data }] = useLazyQuery(
+        findUsingZipCode,
+        {
+            variables: {
+                zip: zupzip
+            }
+        }
+    );
+
+    useEffect(() => {
+        if (props.coords && props.coords.latitude && props.coords.longitude) {
+            Geocode.fromLatLng(props.coords.latitude, props.coords.longitude).then(
+                response => {
+                    var address = response.results[0].formatted_address;
+                    address = address.split(", ")
+                    console.log(address);
+                    area = address[address.length - 3];
+                    let zipCode = address[address.length - 2].split(" ")[1];
+                    zupzip = zipCode;
+                    zippy();
+                },
+                error => {
+                    console.error("Error fetching the land: ", error);
+                })
+        }
+    }, [props.coords])
+
+    function compare(a, b) {
+        if (a.reportedAt < b.reportedAt) {
+            return -1;
+        }
+        if (a.reportedAt > b.reportedAt) {
+            return 1;
+        }
+        return 0;
+    }
+
+    console.log(props)
     return (
         <>
             <div className="demo" id="main">
@@ -67,26 +114,53 @@ const HomepageSide = (props) => {
                                     </h6>
                                         <hr className="divider col s12" style={{ margin: "5px auto" }} />
                                         <p style={{ color: "#10364e", width: "100%", clear: "both" }}>
-                                            <span className="left">Recently reported in</span>
-                                            <span className="right" style={{ fontWeight: "bolder" }}>Mumbai</span>
+                                            <span className="left">Recently reported at</span>
+                                            <span className="right" style={{ fontWeight: "bolder" }}>
+                                                {
+                                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports ? (
+                                                        props.allMyReports.allMyReports.sort(compare)[0]["reportedAt"]
+                                                    ) : "Never"
+                                                }
+                                            </span>
                                         </p>
                                         <p style={{ color: "#10364e", width: "100%", clear: "both" }}>
                                             <span className="left">Total reports</span>
-                                            <span className="right" style={{ fontWeight: "bolder" }}>10</span>
+                                            {
+                                                props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports ? (
+                                                    <span className="right" style={{ fontWeight: "bolder" }}>{props.allMyReports.allMyReports.length}</span>) : (
+                                                    <span className="right" style={{ fontWeight: "bolder" }}>0</span>
+                                                )
+                                            }
                                         </p>
                                         <p style={{ color: "#10364e", width: "100%", clear: "both" }}>
-                                            <span className="left">Successful reports</span>
-                                            <span className="right" style={{ fontWeight: "bolder" }}>02</span>
+                                            <span className="left">Supporting reports</span>
+                                            {
+                                                props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports ? (
+                                                    <span className="right" style={{ fontWeight: "bolder" }}>{props.allMyReports.allMyReports.filter(a => a.baseParent != null ? a.baseParent.noOfReports > 12 ? true : false : false).length}</span>) : (
+                                                    <span className="right" style={{ fontWeight: "bolder" }}>0</span>
+                                                )
+                                            }
                                         </p>
                                         <p style={{ color: "#10364e", width: "100%", clear: "both" }}>
                                             <span className="left">Coupons earned</span>
-                                            <span className="right" style={{ fontWeight: "bolder" }}>03</span>
+                                            {
+                                                props.decrypt && !props.decrypt.loading && props.decrypt.decrypt ? (
+                                                    <span className="right" style={{ fontWeight: "bolder" }}>{props.decrypt.decrypt.coupons.length}</span>
+                                                ) : (
+                                                    <span className="right" style={{ fontWeight: "bolder" }}>00</span>
+                                                )
+                                            }
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col s12 m5">
-                                <HorizontalGraph />
+                                {
+                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports && props.decrypt && !props.decrypt.loading && props.decrypt.decrypt && called && !loading && data ? (
+                                        <HorizontalGraph values={[data.findUsingZipCode[0].similar.length + 1, props.allMyReports.allMyReports.length, props.allMyReports.allMyReports.filter(a => a.baseParent != null ? a.baseParent.noOfReports > 12 ? true : false : false).length, props.decrypt.decrypt.coupons.length]} />
+                                    ) :
+                                        <HorizontalGraph values={[0, 0, 0, 0]} />
+                                }
                             </div>
                         </div>
 
@@ -111,18 +185,34 @@ const HomepageSide = (props) => {
                     <div className="col s12 m3" style={{ background: "#f5f7fb", height: "100%" }}>
                         <div className="row" style={{ marginTop: "30px" }}>
                             <div className="col s12" style={{ padding: "0 30px" }} >
-                                <h6 style={{ color: "#002438" }} >Statistics of Mumbai</h6>
+                                <h6 style={{ color: "#002438" }} >Statistics</h6>
                             </div>
                             <hr className="divider" />
                             <br />
                             <div className="col s8 offset-s2">
-                                <StatsCard text="Total Reports" props={props.props} />
+                                {
+                                    called && !loading && data ?
+                                        <StatsCard text="Total Reports in your area" value={data.findUsingZipCode[0].similar.length + 1} props={props.props} /> :
+                                        <StatsCard text="Total Reports in your area" props={props.props} />
+                                }
                             </div>
                             <div className="col s8 offset-s2">
-                                <StatsCard text="Total Reports" props={props.props} />
+                                {
+                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports ? (
+                                        <StatsCard text="Total Reports by you" value={props.allMyReports.allMyReports.length} props={props.props} />
+                                    ) : (
+                                        <StatsCard text="Total Reports by you" props={props.props} />
+                                    )
+                                }
                             </div>
                             <div className="col s8 offset-s2">
-                                <StatsCard text="Total Reports" props={props.props} />
+                                {
+                                    props.users && !props.users.loading && props.users.users ? (
+                                        <StatsCard text="User count" value={props.users.users.length} props={props.props} />
+                                    ) : (
+                                        <StatsCard text="User count" props={props.props} />
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
@@ -136,6 +226,24 @@ const HomepageSide = (props) => {
 export default compose(
     graphql(decrypt, {
         name: "decrypt",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    token: temp
+                }
+            }
+        }
+    }),
+    geolocated({
+        positionOptions: {
+            enableHighAccuracy: false,
+        },
+        userDecisionTimeout: 5000,
+    }),
+    graphql(users, { name: "users" }),
+    graphql(allMyReports, {
+        name: "allMyReports",
         options: () => {
             let temp = localStorage.getItem("token") || "";
             return {

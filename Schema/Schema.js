@@ -542,6 +542,21 @@ const RootQuery = new GraphQLObjectType({
                 return User.findById(res._id);
             }
         },
+        allMyReports: {
+            type: new GraphQLList(ReportsType || BaseReportsType),
+            args: {
+                token: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            async resolve(parent, args) {
+                if (!args.token) return [];
+                let res = jwt.verify(args.token, JWT_SEC);
+                let user = User.findById(res._id);
+                let id = (await user)._id;
+                let temp1 = await Report.find({ "userID": id });
+                let temp2 = await BaseReports.find({ "userID": id });
+                return [...temp1, ...temp2];
+            }
+        },
         decryptAdvertiser: {
             type: AdvertisersType,
             args: {
