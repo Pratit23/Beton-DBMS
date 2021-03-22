@@ -18,7 +18,7 @@ const { MarkerClusterer } = require("react-google-maps/lib/components/addons/Mar
 const MapWithAMarkerClusterer = compose(
     withProps({
         googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w&v=3.exp&libraries=geometry,drawing,places",
-        loadingElement: <div id="main"  style={{ height: `100%` }}>Loading...</div>,
+        loadingElement: <div id="main" style={{ height: `100%` }}>Loading...</div>,
         containerElement: <div id="main" style={{ height: '100vh' }} />,
         mapElement: <div style={{ height: '100%' }} />,
     }),
@@ -46,7 +46,7 @@ const MapWithAMarkerClusterer = compose(
             gridSize={60}
         >
             {props.markers.length != 0 && props.markers.map(marker => {
-                if(marker == undefined){
+                if (marker == undefined) {
                     return;
                 }
                 return (
@@ -65,9 +65,9 @@ const DemoApp = (props) => {
     useEffect(() => {
         if (props && props.allBaseReports && !props.allBaseReports.loading) {
             let temp = []
-
+            console.log(props)
             temp = props.allBaseReports.allBaseReports.map(i => {
-                if(i.noOfReports < 12){
+                if (i.noOfReports < 12) {
                     return;
                 }
                 let test = {
