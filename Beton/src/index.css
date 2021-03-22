@@ -1667,3 +1667,24 @@ connection {
 .secretAdv > div {
   margin-bottom: 20px !important;
 }
+
+#AllCoupons{
+  padding: 10px 20px;
+}
+#AllCoupons tr{
+  padding: 10px;
+  height: 60px;
+}
+
+.signUpSide{
+  width: 100%;
+  height: auto;
+}
+
+@media only screen and (max-width: 1200px){
+  .signUpSide{
+    height: 100%;
+    width: auto;
+  }
+  
+}

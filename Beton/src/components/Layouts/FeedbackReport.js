@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import M from 'materialize-css';
-import Test from '../../images/deets.jpg';
 import MainMap from '../Maps/MainMap';
 import Sidenav from '../Layouts/Sidenav';
 import SubmitButton from '../Buttons/SubmitButton'
-import e from 'cors';
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
+import { addFeedbackReport, decrypt } from '../../queries/query';
+import Geocode from "react-geocode";
 
 var coords = [0, 0]
 
-const FeedbackReport = () => {
-    const [url, setUrl] = useState('')
+const FeedbackReport = (props) => {
+
+    // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+    Geocode.setApiKey("AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w");
+
+    // set response language. Defaults to english.
+    Geocode.setLanguage("en");
+
 
     useEffect(() => {
-        window.$(document).ready(function(){
-            window.$('.connect').connections();
-        })
         return () => {
+            window.$('.connect').connections('remove');
             console.log("in here")
             localStorage.removeItem("image");
-            window.$('.connect').connections('remove');
         }
     })
-    if (!localStorage.getItem("image")) return <Redirect to="/homepage" />
+    if (!localStorage.getItem("image") || localStorage.getItem("image") == null) return <Redirect to="/homepage" />
 
     const getCoords = (coord) => {
         console.log("Check this: ", coord)
@@ -31,45 +36,58 @@ const FeedbackReport = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let comment = document.querySelector("#textarea1")
-        if(comment == "" || coords[0] == 0 && coords[1] == 0){
+        let comment = document.querySelector("#textarea1").value
+        if (comment == "" || coords[0] == 0 && coords[1] == 0) {
             M.toast({ html: "Please provide all the necessary details!" })
             return;
         }
-        const fileData = new FormData();
-        let mainImage = JSON.parse(localStorage.getItem("image"))
-        console.log("Main Image", mainImage);
-        fileData.append("file", mainImage);
-        fileData.append("upload_preset", "levitation");
-        fileData.append("cloud_name", "levitation");
+        Geocode.fromLatLng(coords[0], coords[1]).then(
+            async (response) => {
+                var address = response.results[0].formatted_address;
+                // setAddressi(address)
 
-        // saving to cloud first
-        fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
-            method: "POST",
-            body: fileData
-        }).then(res => res.json()).then(data => {
-            console.log(data.url);
-            setUrl(data.url)
-            console.log("Photo uploaded")
-            return data.url;
-        }).catch(err => {
-            console.log(err);
-            return err
-        })
+
+                // saving to cloud first
+                let img = localStorage.getItem("image");
+                console.log(img);
+                let res = await props.addFeedbackReport({
+                    variables: {
+                        image: (img).toString(),
+                        address: address,
+                        location: `${coords[0]} ${coords[1]}`,
+                        reportedAt: new Date().toDateString(),
+                        reportedOn: new Date().toLocaleString().split(", ")[1],
+                        userID: props.decrypt.decrypt.id,
+                        noOfReports: props.decrypt.decrypt.karma
+                    }
+                })
+                console.log("res in feedback", res);
+                if (res && res.data && res.data.addFeedbackReport) {
+                    M.toast({ html: "Feedback report successfully submitted!" });
+                    props.history.push("/homepage");
+                }
+                else {
+                    M.toast({ html: "Uh-oh! Something went wrong!" })
+                }
+
+            },
+            error => {
+                console.error("Error fetching the land: ", error);
+            })
     }
 
     return (
         <div>
             <Sidenav />
-            <div id="main" className="row" style={{ marginBottom: "0", height: "100%" }} >
+            <div id="main" className="row" style={{ marginBottom: "0", height: "100%", overflowY: "scroll" }} >
                 {/* first step */}
-                <div className="col s11 offset-s1" style={{marginTop: "40px"}}>
+                <div className="col s11 offset-s1" style={{ marginTop: "40px" }}>
                     <h4 className="">
                         <span className="connect">1.</span> Basic Information
                     </h4>
-                    <hr className="divider" style={{marginBottom: "20px"}}/>
+                    <hr className="divider" style={{ marginBottom: "20px" }} />
                     <div className="col s12 m4 offset-m1">
-                        <img src={URL.createObjectURL(JSON.parse(localStorage.getItem("image")))} alt="Reported image" style={{ height: "auto", width: "100%", borderRadius: "18px" }}/>
+                        <img src={localStorage.getItem("image")} alt="Reported image" style={{ height: "auto", width: "100%", borderRadius: "18px" }} />
                         {/* <img src={Test} alt="Reported image" style={{ height: "auto", width: "100%", borderRadius: "18px" }} /> */}
                     </div>
                     <div className="input-field col s12 m7">
@@ -79,16 +97,16 @@ const FeedbackReport = () => {
                 </div>
 
                 {/* second step */}
-                <div className="col s10 offset-s2" style={{marginTop: "20px"}}>
+                <div className="col s10 offset-s2" style={{ marginTop: "20px" }}>
                     <h4 className="">
                         <span className="connect">2.</span> Landmark Information
                     </h4>
-                    <hr className="divider" style={{marginBottom: "20px"}}/>
+                    <hr className="divider" style={{ marginBottom: "20px" }} />
                     <div className="col s12">
                         <MainMap getCoords={getCoords} />
                     </div>
                 </div>
-                <div className="col s10 offset-s2" style={{marginTop: "10px"}}>
+                <div className="col s10 offset-s2" style={{ marginTop: "10px" }}>
                     <SubmitButton text="Submit feedback" id="feedbackButton" func={handleSubmit} />
                 </div>
             </div>
@@ -96,4 +114,17 @@ const FeedbackReport = () => {
     )
 }
 
-export default FeedbackReport
+export default compose(
+    graphql(addFeedbackReport, { name: "addFeedbackReport" }),
+    graphql(decrypt, {
+        name: "decrypt",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    token: temp
+                }
+            }
+        }
+    })
+)(FeedbackReport)

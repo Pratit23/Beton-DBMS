@@ -9,9 +9,11 @@ import { flowRight as compose } from 'lodash';
 import { users, addUser } from '../../../queries/query'
 import M from 'materialize-css'
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const SignUpForm = (props) => {
     const [showLoader, setShowLoader] = useState(false);
+    const [image, setImage] = useState([])
 
     const handleSubmit = async (e) => {
         setShowLoader(true)
@@ -25,34 +27,50 @@ const SignUpForm = (props) => {
         let month = document.querySelector('.month').value
         let year = document.querySelector('.year').value
         let dob = `${day}/${month}/${year}`;
-        console.log(name)
-        console.log(email)
-        console.log(password)
-        console.log(address)
-        console.log(dob)
 
-        let res = await props.addUser({
-            variables: {
-                name,
-                email,
-                password,
-                address,
-                dob
+        const fileData = new FormData();
+        fileData.append("file", image);
+        fileData.append("upload_preset", "levitation");
+        fileData.append("cloud_name", "levitation");
+
+        // saving to cloud first
+        fetch('https://api.cloudinary.com/v1_1/levitation/image/upload', {
+            method: "POST",
+            body: fileData
+        }).then(res => res.json()).then(async (data) => {
+            console.log("Photo uploaded")
+            let res = await props.addUser({
+                variables: {
+                    name,
+                    email,
+                    password,
+                    address,
+                    dob,
+                    profile: data.url
+                }
+            })
+            if (res.data.addUser) {
+                M.toast({ html: "Wohoo! You're in...Log in to get in ヽ(•‿•)ノ" });
+                props.props.history.push("/login");
             }
+            else {
+                M.toast({ html: "Oopsie! Something went wrong!" })
+                setShowLoader(false)
+            }
+        }).catch(err => {
+            console.log(err);
+            return err
         })
-        if (res.data.addUser) {
-            M.toast({ html: "Wohoo! You're in...Log in to get in ヽ(•‿•)ノ" });
-            props.props.history.push("/login");
-        }
-        else {
-            M.toast({ html: "Oopsie! Something went wrong!" })
-            setShowLoader(false)
-        }
     }
     console.log(props)
     return (
         <form id="signup-form" className="row">
-            <h2 className="white-text center-align"
+            <h4>
+                <Link to="/" style={{ textDecoration: "none", color: "inherit" }} >
+                    Beton
+                </Link>
+            </h4>
+            <h2 className="black-text center-align"
                 style={{ marginBottom: "20px" }}
             >
                 Sign Up
@@ -71,6 +89,19 @@ const SignUpForm = (props) => {
 
             {/* address */}
             <GeneralInput placeholder="Your address" classy="col s10 offset-s1 m9 offset-m2 l8 offset-l2" type="text" id="address-signup" />
+
+            {/* image input */}
+            <div className="col s10 offset-s1 m9 offset-m2 l8 offset-l2" style={{ marginTop: "0" }}>
+                <div className="file-field input-field">
+                    <div className="btn" style={{ borderRadius: "24px", background: "#275EFE" }}>
+                        <span>Profile Picture</span>
+                        <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+                    </div>
+                    <div className="file-path-wrapper">
+                        <input className="file-path validate" type="text" />
+                    </div>
+                </div>
+            </div>
             {
                 showLoader ? (
                     <div className="col s10 offset-s1 m9 offset-m2 l8 offset-l2">
@@ -78,8 +109,8 @@ const SignUpForm = (props) => {
                             <div className="indeterminate blue"></div>
                         </div>
                     </div>
-                ) : 
-                <SubmitButton text="Create" id="signup" func={handleSubmit} />
+                ) :
+                    <SubmitButton text="Create" id="signup" func={handleSubmit} />
             }
         </form>
     )

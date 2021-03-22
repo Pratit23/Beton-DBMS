@@ -14,24 +14,31 @@ const AddCoupons = (props) => {
     const [coupon, setCoupon] = useState([])
     const handleSubmit = async () => {
         console.log("Coupons", coupon);
-        if(!coupon.data || coupon.data.length == 0){
+        if (!coupon.data || coupon.data.length == 0) {
             M.toast({ html: "Hold on mate! Let's have the CSV file for processing!" })
             return;
         }
-        if(props.decryptAdvertiser && !props.decryptAdvertiser.loading && props.decryptAdvertiser.decryptAdvertiser){
+        if (props.decryptAdvertiser && !props.decryptAdvertiser.loading && props.decryptAdvertiser.decryptAdvertiser) {
+            let temp = localStorage.getItem("token") || "";
             let res = await props.addCoupon({
                 variables: {
                     coupons: coupon.data,
                     advertiserID: props.decryptAdvertiser.decryptAdvertiser.id
-                }
+                },
+                refetchQueries: [{
+                    query: decryptAdvertiser,
+                    variables: {
+                        token: temp
+                    }
+                }]
             })
-            if (res && res.data && res.data.addCoupon){
+            if (res && res.data && res.data.addCoupon) {
                 M.toast({ html: `All coupons added! Now you can go make an advertisment` });
                 props.history.push("/advertiser/homepage");
-            }else{
+            } else {
                 M.toast({ html: `Something wasn't right. Couldn't process your request :/` });
             }
-        }else{
+        } else {
             M.toast({ html: "Okay okay. Easy now. You're moving a bit too quick. Authenticating..." })
         }
     }
@@ -65,7 +72,7 @@ const AddCoupons = (props) => {
                             }} >
                                 1. Add CSV <br /><a href={FormatCover} target="__blank">(Check format)</a>
                             </p>
-                            
+
                             <p className="white-text col s4 center-align" style={{
                                 display: "inline-block",
                                 whiteSpace: "nowrap"
@@ -104,5 +111,5 @@ export default compose(
                 }
             }
         }
-    })   
+    })
 )(AddCoupons)

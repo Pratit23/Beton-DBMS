@@ -2,35 +2,39 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
 
 const userSchema = new mongoose.Schema({
-    email:{
-        type:String,
-        require:true
-    },
-    password :{
-        type:String,
-        require:true,
-    },
-    name:{
+    email: {
         type: String,
         require: true
     },
-    address:{
+    profile: {
         type: String,
         require: true
     },
-    coupons:[{
+    password: {
+        type: String,
+        require: true,
+    },
+    name: {
+        type: String,
+        require: true
+    },
+    address: {
+        type: String,
+        require: true
+    },
+    coupons: [{
         type: ObjectId,
         ref: "Coupons"
     }],
-    dob:{
+    dob: {
         type: String,
         require: true
     },
-    reports:[{
+    reports: [{
         type: ObjectId,
         ref: "Reports"
     }],
-    baseReports:[{
+    baseReports: [{
         type: ObjectId,
         ref: "BaseReports"
     }],
