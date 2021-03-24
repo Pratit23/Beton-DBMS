@@ -4,7 +4,7 @@ const _ = require('lodash');
 const crypto = require('crypto')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { JWT_SEC } = require('../keys/keys');
+const { JWT_SEC, ADMINPASS } = require('../keys/keys');
 const geolib = require('geolib');
 const User = require('../models/user')
 const Admin = require('../models/admin')
@@ -711,7 +711,28 @@ const Mutation = new GraphQLObjectType({
 
             }
         }, //add user mutation
+        adminLogin: {
+            type: GraphQLString,
+            args: {
+                password: { type: new GraphQLNonNull(GraphQLString) },
+                email: { type: new GraphQLNonNull(GraphQLString) },
+            },
+            async resolve(parent, args) {
+                if (!args.email || !args.password) {
+                    // console.log("error?")
+                    throw new Error("Kindly provide all details");
+                }
+                if (args.email == "admin@beton.com") {
+                    if (ADMINPASS == args.password) {
+                        const token = jwt.sign({ _id: ADMINPASS }, JWT_SEC);
+                        return token;
+                    } else {
+                        throw new Error("Invalid email and password combination!");
+                    }
 
+                }
+            }
+        },
         // TODO: this is Advertiser signup
         addAdvertiser: {
             type: AdvertisersType,

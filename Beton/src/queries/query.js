@@ -349,6 +349,12 @@ mutation($id: ID!, $screentime: Int!){
 }
 `
 
+const adminLogin = gql`
+mutation($email: String!, $password: String!){
+  adminLogin(email: $email, password: $password)
+}
+`;
+
 const allMyReports = gql`
 query($token: String!){
   allMyReports(token: $token){
@@ -387,7 +393,8 @@ export {
   getRandomAd,
   updateAdd,
   addFeedbackReport,
-  allMyReports
+  allMyReports,
+  adminLogin
 };
 
 

@@ -24,11 +24,11 @@ const GenericButton = ({ text, id, func }) => {
                     </svg>
                 </button>
                 {
-                    id == "feedbackButton" || id == "login-adv" ? null : (
+                    id == "feedbackButton" || id == "login-adv" || id == "login-admin" ? null : (
                         <div className="signUpHead center-align">
                             <p>Already have an account? <NavLink to={
                                 id == "signup-adv" ? "/advertiser/login" : "/login"
-                             } style={{ cursor: "pointer" }}>  Log in</NavLink></p>
+                            } style={{ cursor: "pointer" }}>  Log in</NavLink></p>
                         </div>
                     )
                 }

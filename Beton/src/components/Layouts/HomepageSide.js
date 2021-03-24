@@ -14,7 +14,7 @@ import AdCard from '../Cards/AdCard';
 import { geolocated } from "react-geolocated";
 import Geocode from "react-geocode";
 
-let zupzip, area;
+let zupzip;
 
 const HomepageSide = (props) => {
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
@@ -38,11 +38,11 @@ const HomepageSide = (props) => {
             Geocode.fromLatLng(props.coords.latitude, props.coords.longitude).then(
                 response => {
                     var address = response.results[0].formatted_address;
-                    address = address.split(", ")
                     console.log(address);
-                    area = address[address.length - 3];
-                    let zipCode = address[address.length - 2].split(" ")[1];
+                    var myRegexExp = /[0-9]{6}/gm;
+                    let zipCode = myRegexExp.exec(address)[0]
                     zupzip = zipCode;
+                    console.log(zipCode)
                     zippy();
                 },
                 error => {
@@ -156,7 +156,7 @@ const HomepageSide = (props) => {
                             </div>
                             <div className="col s12 m5">
                                 {
-                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports && props.decrypt && !props.decrypt.loading && props.decrypt.decrypt && called && !loading && data ? (
+                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports && props.decrypt && !props.decrypt.loading && props.decrypt.decrypt && called && !loading && data && data.findUsingZipCode && data.findUsingZipCode.length != 0 ? (
                                         <HorizontalGraph values={[data.findUsingZipCode[0].similar.length + 1, props.allMyReports.allMyReports.length, props.allMyReports.allMyReports.filter(a => a.baseParent != null ? a.baseParent.noOfReports > 12 ? true : false : false).length, props.decrypt.decrypt.coupons.length]} />
                                     ) :
                                         <HorizontalGraph values={[0, 0, 0, 0]} />
@@ -192,7 +192,7 @@ const HomepageSide = (props) => {
                             <div className="col s8 offset-s2">
                                 {
                                     called && !loading && data ?
-                                        <StatsCard text="Total Reports in your area" value={data.findUsingZipCode[0].similar.length + 1} props={props.props} /> :
+                                        <StatsCard text="Total Reports in your area" value={data && data.findUsingZipCode && data.findUsingZipCode.length != 0 && data.findUsingZipCode[0].similar.length + 1} props={props.props} /> :
                                         <StatsCard text="Total Reports in your area" props={props.props} />
                                 }
                             </div>

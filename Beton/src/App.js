@@ -19,6 +19,7 @@ import AllAdvertisments from './components/Layouts/Advertiser/AllAdvertisments.j
 import AddCoupons from './components/Layouts/Advertiser/AddCoupons.js';
 import AllCoupons from './components/Layouts/Advertiser/AllCoupons.js';
 import AddAdvertisment from './components/Layouts/Advertiser/AddAdvertisment.js';
+import AdminLogin from './components/Auth/Admin/AdminLogin.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -57,6 +58,8 @@ const App = (props) => {
             <Route exact path='/ReportPage' component={ReportPage} />
             <Route exact path='/feedback/report' component={FeedbackReport} />
             <Route exact path='/coupons' component={Coupons} />
+
+            {/* advertiser routes */}
             <Route exact path='/advertiser/signup' component={AdvSignupPage} />
             <Route exact path='/advertiser/login' component={AdvLoginPage} />
             <Route exact path='/advertiser/homepage' component={AdvertiserHomepage} />
@@ -64,6 +67,9 @@ const App = (props) => {
             <Route exact path='/advertiser/add/advertisments' component={AddAdvertisment} />
             <Route exact path='/advertiser/add/coupons' component={AddCoupons} />
             <Route exact path='/advertiser/coupons' component={AllCoupons} />
+
+            {/* admin routes */}
+            <Route exact path='/admin/login' component={AdminLogin} />
           </Switch>
         </div>
       </BrowserRouter>

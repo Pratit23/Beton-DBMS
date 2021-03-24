@@ -1,4 +1,5 @@
 module.exports = {
     URI: process.env.URI,
-    JWT_SEC: process.env.JWT_SEC
+    JWT_SEC: process.env.JWT_SEC,
+    ADMINPASS: process.env.ADMINPASS
 }

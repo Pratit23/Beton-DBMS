@@ -139,13 +139,13 @@ const ReportPage = (props) => {
         next()
     }
 
-    const selectLocation = () => {
+    const selectLocation = async () => {
         console.log("Selected location: ", coords)
         if (coords[0] == 0 && coords[1] == 0) {
             M.toast({ html: "Please select a location on the map!" })
         } else {
             Geocode.fromLatLng(coords[0], coords[1]).then(
-                response => {
+                async (response) => {
                     var address = response.results[0].formatted_address;
                     setAddressi(address)
                     address = address.split(" " || ",")
@@ -159,6 +159,7 @@ const ReportPage = (props) => {
                 error => {
                     console.error("Error fetching the land: ", error);
                 })
+            await existingBase();
             document.querySelectorAll('.tabbar li a')[2].dispatchEvent(new CustomEvent('moveIt'))
             next()
         }
@@ -188,7 +189,6 @@ const ReportPage = (props) => {
 
     const HandleReport = async () => {
         console.log("Coords", coords)
-        await existingBase();
         if (called && loading) return M.toast({ html: "Initializing..." });
         if (data && data.existingBaseCoordinate) {
             console.log("Data here", data)
