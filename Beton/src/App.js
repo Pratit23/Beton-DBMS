@@ -20,6 +20,7 @@ import AddCoupons from './components/Layouts/Advertiser/AddCoupons.js';
 import AllCoupons from './components/Layouts/Advertiser/AllCoupons.js';
 import AddAdvertisment from './components/Layouts/Advertiser/AddAdvertisment.js';
 import AdminLogin from './components/Auth/Admin/AdminLogin.js';
+import AdminHomepage from './components/Layouts/Admin/AdminHomepage.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -70,6 +71,7 @@ const App = (props) => {
 
             {/* admin routes */}
             <Route exact path='/admin/login' component={AdminLogin} />
+            <Route exact path='/admin/homepage' component={AdminHomepage} />
           </Switch>
         </div>
       </BrowserRouter>

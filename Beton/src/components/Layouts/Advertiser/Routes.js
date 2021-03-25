@@ -38,5 +38,5 @@ export const routes = [
         icon: 'sign-out',
         eventKey: 99
     },
-    
+
 ]
