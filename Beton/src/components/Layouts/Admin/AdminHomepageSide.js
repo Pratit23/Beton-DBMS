@@ -1,7 +1,7 @@
 import React from 'react'
 import QuickInfoCard from '../../Cards/QuickInfoCard';
 import AdminDonut from '../../Charts/AdminDonut';
-import RecentUser from './HomepageComponents/RecentUser';
+import RecentUser from './AdminComponents/RecentUser';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { allAdvertisers, allReports, users } from '../../../queries/query';

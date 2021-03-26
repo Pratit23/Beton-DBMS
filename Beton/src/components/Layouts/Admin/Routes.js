@@ -9,6 +9,48 @@ export const routes = [
         eventKey: 1
     },
     {
+        name: 'Users',
+        link: '/admin/users',
+        icon: 'user-analysis',
+        eventKey: 2
+    },
+    {
+        name: 'Advertisers',
+        link: '/admin/advertisers',
+        icon: 'ticket',
+        eventKey: 3
+    },
+    {
+        name: 'Contractors',
+        link: '/admin/contractors',
+        icon: 'user',
+        eventKey: 4
+    },
+    {
+        name: 'All Reports',
+        link: '/admin/all/reports',
+        icon: 'globe',
+        eventKey: 5
+    },
+    {
+        name: 'Verified Reports',
+        link: '/admin/verified/reports',
+        icon: 'gavel',
+        eventKey: 6
+    },
+    {
+        name: 'Feedback',
+        link: '/admin/feedback/reports',
+        icon: 'search',
+        eventKey: 7
+    },
+    {
+        name: 'Onroad Reports',
+        link: '/admin/onroad/reports',
+        icon: 'bullhorn',
+        eventKey: 8
+    },
+    {
         name: 'Logout',
         link: '/',
         icon: 'sign-out',

@@ -21,6 +21,7 @@ import AllCoupons from './components/Layouts/Advertiser/AllCoupons.js';
 import AddAdvertisment from './components/Layouts/Advertiser/AddAdvertisment.js';
 import AdminLogin from './components/Auth/Admin/AdminLogin.js';
 import AdminHomepage from './components/Layouts/Admin/AdminHomepage.js';
+import Verified from './components/Layouts/Admin/AdminComponents/Verified.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -72,6 +73,7 @@ const App = (props) => {
             {/* admin routes */}
             <Route exact path='/admin/login' component={AdminLogin} />
             <Route exact path='/admin/homepage' component={AdminHomepage} />
+            <Route exact path='/admin/verified/reports' component={Verified} />
           </Switch>
         </div>
       </BrowserRouter>
