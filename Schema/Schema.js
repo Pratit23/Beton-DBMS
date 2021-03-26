@@ -655,6 +655,12 @@ const RootQuery = new GraphQLObjectType({
                 res[0]["id"] = res[0]["_id"];
                 return res[0];
             }
+        },
+        allFeedbackReports: {
+            type: new GraphQLList(FeedbackReportType),
+            async resolve(parent, args) {
+                return await FeedbackReport.find();
+            }
         }
     }
 })

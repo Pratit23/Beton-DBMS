@@ -381,6 +381,22 @@ query($token: String!){
 }
 `
 
+const allFeedbackReports = gql`
+{
+  allFeedbackReports{
+    id
+    image
+    location
+    address
+    noOfReports
+    userID{
+      name
+      email
+    }
+  }
+}
+`
+
 
 export {
   users,
@@ -407,7 +423,8 @@ export {
   addFeedbackReport,
   allMyReports,
   adminLogin,
-  allReports
+  allReports,
+  allFeedbackReports
 };
 
 
