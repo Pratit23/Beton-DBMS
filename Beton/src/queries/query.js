@@ -7,6 +7,7 @@ const users = gql`
         email
         address
         dob
+        profile
     }
 }
 `
@@ -265,6 +266,17 @@ const allAdvertisers = gql`
 }
 `
 
+const allReports = gql`
+{
+  allReports{
+    id
+    image
+    address
+    location
+  }
+}
+`
+
 const addAdvertisment = gql`
 mutation($title: String!, $link: String!, $image: String!, $when: String!, $advertiserID: ID!){
   addAdvertisment(title: $title, link: $link, image: $image, when: $when, advertiserID: $advertiserID){
@@ -394,7 +406,8 @@ export {
   updateAdd,
   addFeedbackReport,
   allMyReports,
-  adminLogin
+  adminLogin,
+  allReports
 };
 
 

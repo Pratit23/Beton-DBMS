@@ -51,16 +51,18 @@ export default function HomeCards(props) {
                                 </g>
                             </g>
                         </svg>
-                        <h2>CAPTCHA</h2>
+                        <h2>Reports on the map</h2>
                     </div>
                     <div className="card__bottom">
-                        <h2>CAPTCHA</h2>
+                        <h2>Reports on the map</h2>
                         <p>
-                            Human Machine Verification 3.0 Universal Solution
-      </p>
+                            After all the spam detection, only the most reliable ones can be shown in the map
+                            <br />
+                            Hover for more details 🠒
+                        </p>
                         <p>
-                            Using AI to dynamically determine the current attack situation of the website, combined with the multi-dimensional data combination of each request, AI can use different defense capability combinations for each request
-      </p>
+                            Most of the reports are in area:
+                        </p>
                     </div>
                     <span>
                     </span>
@@ -117,9 +119,7 @@ export default function HomeCards(props) {
                         <h2>Yearly Reportings</h2>
                     </div>
                     <div className="card__bottom">
-                        {
-                            props.city && (props.city).length !== 0 ? <h2>{props.city} - 69 Reportings</h2> : <h2>Loading...</h2>
-                        }
+                        <h2>Reportings</h2>
                         <p>Live Reportings for your location</p>
                         <DashChart1 />
                     </div>

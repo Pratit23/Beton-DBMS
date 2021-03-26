@@ -8,7 +8,7 @@
   }
   .wrap .cardpy {
     position: relative;
-    width: 40%;
+    width: 45%;
     height: max-content;
     background-color: #ffffff;
     box-shadow: 0 2px 4px 0 #ccd0d9;
@@ -18,6 +18,7 @@
     cursor: pointer;
     will-change: transform;
     transition: all 0.3s ease;
+    border-radius: 24px;
   }
   .wrap .card__top {
     position: relative;
@@ -80,6 +81,9 @@
     letter-spacing: 0;
     line-height: 21px;
   }
+  .wrap .card__bottom p:nth-of-type(2) {
+    opacity: 0;
+  }
   .wrap .card__bottom div:nth-of-type(1) {
     opacity: 0;
     transform: translateY(-10px);
@@ -110,8 +114,11 @@
   }
   .wrap .cardpy:hover .card__bottom p:nth-of-type(1) {
     transform: translateY(16px);
-    opacity: 0;
+    opacity: 1;
     display: none !important;
+  }
+  .wrap .cardpy:hover .card__bottom p:nth-of-type(2) {
+    opacity: 1;
   }
   .wrap .cardpy:hover .card__bottom div:nth-of-type(1) {
     transform: translateY(0);
