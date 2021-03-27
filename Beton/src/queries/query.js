@@ -2,13 +2,36 @@ import { gql } from 'apollo-boost';
 
 const users = gql`
 {
-    users{
-        name
-        email
-        address
-        dob
-        profile
+  users{
+    name
+    email
+    address
+    dob
+    profile
+    karma
+  	reports{
+      id
+      image
+      location
     }
+    baseReports{
+      id
+      image
+      location
+    }
+    coupons{
+      id
+      name
+      amount
+      validity
+      advertiserID{
+        company
+        id
+        email
+        category
+      }
+    }
+  }
 }
 `
 

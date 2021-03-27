@@ -23,7 +23,10 @@ import AdminLogin from './components/Auth/Admin/AdminLogin.js';
 import AdminHomepage from './components/Layouts/Admin/AdminHomepage.js';
 import Verified from './components/Layouts/Admin/Verified.js';
 import All from './components/Layouts/Admin/All.js';
+import AllUsers from './components/Layouts/Admin/AllUsers';
 import Feedback from './components/Layouts/Admin/Feedback.js';
+import ContractorHomepage from './components/Layouts/Contractors/ContractorHomepage'
+import Tenders from './components/Layouts/Contractors/Contractor Components/Tenders'
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -78,6 +81,11 @@ const App = (props) => {
             <Route exact path='/admin/verified/reports' component={Verified} />
             <Route exact path='/admin/all/reports' component={All} />
             <Route exact path='/admin/feedback/reports' component={Feedback} />
+            <Route exact path='/admin/users' component={AllUsers} />
+
+            {/* Contractor routes */}
+            <Route exact path='/contractor/homepage' component={ContractorHomepage} />
+            <Route exact path='/contractor/tenders' component={Tenders} />
           </Switch>
         </div>
       </BrowserRouter>

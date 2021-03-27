@@ -124,7 +124,6 @@ const UserType = new GraphQLObjectType({
                 return temp
             }
         },
-        level: { type: GraphQLString },
         karma: { type: GraphQLInt }
     })
 });
