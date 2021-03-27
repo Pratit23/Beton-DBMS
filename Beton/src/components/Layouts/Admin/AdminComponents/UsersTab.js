@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { users } from '../../../../queries/query';
 import Lottie from 'react-lottie';
-import *
+
 
 const UsersTab = (props) => {
     return (
@@ -46,7 +46,7 @@ const UsersTab = (props) => {
                                     </div>
                                 )
                             })
-                        ) : 
+                        ) : null
                     }
                 </div>
             </div>

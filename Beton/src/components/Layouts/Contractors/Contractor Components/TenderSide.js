@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import TenderMap from './TenderMap'
 
 export default function TenderSide() {
 
-    const [currentTab, setCurrentTab] = useState(2)
+    const [currentTab, setCurrentTab] = useState(3)
     const [showTenders, setShowTenders] = useState(true)
 
     useEffect(() => {
@@ -289,8 +290,8 @@ export default function TenderSide() {
                                 }
                                 {
                                     currentTab == 3 ?
-                                        <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '290px', paddingRight: '250px', paddingTop: '25px' }}>
-                                            
+                                        <div className="row" style={{ height: '100%', width: '100%', paddingRight: '380px', paddingTop: '25px', borderRadius: '24px' }}>
+                                            <TenderMap />
                                         </div>
                                         : null
                                 }
