@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { users } from '../../../../queries/query';
 import Lottie from 'react-lottie';
-import *
+// import *
 
 const UsersTab = (props) => {
     return (
@@ -16,14 +16,14 @@ const UsersTab = (props) => {
                     <hr className="divider" />
                     {
                         props.users && !props.users.loading && props.users.users ? (
-                            props.users.users.map(u=>{
+                            props.users.users.map(u => {
                                 let level = "";
                                 console.log(u.karma);
-                                if (u.karma < 25){
+                                if (u.karma < 25) {
                                     level = "Beginner"
-                                }else if(u.karma < 65){
+                                } else if (u.karma < 65) {
                                     level = "Intermediate"
-                                }else{
+                                } else {
                                     level = "Pro"
                                 }
                                 return (
@@ -46,7 +46,7 @@ const UsersTab = (props) => {
                                     </div>
                                 )
                             })
-                        ) : 
+                        ) : null
                     }
                 </div>
             </div>
