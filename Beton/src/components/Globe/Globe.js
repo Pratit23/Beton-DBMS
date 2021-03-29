@@ -1,12 +1,6 @@
 import React, { useEffect } from 'react'
-import Globe from 'globe.gl';
-import Dataset from './datasets/ne_110m_admin_0_countries.geojson';
 import DatasetCSV from './datasets/india_test.csv';
-import MapImage from '../../images/mapImage.jpg';
-// import LandingButton from '../Buttons/LandingButton';
 import GenericButton from '../Buttons/GenericButton';
-import * as d3 from 'd3';
-import 'd3-dsv';
 
 const GlobeJS = () => {
     const OPACITY = 0.1;
@@ -14,10 +8,10 @@ const GlobeJS = () => {
         window.$(document).ready(function () {
 
             // TODO: figure this shit out
-            const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
+            const weightColor = window.d3.scaleSequentialSqrt(window.d3.interpolateYlOrRd)
                 .domain([0, 1e7]);
 
-            const world = Globe()
+            const world = window.Globe()
                 (document.getElementById('globeViz'))
                 .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
                 .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
@@ -30,13 +24,13 @@ const GlobeJS = () => {
                 .hexBinMerge(true)
                 .enablePointerInteraction(false); // performance improvement
 
-            fetch(Dataset).then(res => res.text())
-                .then(csv => d3.csvParse(csv, ({ lat, lng, pop }) => ({ lat: +lat, lng: +lng, pop: +pop })))
+            fetch(DatasetCSV).then(res => res.text())
+                .then(csv => window.d3.csvParse(csv, ({ lat, lng, pop }) => ({ lat: +lat, lng: +lng, pop: +pop })))
                 .then(data => world.hexBinPointsData(data));
 
             // Add auto-rotation
             world.controls().autoRotate = true;
-            world.controls().autoRotateSpeed = -0.5;
+            world.controls().autoRotateSpeed = -0.35;
         });
 
     }, []);
