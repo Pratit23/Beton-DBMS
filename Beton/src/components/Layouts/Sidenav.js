@@ -3,6 +3,7 @@ import { Sidenav, Toggle, Nav, Icon, Dropdown } from 'rsuite';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { NavLink } from 'react-router-dom'
 import { routes as Routes } from './Routes';
+import GooeySwitch from '../Buttons/GooeySwitch';
 
 
 class Sidenav1 extends React.Component {
@@ -41,7 +42,7 @@ class Sidenav1 extends React.Component {
                 {
                     expanded ? (
                         <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial", marginTop: "15px" }} >Beton</h3>
-                    ) : 
+                    ) :
                         <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial", marginTop: "15px" }} >B</h3>
                 }
                 <Sidenav
@@ -53,7 +54,7 @@ class Sidenav1 extends React.Component {
                     <Sidenav.Body>
                         <Nav>
                             {
-                                Routes.map(route=>{
+                                Routes.map(route => {
                                     return (
                                         <NavLink to={route.link} key={route.eventKey}
                                             onClick={route.eventKey == 99 ? (() => localStorage.clear()) : null}
@@ -61,30 +62,36 @@ class Sidenav1 extends React.Component {
                                             <Nav.Item eventKey={route.eventKey} icon={<Icon className="white-text" icon={route.icon} />}>
                                                 {route.name}
                                             </Nav.Item>
-                                        </NavLink> 
+                                        </NavLink>
                                     )
                                 })
                             }
                         </Nav>
                     </Sidenav.Body>
                 </Sidenav>
-                {
-                    expanded ? (
-                        <div className="valign-wrapper center-align" style={{
-                                position: "fixed",
-                                bottom: "20px",
-                                left: "30px"
-                        }}>
-                            <p style={{display: "inline-block", width: "max-content", margin: "10px 10px 0 10px"}}>Toggle Sidebar</p>
-                            <Toggle onChange={this.handleToggle} checked={expanded} />
-                        </div>
-                    ): 
-                    <Toggle onChange={this.handleToggle} checked={expanded} style={{
-                        position: "fixed",
-                        bottom: "20px",
-                        left: "2px"
-                    }}/>
-                }
+                <div className="valign-wrapper center-align" style={expanded ? {
+                    position: "fixed",
+                    bottom: "20px",
+                    left: "30px"
+                } : {
+                    position: "fixed",
+                    bottom: "10px",
+                    left: "2px"
+                }}>
+                    <GooeySwitch onChange={this.handleToggle} checked={expanded} />
+                    <p style={expanded ? {
+                        display: "inline-block",
+                        width: "max-content",
+                        margin: "0px 10px 0 10px",
+                        transition: "width 1s",
+                    } : {
+                        display: "inline-block",
+                        width: "0",
+                        opacity: "0",
+                        margin: "0px",
+                        transition: "width 1s",
+                    }}>Toggle Sidebar</p>
+                </div>
             </div>
 
         );
@@ -93,7 +100,7 @@ class Sidenav1 extends React.Component {
 
 const instance = () => {
     return (
-        <Sidenav1 appearance="subtle"/>
+        <Sidenav1 appearance="subtle" />
     )
 }
 

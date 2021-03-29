@@ -1688,3 +1688,9 @@ connection {
   }
   
 }
+
+#gooey-switch{
+  position: inherit !important;
+  opacity: 1 !important;
+  pointer-events: initial !important;
+}
