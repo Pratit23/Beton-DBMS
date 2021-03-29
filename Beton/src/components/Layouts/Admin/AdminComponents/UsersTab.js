@@ -3,9 +3,18 @@ import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { users } from '../../../../queries/query';
 import Lottie from 'react-lottie';
-// import *
+import loading from '../../../../images/Lottie/loading.json'
 
 const UsersTab = (props) => {
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: loading,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
+
     return (
         <div className="demo" id="main" style={{ overflowY: "auto" }} >
             <div className="row advHomeTop">
@@ -46,7 +55,12 @@ const UsersTab = (props) => {
                                     </div>
                                 )
                             })
-                        ) : null
+                        ) : <Lottie options={defaultOptions}
+                            height={400}
+                            width={400}
+                            isStopped={false}
+                            isPaused={false}
+                        />
                     }
                 </div>
             </div>
