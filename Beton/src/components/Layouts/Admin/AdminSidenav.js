@@ -3,6 +3,7 @@ import { Sidenav, Toggle, Nav, Icon } from 'rsuite';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { NavLink } from 'react-router-dom'
 import { routes as Routes } from './Routes';
+import GooeySwitch from '../../Buttons/GooeySwitch';
 
 
 class AdminSidenav extends React.Component {
@@ -68,23 +69,29 @@ class AdminSidenav extends React.Component {
                         </Nav>
                     </Sidenav.Body>
                 </Sidenav>
-                {
-                    expanded ? (
-                        <div className="valign-wrapper center-align" style={{
-                            position: "fixed",
-                            bottom: "20px",
-                            left: "30px"
-                        }}>
-                            <p style={{ display: "inline-block", width: "max-content", margin: "10px 10px 0 10px" }}>Toggle Sidebar</p>
-                            <Toggle onChange={this.handleToggle} checked={expanded} />
-                        </div>
-                    ) :
-                        <Toggle onChange={this.handleToggle} checked={expanded} style={{
-                            position: "fixed",
-                            bottom: "20px",
-                            left: "2px"
-                        }} />
-                }
+                <div className="valign-wrapper center-align" style={expanded ? {
+                    position: "fixed",
+                    bottom: "20px",
+                    left: "30px"
+                } : {
+                    position: "fixed",
+                    bottom: "10px",
+                    left: "2px"
+                }}>
+                    <GooeySwitch onChange={this.handleToggle} checked={expanded} />
+                    <p style={expanded ? {
+                        display: "inline-block",
+                        width: "max-content",
+                        margin: "0px 10px 0 10px",
+                        transition: "width 1s",
+                    } : {
+                        display: "inline-block",
+                        width: "0",
+                        opacity: "0",
+                        margin: "0px",
+                        transition: "width 1s",
+                    }}>Toggle Sidebar</p>
+                </div>
             </div>
 
         );
