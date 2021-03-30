@@ -1,12 +1,22 @@
 import React from 'react'
-import CountUp from 'react-countup';
 
-const CountUp = () => {
+const Counting = () => {
     return (
-        <div>
-
+        <div className="row container countUp valign-wrapper" >
+            <div className="col s3">
+                <h6>7+ | Users</h6>
+            </div>
+            <div className="col s3">
+                <h6>7+ | Users</h6>
+            </div>
+            <div className="col s3">
+                <h6>7+ | Users</h6>
+            </div>
+            <div className="col s3">
+                <h6>7+ | Users</h6>
+            </div>
         </div>
     )
 }
 
-export default CountUp
+export default Counting
