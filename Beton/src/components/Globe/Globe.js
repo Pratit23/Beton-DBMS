@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import DatasetCSV from './datasets/india_test.csv';
 import GenericButton from '../Buttons/GenericButton';
+import Typing from '../Layouts/Landing/Interactive/Typing';
 
 const GlobeJS = () => {
     const OPACITY = 0.1;
@@ -37,14 +38,20 @@ const GlobeJS = () => {
 
     return (
         <div id="globeWrapper" className="row" style={{ overflow: "hidden", background: "#000011", marginBottom: "0" }} >
-            <div id="intro" className="col s12 m5 valign-wrapper" style={{ zIndex: "2", height: "100vh", position: "relative" }}>
-                <div id="homeMotto" style={{ paddingLeft: "20px" }}>
-                    <h2 className="white-text right-align">Beton</h2>
-                    <h4 className="white-text right-align">Be the change you wan't to see</h4>
-                    <h6 className="white-text right-align">
+            <div id="intro" className="col s12 m4 offset-m1" style={{ zIndex: "2", height: "100vh", position: "relative" }}>
+                <div id="homeMotto" style={{ paddingLeft: "20px", width: "100%", marginTop: "150px" }}>
+                    <h2 className="white-text left-align" style={{ width: "100%" }} >
+                        Be the change
+                        <Typing />
+                    </h2>
+                    {/* <h6 className="white-text right-align">
                         Beton helps people raise their concerns to help make India into a better place.
                         Be the change!
-                    </h6>
+                    </h6> */}
+                    <br />
+                    <p className="white-text lighten-2">
+                        Beton helps people raise their concerns to help make India into a better place.
+                    </p>
                     <GenericButton text="Get Started" id="CTA" link="signup" />
                 </div>
             </div>

@@ -6,7 +6,7 @@ import UserLogin from '../../../../images/UserLogin.png';
 const Options = (props) => {
     return (
         <>
-            <div className="container">
+            <div className="container" id="options">
                 <h2 className="center-align">
                     Choose your type
                 </h2>

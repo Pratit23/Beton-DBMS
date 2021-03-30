@@ -6,9 +6,6 @@ import global from '../../../images/Lottie/global.json';
 import reward from '../../../images/Lottie/reward.json';
 
 const Features = () => {
-
-    const [shred, setShred] = useState('Go ahead, get rid of the spam report. You know you want to, click it!');
-    const [like, setLike] = useState('Reward yourself. Go on, do it! (~˘▾˘)~');
     const defaultOptions1 = {
         loop: true,
         autoplay: true,
@@ -35,31 +32,9 @@ const Features = () => {
     };
 
 
-    const handleShred = () => {
-        var items = [
-            'There we go. Shred it. Shred it good!',
-            "Yess get rid of the spam ones",
-            "See! It's that easy and simple!",
-            "Nice job, we have a good set now"
-        ]
-        var item = items[Math.floor(Math.random() * items.length)];
-        setShred(item)
-    }
-
-    const handleLike = () => {
-        var items = [
-            "There we go!",
-            "Perfectoo!",
-            "Feels nice, doesn't it?",
-            "Oooo. That felt good, want to do it again?"
-        ]
-        var item = items[Math.floor(Math.random() * items.length)];
-        setLike(item)
-    }
-
     return (
         <>
-            <div className="section" style={{ backgroundColor: "#E63946" }} >
+            <div className="section" style={{ backgroundColor: "#E63946" }} id="whyus" >
                 <div className="container white" style={{ borderRadius: "24px", width: "85%", paddingBottom: "20px" }}>
                     <div className="row" style={{ paddingTop: "20px" }}>
                         <br />
