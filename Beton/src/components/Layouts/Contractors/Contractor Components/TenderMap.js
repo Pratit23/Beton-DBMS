@@ -19,7 +19,7 @@ const MapWithAMarkerClusterer = compose(
     withProps({
         googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w&v=3.exp&libraries=geometry,drawing,places",
         loadingElement: <div id="main" style={{ height: `100%`, borderRadius: '24px' }}>Loading...</div>,
-        containerElement: <div id="main" style={{ height: '80vh', width: '90%', borderRadius: '24px' }} />,
+        containerElement: <div id="main" style={{ height: '80vh', width: '90%', borderRadius: '24px', marginLeft: '0' }} />,
         mapElement: <div style={{ height: '100%', borderRadius: '24px' }} />,
     }),
     withHandlers({

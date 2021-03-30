@@ -6,7 +6,7 @@ import loading from '../../../../images/Lottie/newTenders.json'
 export default function TenderSide() {
 
     const [currentTab, setCurrentTab] = useState(0)
-    const [showTenders, setShowTenders] = useState(true)
+    const [showTenders, setShowTenders] = useState(false)
 
     const defaultOptions = {
         loop: true,
@@ -51,7 +51,7 @@ export default function TenderSide() {
     return (
         <>
             {
-                showTenders ?
+                !showTenders ?
                     <div className="row">
                         <div className="col s8" style={{ height: '100vh' }}>
                             <div className="demo" id="main" style={{ overflowY: "auto" }} >
@@ -120,7 +120,7 @@ export default function TenderSide() {
                                         {
                                             currentTab == 0 ?
                                                 <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '100px', paddingTop: '25px' }}>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                    <div className="card-panel" onClick={() => setShowTenders(true)} style={{ borderRadius: "24px", padding: "10px" }} >
                                                         <div className="row valign-wrapper">
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
@@ -161,14 +161,14 @@ export default function TenderSide() {
                                                             <div className="col s9">
                                                                 <h5 className="black-text">
                                                                     NH-15
-                                                    </h5>
+                                                                </h5>
                                                                 <p className="grey-text" style={{ paddingTop: "8px" }} >
                                                                     50,00,000 | May 2021 | Click to know more
-                                                    </p>
+                                                                </p>
                                                             </div>
                                                             <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
                                                                 ➜
-                                                    </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -298,106 +298,120 @@ export default function TenderSide() {
                                 width={400}
                                 isStopped={false}
                                 isPaused={false}
+                                style={{ marginTop: '15vh' }}
                             />
                         </div>
                     </div>
                     :
-                    <div className="demo" id="main" style={{ overflowY: "auto" }} >
-                        <div className="row">
-                            <div className="col s12" style={{ paddingTop: '40px' }}>
-                                <ul className="tabs" style={{ paddingLeft: '70px', borderRadius: '12px', backgroundColor: '#F5F5F5', width: '1000px' }}>
-                                    <li onClick={() => setCurrentTab(0)} className="tab col s3"><a className="blue-text">All Reports</a></li>
-                                    <li onClick={() => setCurrentTab(1)} className="tab col s3"><a className="blue-text">Images</a></li>
-                                    <li onClick={() => setCurrentTab(2)} className="tab col s3"><a className="blue-text">Users</a></li>
-                                    <li onClick={() => setCurrentTab(3)} className="tab col s3"><a className="blue-text">Map View</a></li>
-                                </ul>
-                                {
-                                    currentTab == 0 ?
-                                        <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '270px', paddingRight: '250px', paddingTop: '25px' }}>
-                                            <ul className="collapsible">
-                                                <li>
-                                                    <div className="collapsible-header"><i className="material-icons">filter_drama</i>Address of the first report</div>
-                                                    <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                                                </li>
-                                                <li>
-                                                    <div className="collapsible-header"><i className="material-icons">place</i>Address of the second report</div>
-                                                    <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                                                </li>
-                                                <li>
-                                                    <div className="collapsible-header"><i className="material-icons">whatshot</i>Address of the third report</div>
-                                                    <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        : null
-                                }
-                                {
-                                    currentTab == 1 ?
-                                        <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '290px', paddingRight: '250px', paddingTop: '25px' }}>
-                                            <div class="row" >
-                                                <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?beach" alt="" class="materialboxed responsive-img" /></div>
-                                                <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?sand" alt="" class="materialboxed responsive-img" /></div>
-                                                <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?boat" alt="" class="materialboxed responsive-img" /></div>
-                                                <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?cruise" alt="" class="materialboxed responsive-img" /></div>
-                                                <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?cruise" alt="" class="materialboxed responsive-img" /></div>
-                                            </div>
-                                        </div>
-                                        : null
-                                }
-                                {
-                                    currentTab == 2 ?
-                                        <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '290px', paddingRight: '250px', paddingTop: '25px' }}>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                            <div class="chip">
-                                                <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                Jane Doe
-                                            </div>
-                                        </div>
-                                        : null
-                                }
-                                {
-                                    currentTab == 3 ?
-                                        <div className="row" style={{ height: '100%', width: '100%', paddingRight: '380px', paddingTop: '25px', borderRadius: '24px' }}>
-                                            <TenderMap />
-                                        </div>
-                                        : null
-                                }
+                    <div className="row">
+                        <div className="col s8" style={{ height: '100vh' }}>
+                            <div className="demo" id="main" style={{ overflowY: "auto" }} >
+                                <div className="row">
+                                    <div className="col s12" style={{ paddingTop: '40px' }}>
+                                        <ul className="tabs" style={{ paddingLeft: '40px', borderRadius: '12px', backgroundColor: '#F5F5F5', width: '700px' }}>
+                                            <li onClick={() => setCurrentTab(0)} className="tab col s3"><a className="blue-text">All Reports</a></li>
+                                            <li onClick={() => setCurrentTab(1)} className="tab col s3"><a className="blue-text">Images</a></li>
+                                            <li onClick={() => setCurrentTab(2)} className="tab col s3"><a className="blue-text">Users</a></li>
+                                            <li onClick={() => setCurrentTab(3)} className="tab col s3"><a className="blue-text">Map View</a></li>
+                                        </ul>
+                                        {
+                                            currentTab == 0 ?
+                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '100px', paddingTop: '25px' }}>
+                                                    <ul className="collapsible">
+                                                        <li>
+                                                            <div className="collapsible-header"><i className="material-icons">filter_drama</i>Address of the first report</div>
+                                                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                                                        </li>
+                                                        <li>
+                                                            <div className="collapsible-header"><i className="material-icons">place</i>Address of the second report</div>
+                                                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                                                        </li>
+                                                        <li>
+                                                            <div className="collapsible-header"><i className="material-icons">whatshot</i>Address of the third report</div>
+                                                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                : null
+                                        }
+                                        {
+                                            currentTab == 1 ?
+                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '160px', paddingTop: '25px' }}>
+                                                    <div class="row" >
+                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?beach" alt="" class="materialboxed responsive-img" /></div>
+                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?sand" alt="" class="materialboxed responsive-img" /></div>
+                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?boat" alt="" class="materialboxed responsive-img" /></div>
+                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?cruise" alt="" class="materialboxed responsive-img" /></div>
+                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?cruise" alt="" class="materialboxed responsive-img" /></div>
+                                                    </div>
+                                                </div>
+                                                : null
+                                        }
+                                        {
+                                            currentTab == 2 ?
+                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '200px', paddingRight: '180px', paddingTop: '25px' }}>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                     </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                    <div class="chip">
+                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
+                                                        Jane Doe
+                                                    </div>
+                                                </div>
+                                                : null
+                                        }
+                                        {
+                                            currentTab == 3 ?
+                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '80px', paddingTop: '25px' }}>
+                                                    <TenderMap />
+                                                </div>
+                                                : null
+                                        }
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        <div className="col s4" style={{ height: '100vh' }}>
+                            <Lottie options={defaultOptions}
+                                height={700}
+                                width={400}
+                                isStopped={false}
+                                isPaused={false}
+                                style={{ marginTop: '15vh' }}
+                            />
                         </div>
                     </div>
             }
