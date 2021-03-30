@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { users } from '../../../../queries/query';
@@ -6,6 +6,7 @@ import Lottie from 'react-lottie';
 import loading from '../../../../images/Lottie/loading.json'
 
 const UsersTab = (props) => {
+    const [selected, setSelected] = useState({});
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -37,7 +38,7 @@ const UsersTab = (props) => {
                                 }
                                 return (
                                     <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                        <div className="row valign-wrapper">
+                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${u.profile})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                             </div>
                                             <div className="col s9">
