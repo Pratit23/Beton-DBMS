@@ -156,8 +156,8 @@ const HomepageSide = (props) => {
                             </div>
                             <div className="col s12 m5">
                                 {
-                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports && props.decrypt && !props.decrypt.loading && props.decrypt.decrypt && called && !loading && data && data.findUsingZipCode && data.findUsingZipCode.length != 0 ? (
-                                        <HorizontalGraph values={[data.findUsingZipCode[0].similar.length + 1, props.allMyReports.allMyReports.length, props.allMyReports.allMyReports.filter(a => a.baseParent != null ? a.baseParent.noOfReports > 12 ? true : false : false).length, props.decrypt.decrypt.coupons.length]} />
+                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports && props.decrypt && !props.decrypt.loading && props.decrypt.decrypt && called && !loading && data && data.findUsingZipCode ? (
+                                        <HorizontalGraph values={[data.findUsingZipCode.length == 0 ? 0 : data.findUsingZipCode[0].similar.length + 1, props.allMyReports.allMyReports.length, props.allMyReports.allMyReports.filter(a => a.baseParent != null ? a.baseParent.noOfReports > 12 ? true : false : false).length, props.decrypt.decrypt.coupons.length]} />
                                     ) :
                                         <HorizontalGraph values={[0, 0, 0, 0]} />
                                 }
@@ -192,7 +192,7 @@ const HomepageSide = (props) => {
                             <div className="col s8 offset-s2">
                                 {
                                     called && !loading && data ?
-                                        <StatsCard text="Total Reports in your area" value={data && data.findUsingZipCode && data.findUsingZipCode.length != 0 && data.findUsingZipCode[0].similar.length + 1} props={props.props} /> :
+                                        <StatsCard text="Total Reports in your area" value={data && data.findUsingZipCode && data.findUsingZipCode.length != 0 ?  data.findUsingZipCode[0].similar.length + 1 : 0} props={props.props} /> :
                                         <StatsCard text="Total Reports in your area" props={props.props} />
                                 }
                             </div>
