@@ -51,6 +51,12 @@ export const routes = [
         eventKey: 8
     },
     {
+        name: 'Add Tender',
+        link: '/admin/add/tender',
+        icon: 'gift',
+        eventKey: 9
+    },
+    {
         name: 'Logout',
         link: '/',
         icon: 'sign-out',

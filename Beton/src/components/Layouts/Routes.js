@@ -1,4 +1,4 @@
-
+    
 // add all routes here
 
 export const routes = [
@@ -19,6 +19,12 @@ export const routes = [
         link: '/ReportPage',
         icon: 'exclamation-triangle',
         eventKey: 3
+    },
+    {
+        name: 'Profile',
+        link: '/Profile',
+        icon: 'user',
+        eventKey: 4
     },
     {
         name: 'Logout',

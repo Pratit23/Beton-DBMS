@@ -119,9 +119,9 @@ export default function TenderSide() {
                                         </svg>
                                         {
                                             currentTab == 0 ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '100px', paddingTop: '25px' }}>
-                                                    <div className="card-panel" onClick={() => setShowTenders(true)} style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
+                                                    <div className="card-panel col s10 offset-s1" onClick={() => setShowTenders(true)} style={{ borderRadius: "24px", padding: "10px" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
@@ -137,8 +137,8 @@ export default function TenderSide() {
                                                     </div>
                                                         </div>
                                                     </div>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                    <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
@@ -154,8 +154,8 @@ export default function TenderSide() {
                                                     </div>
                                                         </div>
                                                     </div>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
@@ -176,9 +176,9 @@ export default function TenderSide() {
                                         }
                                         {
                                             currentTab == 1 ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '100px', paddingTop: '25px' }}>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
+                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
@@ -194,8 +194,8 @@ export default function TenderSide() {
                                                     </div>
                                                         </div>
                                                     </div>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
@@ -211,8 +211,8 @@ export default function TenderSide() {
                                                     </div>
                                                         </div>
                                                     </div>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
@@ -233,9 +233,9 @@ export default function TenderSide() {
                                         }
                                         {
                                             currentTab == 2 ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '100px', paddingTop: '25px' }}>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
+                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
@@ -251,8 +251,8 @@ export default function TenderSide() {
                                                     </div>
                                                         </div>
                                                     </div>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
@@ -268,8 +268,8 @@ export default function TenderSide() {
                                                     </div>
                                                         </div>
                                                     </div>
-                                                    <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper">
+                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">

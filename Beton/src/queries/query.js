@@ -44,18 +44,36 @@ mutation($name: String!, $email: String!, $password: String!, $dob: String!, $ad
     }
 }
 `
+const addContractor = gql`
+mutation($name: String!, $email: String!, $password: String!, $address: String!, $profile: String!){
+    addContractor(name: $name, email: $email, password: $password, address: $address, profile: $profile){
+      name
+      email
+    }
+}
+`
 
 const loginQuery = gql`
   mutation($email:String!, $password: String!){
     login(email:$email, password:$password){
       name
       email
-      password
       dob
       token
     }
   }
 `;
+
+const loginContractor = gql`
+  mutation($email:String!, $password: String!){
+    loginContractor(email:$email, password:$password){
+      name
+      email
+      token
+    }
+  }
+`;
+
 
 const existingBaseCoordinate = gql`
 query($latitude: String!, $longitude: String!){
@@ -447,7 +465,9 @@ export {
   allMyReports,
   adminLogin,
   allReports,
-  allFeedbackReports
+  allFeedbackReports,
+  loginContractor,
+  addContractor
 };
 
 

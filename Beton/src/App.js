@@ -20,6 +20,8 @@ import AddCoupons from './components/Layouts/Advertiser/AddCoupons.js';
 import AllCoupons from './components/Layouts/Advertiser/AllCoupons.js';
 import AddAdvertisment from './components/Layouts/Advertiser/AddAdvertisment.js';
 import AdminLogin from './components/Auth/Admin/AdminLogin.js';
+import LoginPage from './components/Auth/Contractors/LoginPage';
+import SignupPage from './components/Auth/Contractors/SignupPage';
 import AdminHomepage from './components/Layouts/Admin/AdminHomepage.js';
 import Verified from './components/Layouts/Admin/Verified.js';
 import All from './components/Layouts/Admin/All.js';
@@ -27,6 +29,7 @@ import AllUsers from './components/Layouts/Admin/AllUsers';
 import Feedback from './components/Layouts/Admin/Feedback.js';
 import ContractorHomepage from './components/Layouts/Contractors/ContractorHomepage'
 import Tenders from './components/Layouts/Contractors/Contractor Components/Tenders'
+import Profile from './components/Layouts/Profile'
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -58,6 +61,7 @@ const App = (props) => {
             <Route exact path='/' component={LandingPage} />
             <Route exact path='/login' component={SignIn} />
             <Route exact path='/Signup' component={SignUpRevised} />
+            <Route exact path='/Profile' component={Profile} />
 
             {/* auth routes below */}
             <Route exact path='/Homepage' component={Homepage} />
@@ -84,6 +88,8 @@ const App = (props) => {
             <Route exact path='/admin/users' component={AllUsers} />
 
             {/* Contractor routes */}
+            <Route exact path='/contractor/login' component={LoginPage} />
+            <Route exact path='/contractor/signup' component={SignupPage} />
             <Route exact path='/contractor/homepage' component={ContractorHomepage} />
             <Route exact path='/contractor/tenders' component={Tenders} />
           </Switch>
