@@ -161,7 +161,7 @@ const TendersType = new GraphQLObjectType({
         contractorId: {
             type: ContractorsType || GraphQLString,
             async resolve(parent, args) {
-                if(parent.contractorId == "") return;
+                if (parent.contractorId == "") return;
                 return await Contractors.findById(parent.contractorId)
             }
         },
@@ -175,7 +175,8 @@ const TendersType = new GraphQLObjectType({
                     }
                 })
             }
-        }
+        },
+        nameOfWork: { type: GraphQLString }
     })
 });
 
@@ -733,6 +734,16 @@ const RootQuery = new GraphQLObjectType({
             async resolve(parent, args) {
                 return await FeedbackReport.find();
             }
+        },
+        getSpecificReport: {
+            type: BaseReportsType,
+            args: {
+                id: { type: GraphQLString }
+            },
+            async resolve(parent, args) {
+                console.log(args.id);
+                return await BaseReports.findById(args.id);
+            }
         }
     }
 })
@@ -961,7 +972,7 @@ const Mutation = new GraphQLObjectType({
                 profile: { type: GraphQLString },
             },
             async resolve(parent, args) {
-                if(!args.email || !args.password || !args.name || !args.address || !args.profile) {
+                if (!args.email || !args.password || !args.name || !args.address || !args.profile) {
                     throw new Error("Kindly provide all details");
                 }
                 // hashing passwords
@@ -994,7 +1005,7 @@ const Mutation = new GraphQLObjectType({
                 password: { type: GraphQLString },
             },
             async resolve(parent, args) {
-                if(!args.email || !args.password) {
+                if (!args.email || !args.password) {
                     throw new Error("Kindly provide all details");
                 }
                 return await Contractors.findOne({ email: args.email }).then(async (res) => {
@@ -1007,11 +1018,11 @@ const Mutation = new GraphQLObjectType({
                         throw new Error("Invalid Email and Password combination :(")
                     }
                     let isVerified = res.isVerified;
-                    if(isVerified == true) {
+                    if (isVerified == true) {
                         const token = jwt.sign({ _id: res._id }, JWT_SEC);
                         res['token'] = token;
                         return res;
-                    }else{
+                    } else {
                         return;
                     }
                 })

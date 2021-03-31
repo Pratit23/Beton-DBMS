@@ -12,7 +12,7 @@ export default function Profile() {
                     <div className="demo" id="main" style={{ overflowY: "hidden" }} >
                         <div className="row">
                             <div className="col s12" style={{ height: '40vh', position: 'relative', backgroundImage: `url(${CoverImg})`, backgroundSize: 'cover' }}>
-                                <img style={{ height: '150px', width: '150px', borderRadius: '50%', position: 'absolute', top: '27%', left: '40%' }} src={ProfileImg} id='img1' alt="Image not loading" />
+                                <img style={{ height: '150px', width: '150px', borderRadius: '50%', position: 'absolute', top: 'calc(50% - 75px)', left: 'calc(50% - 75px)' }} src={ProfileImg} id='img1' alt="Image not loading" />
                             </div>
                             <div className="col s12" style={{ height: '60vh' }}>
                                 <div style={{ height: '100%', width: '100%', paddingLeft: '40px' }}>
@@ -44,8 +44,8 @@ export default function Profile() {
                             <h3 style={{ paddingLeft: '20px', paddingTop: '20px' }}>Your Reports</h3>
                         </div>
                         <div className='col s12'>
-                            
-                            <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
+
+                            <div className="card-panel col s12" style={{ borderRadius: "24px", padding: "10px" }} >
                                 <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                     <div className="col s2 center" style={{ height: "50px", width: "50px", borderRadius: "100%", backgroundImage: `url(${"https://source.unsplash.com/800x600/?beach"})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                     </div>
@@ -57,12 +57,9 @@ export default function Profile() {
                                             This is the address | 416520 | Click to know more
                                         </p>
                                     </div>
-                                    <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                        ➜
-                                    </div>
                                 </div>
                             </div>
-                            <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
+                            <div className="card-panel col s12" style={{ borderRadius: "24px", padding: "10px" }} >
                                 <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                     <div className="col s2 center" style={{ height: "50px", width: "50px", borderRadius: "100%", backgroundImage: `url(${"https://source.unsplash.com/800x600/?beach"})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                     </div>
@@ -74,12 +71,9 @@ export default function Profile() {
                                             This is the address | 416520 | Click to know more
                                         </p>
                                     </div>
-                                    <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                        ➜
-                                    </div>
                                 </div>
                             </div>
-                            <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
+                            <div className="card-panel col s12" style={{ borderRadius: "24px", padding: "10px" }} >
                                 <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                     <div className="col s2 center" style={{ height: "50px", width: "50px", borderRadius: "100%", backgroundImage: `url(${"https://source.unsplash.com/800x600/?beach"})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                     </div>
@@ -91,12 +85,9 @@ export default function Profile() {
                                             This is the address | 416520 | Click to know more
                                         </p>
                                     </div>
-                                    <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                        ➜
-                                    </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

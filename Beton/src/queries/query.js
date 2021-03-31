@@ -18,6 +18,8 @@ const users = gql`
       id
       image
       location
+      address
+      noOfReports
     }
     coupons{
       id
@@ -32,8 +34,7 @@ const users = gql`
       }
     }
   }
-}
-`
+}`
 
 const addUser = gql`
 mutation($name: String!, $email: String!, $password: String!, $dob: String!, $address: String!, $profile: String!){
@@ -438,6 +439,43 @@ const allFeedbackReports = gql`
 }
 `
 
+const getSpecificReport = gql`
+query($id: String!){
+  getSpecificReport(id: $id){
+    id
+    image
+    address
+    location
+    reportedAt
+    reportedOn
+    resolved
+    noOfReports
+    userID{
+      id
+      name
+      profile
+      email
+      karma
+    }
+    similar{
+      id
+      image
+      location
+      address
+      reportedAt
+      reportedOn
+      userID{
+        id
+        name
+        profile
+        email
+        karma
+      }
+    }
+  }
+}
+`
+
 
 export {
   users,
@@ -467,7 +505,8 @@ export {
   allReports,
   allFeedbackReports,
   loginContractor,
-  addContractor
+  addContractor,
+  getSpecificReport
 };
 
 
