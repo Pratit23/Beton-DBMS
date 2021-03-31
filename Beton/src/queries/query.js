@@ -222,6 +222,10 @@ const allBaseReports = gql`
     id
     location
     noOfReports
+    address
+    reportedAt
+    reportedOn
+    image
     userID{
       name
       id

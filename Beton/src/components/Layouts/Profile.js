@@ -44,7 +44,6 @@ export default function Profile() {
                             <h3 style={{ paddingLeft: '20px', paddingTop: '20px' }}>Your Reports</h3>
                         </div>
                         <div className='col s12'>
-                            
                             <div className="card-panel" style={{ borderRadius: "24px", padding: "10px" }} >
                                 <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                     <div className="col s2 center" style={{ height: "50px", width: "50px", borderRadius: "100%", backgroundImage: `url(${"https://source.unsplash.com/800x600/?beach"})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
