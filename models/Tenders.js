@@ -39,7 +39,10 @@ const tenderSchema = new mongoose.Schema({
         ref: "Users",
         require: true
     },
-
+    nameOfWork: {
+        type: String,
+        require: true
+    }
 });
 
 module.exports = mongoose.model("Tenders", tenderSchema);

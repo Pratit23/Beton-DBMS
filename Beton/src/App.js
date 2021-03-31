@@ -31,6 +31,7 @@ import ContractorHomepage from './components/Layouts/Contractors/ContractorHomep
 import Tenders from './components/Layouts/Contractors/Contractor Components/Tenders'
 import Profile from './components/Layouts/Profile'
 import AddTender from './components/Layouts/Admin/AdminComponents/AddTender'
+import SpecificReport from './components/Layouts/Admin/SpecificReport.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -88,6 +89,7 @@ const App = (props) => {
             <Route exact path='/admin/feedback/reports' component={Feedback} />
             <Route exact path='/admin/users' component={AllUsers} />
             <Route exact path='/admin/add/tender' component={AddTender} />
+            <Route exact path='/admin/report/:id' component={SpecificReport} />
 
             {/* Contractor routes */}
             <Route exact path='/contractor/login' component={LoginPage} />
