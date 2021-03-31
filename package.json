@@ -31,6 +31,7 @@
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
-    "mongoose": "^5.11.15"
+    "mongoose": "^5.11.15",
+    "polyline-encoded": "0.0.9"
   }
 }

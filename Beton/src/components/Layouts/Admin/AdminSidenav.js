@@ -38,7 +38,7 @@ class AdminSidenav extends React.Component {
 
         return (
 
-            <div className="sidenav" id="mySidenav">
+            <div className="sidenav" id="mySidenav" style={{overflowY: 'hidden'}}>
                 {
                     expanded ? (
                         <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial", marginTop: "15px" }} >Beton</h3>

@@ -9,6 +9,9 @@ const geolib = require('geolib');
 const User = require('../models/user')
 const Admin = require('../models/admin')
 const Advertisers = require('../models/advertisers')
+const Tenders = require('../models/Tenders')
+const Contractors = require('../models/contractors')
+const Bids = require('../models/Bids')
 const Coupon = require('../models/coupons')
 const Advertisement = require('../models/advertisments')
 const FeedbackReport = require('../models/FeedbackReport')
@@ -136,6 +139,62 @@ const AdminType = new GraphQLObjectType({
     })
 });
 
+const TendersType = new GraphQLObjectType({
+    name: "Tenders",
+    fields: () => ({
+        id: { type: GraphQLID },
+        address: { type: GraphQLString },
+        source: { type: GraphQLString },
+        destination: { type: GraphQLString },
+        baseReports: {
+            type: new GraphQLList(BaseReportsType),
+            async resolve(parent, args) {
+                return await BaseReports.find({
+                    _id: {
+                        $in: parent.baseReports
+                    }
+                })
+            }
+        },
+        isAssigned: { type: GraphQLBoolean },
+        isCompleted: { type: GraphQLBoolean },
+        contractorId: {
+            type: ContractorsType || GraphQLString,
+            async resolve(parent, args) {
+                if(parent.contractorId == "") return;
+                return await Contractors.findById(parent.contractorId)
+            }
+        },
+        amount: { type: GraphQLString },
+        bids: {
+            type: new GraphQLList(BidsType),
+            async resolve(parent, args) {
+                return await Bids.find({
+                    _id: {
+                        $in: parent.bids
+                    }
+                })
+            }
+        }
+    })
+});
+
+const BidsType = new GraphQLObjectType({
+    name: "Bids",
+    fields: () => ({
+        id: { type: GraphQLID },
+        amount: { type: GraphQLString },
+        contractorId: {
+            type: ContractorsType,
+            async resolve(parent, args) {
+                return await Contractors.findById(parent.contractorId)
+            }
+        },
+        bidedAt: { type: GraphQLString },   // time
+        bidedOn: { type: GraphQLString },   // date
+    })
+})
+
 const ContractorsType = new GraphQLObjectType({
     name: "Contractor",
     fields: () => ({
@@ -143,7 +202,20 @@ const ContractorsType = new GraphQLObjectType({
         email: { type: GraphQLString },
         password: { type: GraphQLString },
         address: { type: GraphQLString },
-        name: { type: GraphQLString }
+        name: { type: GraphQLString },
+        isVerified: { type: GraphQLBoolean },
+        bidsMade: {
+            type: new GraphQLList(BidsType),
+            async resolve(parent, args) {
+                return await Bids.find({
+                    _id: {
+                        $in: parent.bidsMade
+                    }
+                })
+            }
+        },
+        token: { type: GraphQLString },
+        profile: { type: GraphQLString }
     })
 });
 
@@ -878,6 +950,73 @@ const Mutation = new GraphQLObjectType({
             }
         }, //* add an advertisment done
 
+        // * add contractor
+        addContractor: {
+            type: ContractorsType,
+            args: {
+                email: { type: GraphQLString },
+                password: { type: GraphQLString },
+                address: { type: GraphQLString },
+                name: { type: GraphQLString },
+                profile: { type: GraphQLString },
+            },
+            async resolve(parent, args) {
+                if(!args.email || !args.password || !args.name || !args.address || !args.profile) {
+                    throw new Error("Kindly provide all details");
+                }
+                // hashing passwords
+                let hashedPwd = await bcrypt.hash(args.password, 15)
+                if (!hashedPwd) {
+                    throw new Error('Our servers seems to be a lil busy today. Try again later?')
+                }
+                let newContractor = new Contractors({
+                    email: args.email,
+                    password: hashedPwd,
+                    address: args.address,
+                    name: args.name,
+                    bidsMade: [],
+                    isVerified: false,
+                    profile: args.profile
+                });
+                let results = await newContractor.save();
+                console.log(results);
+                if (!results) {
+                    throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                }
+                return results
+            }
+        }, // * add contractor done
+        // * login contractor
+        loginContractor: {
+            type: ContractorsType,
+            args: {
+                email: { type: GraphQLString },
+                password: { type: GraphQLString },
+            },
+            async resolve(parent, args) {
+                if(!args.email || !args.password) {
+                    throw new Error("Kindly provide all details");
+                }
+                return await Contractors.findOne({ email: args.email }).then(async (res) => {
+                    if (!res) {
+                        throw new Error("Yayzow! We can't find an account with that email. You gotta register first, you know ¯\_(ツ)_/¯");
+                    }
+                    // checking the password comparison
+                    let didMatch = await bcrypt.compare(args.password, res.password)
+                    if (!didMatch) {
+                        throw new Error("Invalid Email and Password combination :(")
+                    }
+                    let isVerified = res.isVerified;
+                    if(isVerified == true) {
+                        const token = jwt.sign({ _id: res._id }, JWT_SEC);
+                        res['token'] = token;
+                        return res;
+                    }else{
+                        return;
+                    }
+                })
+            }
+        }, // * login contractor done
         // * add a new coupon
         addCoupon: {
             type: GraphQLBoolean,
