@@ -15,9 +15,9 @@ const { MarkerClusterer } = require("react-google-maps/lib/components/addons/Mar
 const MapWithAMarkerClusterer = compose(
     withProps({
         googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w&v=3.exp&libraries=geometry,drawing,places",
-        loadingElement: <div id="main" style={{ height: `100%`, width: "100%", margin: "0" }}>Loading...</div>,
-        containerElement: <div id="main" style={{ height: '100vh', width: "100%", margin: "0" }} />,
-        mapElement: <div style={{ height: '100%', width: "100%", margin: "0", borderRadius: "24px" }} />,
+        loadingElement: <div id="main" style={{ height: `75%`, width: "100%", margin: "0" }}>Loading...</div>,
+        containerElement: <div id="main" style={{ height: '75vh', width: "100%", margin: "0" }} />,
+        mapElement: <div style={{ height: '75%', width: "100%", margin: "0", borderRadius: "24px" }} />,
     }),
     withHandlers({
         onMarkerClustererClick: () => (markerClusterer) => {

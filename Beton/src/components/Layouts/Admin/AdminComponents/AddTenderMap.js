@@ -4,6 +4,8 @@ import AddTender from "./AddTender";
 import MapStyles from '../../../Maps/GoogleMapStyles'
 import { geolocated } from "react-geolocated";
 import { flowRight as compose } from 'lodash';
+import { graphql, useLazyQuery } from 'react-apollo';
+import { isOnLine } from '../../../../queries/query'
 
 const Map = withScriptjs(
     withGoogleMap(props => (
@@ -29,7 +31,9 @@ const Map = withScriptjs(
     ))
 );
 
-const AddTenderMap = () => {
+var coords = []
+
+const AddTenderMap = (props) => {
 
     const [marks, setMarks] = useState([])
     const [directions, setDirections] = useState(null)
@@ -45,6 +49,15 @@ const AddTenderMap = () => {
     const deleteMark = () => {
         setMarks([])
     };
+
+    const [isOn, { called, loading, data }] = useLazyQuery(
+        isOnLine,
+        {
+            variables: {
+                encoded: coords
+            }
+        }
+    );
 
     const getDirection = async () => {
         if (marks.length > 1) {
@@ -70,39 +83,64 @@ const AddTenderMap = () => {
                 }
             );
 
-            // const lat = marks[0].lat()
-            // const lng = marks[0].lng()
-            // const lat1 = marks[1].lat()
-            // const lng1 = marks[1].lng()
-            // const fromName = lat + "," + lng
-            // const toName = lat1 + "," + lng1
-            // let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${fromName}&destination=${toName}&mode=driving&key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w`)
-            // let respJson = await resp.json()
-            // console.log("JSON response: ", respJson)
+            const lat = marks[0].lat()
+            const lng = marks[0].lng()
+            const lat1 = marks[1].lat()
+            const lng1 = marks[1].lng()
+            const fromName = lat + "," + lng
+            const toName = lat1 + "," + lng1
+            let resp = await fetch(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/directions/json?origin=${fromName}&destination=${toName}&mode=driving&key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w`)
+            let respJson = await resp.json()
+            console.log("JSON response: ", respJson)
 
-            // var encoded = respJson.routes[0].legs[0].steps.map((obj, key) => {
-            //     return obj.polyline.points
-            // })
+            const routeData = {
+                distance: respJson.routes[0].legs[0].distance.text,
+                start_address: respJson.routes[0].legs[0].start_address,
+                end_address: respJson.routes[0].legs[0].end_address,
+                start_location: respJson.routes[0].legs[0].start_location,
+                end_location: respJson.routes[0].legs[0].end_location
+            }
+
+            console.log("Route data: ", routeData)
+
+            props.getData(routeData)
+
+            var encoded = respJson.routes[0].legs[0].steps.map((obj, key) => {
+                return obj.polyline.points
+            })
+
+            coords = [...encoded]
+            isOn();
+
+            if (called && loading) {
+                console.log("Patience is virtue")
+            }
+
+            console.log("Encoded: ", encoded)
         }
     }
 
+    // if (data) {
+    //     props.getData(routeData)
+    // }
+
     useEffect(() => {
         getDirection()
-    })
+    }, [marks])
 
     return (
         <div>
-            <button onClick={() => deleteMark()}>DELETE MARKS</button>
             <Map
                 googleMapURL="http://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w"
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `400px` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
+                loadingElement={<div style={{ height: `100%`, borderRadius: '24px' }} />}
+                containerElement={<div style={{ height: `400px`, borderRadius: '24px' }} />}
+                mapElement={<div style={{ height: `100%`, borderRadius: '24px' }} />}
                 onMapClick={(e) => setMark(e)}
                 marks={marks}
                 directions={directions}
                 showDirec={showDirections}
             />
+            <button onClick={() => deleteMark()}>DELETE MARKS</button>
         </div>
     );
 }

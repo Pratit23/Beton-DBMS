@@ -107,7 +107,7 @@ const ReportDetails = ({ props, getSpecificReport }) => {
                                 </div>
                             </div>
 
-                            <div className="col s4">
+                            <div className="col s4" style={{ height: '100%', overflow: 'auto'}}>
                                 <h4 style={{ margin: "30px 0 0 0" }}>Similar Reports</h4>
                                 <hr className="divider" />
                                 {
