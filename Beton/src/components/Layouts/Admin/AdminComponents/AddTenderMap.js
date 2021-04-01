@@ -122,9 +122,11 @@ const AddTenderMap = (props) => {
         }
     }
 
-    // if (data) {
-    //     props.getData(routeData)
-    // }
+    if (data) {
+        var num = data.isOnLine.length
+        console.log("Num: ", num)
+        props.getNumPotholes(num)
+    }
 
     useEffect(() => {
         getDirection()

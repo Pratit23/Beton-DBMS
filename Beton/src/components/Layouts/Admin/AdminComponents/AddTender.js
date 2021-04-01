@@ -6,10 +6,10 @@ import { flowRight as compose } from 'lodash';
 import { Icon } from 'rsuite'
 import AddTenderMap from '../AdminComponents/AddTenderMap'
 import GeneralInput from '../../../Buttons/GeneralInput'
-import GeneralDOB from '../../../Buttons/GeneralDOB'
+import GeneralDOB from '../../../Buttons/GeneralDOB1'
 
 var lo = ''
-//var sortedReports = []
+//var sortedReports = [] 
 
 function AddTender(props) {
 
@@ -18,6 +18,7 @@ function AddTender(props) {
     const [sortedReports, setSortedReports] = useState([])
     const [mapData, setMapData] = useState(null)
     const [showDirec, setShowDirec] = useState(true)
+    const [numPotholes, setNumPotholes] = useState(null)
 
     const searchZip = () => {
         setSortedReports([])
@@ -41,6 +42,11 @@ function AddTender(props) {
         console.log("Get data is working: ", data)
         setMapData(data)
         console.log("Map data: ", mapData)
+    }
+
+    const getNumPotholes = (data) => {
+        console.log("Num of potholes: ", data)
+        setNumPotholes(data)
     }
 
     const resetInput = () => {
@@ -87,7 +93,7 @@ function AddTender(props) {
                     <div className="demo" id="main" style={{ overflowY: "auto" }} >
                         <div className="row" >
                             <div className="col s12" style={{ paddingTop: '2vh', paddingLeft: '2vw', paddingRight: '2vw' }}>
-                                <AddTenderMap getData={getData} showDirec={showDirec}/>
+                                <AddTenderMap getData={getData} showDirec={showDirec} getNumPotholes={getNumPotholes}/>
                             </div>
                             <div className="col s12">
                                 {
@@ -102,6 +108,7 @@ function AddTender(props) {
                                                         <p>Distance: {mapData.distance}</p>
                                                         <p>{mapData.start_address}</p>
                                                         <p>{mapData.end_address}</p>
+                                                        <p>No. of potholes: {numPotholes}</p>
                                                     </div>
                                                 </div>
                                                 <div className="col s7">
@@ -165,7 +172,7 @@ function AddTender(props) {
                                             props.allBaseReports.allBaseReports.map((place, key) => {
 
                                                 return (
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                    <div key={key} className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
                                                         <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
                                                             <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${place.image})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
                                                             </div>

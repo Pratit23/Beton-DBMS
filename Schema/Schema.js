@@ -1346,7 +1346,41 @@ const Mutation = new GraphQLObjectType({
                     $inc: { "outreach": 1, "screentime": args.screentime }
                 });
             }
-        } // * update add done here
+        }, // * update add done here
+        // * add tender
+        addTender: {
+            type: TendersType,
+            args: {
+                address: { type: GraphQLString },
+                source: { type: GraphQLString },
+                destination: { type: GraphQLString },
+                baseReports: { type: new GraphQLList(GraphQLString) },
+                amount: { type: GraphQLString },
+                nameOfWork: { type: GraphQLString }
+            },
+            async resolve(parent, args) {
+                if(!args.address || !args.source || !args.destination || !args.baseReports || !args.amount || !args.nameOfWork){
+                    throw new Error("Kindly provide all details");
+                }
+                let obj = new Tenders({
+                    address: args.address,
+                    source: args.source,
+                    destination: args.destination,
+                    amount: args.amount,
+                    nameOfWork: args.nameOfWork,
+                    isAssigned: false,
+                    isCompleted: false,
+                    contractorId: "",
+                    bids: [],
+                    baseReports: args.baseReports
+                });
+                let fin = await obj.save();
+                if(!fin) {
+                    throw new Error("Something unexpected happened!")
+                }
+                return fin;
+            }
+        }, // * add tender done
     }
 })
 

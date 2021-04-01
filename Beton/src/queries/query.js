@@ -82,6 +82,22 @@ const allContractors = gql`
 }
 `
 
+const addTender = gql`
+mutation($address: String!, $source: String!, $destination: String!, $baseReports: [String]!, $amount: String!, $nameOfWork: String!){
+  addTender(address: $address, source: $source, destination: $destination, baseReports: $baseReports, amount: $amount, nameOfWork: $nameOfWork){
+    id
+    address
+    source
+    destination
+    baseReports
+    amount
+    nameOfWork
+    isAssigned
+    isCompleted
+  }
+}
+`
+
 const addUser = gql`
 mutation($name: String!, $email: String!, $password: String!, $dob: String!, $address: String!, $profile: String){
     addUser(name: $name, email: $email, password: $password, dob: $dob, address: $address, profile: $profile){
@@ -560,7 +576,8 @@ export {
   addContractor,
   getSpecificReport,
   toggleActivation,
-  allContractors
+  allContractors,
+  addTender
 };
 
 

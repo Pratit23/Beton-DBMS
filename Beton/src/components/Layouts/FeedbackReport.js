@@ -92,7 +92,7 @@ const FeedbackReport = (props) => {
                     </div>
                     <div className="input-field col s12 m7">
                         <textarea id="textarea1" className="materialize-textarea"></textarea>
-                        <label for="textarea1">Let us know what we did wrong!</label>
+                        <label htmlFor="textarea1">Let us know what we did wrong!</label>
                     </div>
                 </div>
 
