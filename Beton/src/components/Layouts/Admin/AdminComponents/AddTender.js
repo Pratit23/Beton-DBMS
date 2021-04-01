@@ -70,10 +70,10 @@ function AddTender(props) {
     return (
         <div>
             <Sidenav />
-            <div className="row">
-                <div className="col s8" style={{ height: '100vh' }}>
+            <div className="row" style={{ height: "100%" }}>
+                <div className="col s8" style={{ height: '100%' }}>
                     <div className="demo" id="main" style={{ overflowY: "auto" }} >
-                        <div className="row">
+                        <div className="row" >
                             <div className="col s12" style={{ paddingTop: '2vh', paddingLeft: '2vw', paddingRight: '2vw' }}>
                                 <AddTenderMap getData={getData} />
                             </div>
@@ -123,7 +123,7 @@ function AddTender(props) {
                         </div>
                     </div>
                 </div>
-                <div className="col s4" style={{ height: '100vh' }}>
+                <div className="col s4" style={{ height: '100%', overflow: "auto" }}>
                     <div className="row">
                         <div className='col s12'>
                             <h3 style={{ paddingLeft: '20px', paddingTop: '20px' }}>All Reports</h3>
