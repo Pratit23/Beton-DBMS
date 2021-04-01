@@ -17,6 +17,7 @@ function AddTender(props) {
     const [allReports, setAllReports] = useState({})
     const [sortedReports, setSortedReports] = useState([])
     const [mapData, setMapData] = useState(null)
+    const [showDirec, setShowDirec] = useState(true)
 
     const searchZip = () => {
         setSortedReports([])
@@ -40,6 +41,11 @@ function AddTender(props) {
         console.log("Get data is working: ", data)
         setMapData(data)
         console.log("Map data: ", mapData)
+    }
+
+    const resetInput = () => {
+        setShowAll(true)
+        document.getElementById('autocomplete-input').value = ''
     }
 
     useEffect(() => {
@@ -67,6 +73,12 @@ function AddTender(props) {
 
     console.log(props)
 
+    const cancel = () => {
+        console.log("Cancel running")
+        setShowDirec(false)
+        setMapData(null)
+    }
+
     return (
         <div>
             <Sidenav />
@@ -75,7 +87,7 @@ function AddTender(props) {
                     <div className="demo" id="main" style={{ overflowY: "auto" }} >
                         <div className="row">
                             <div className="col s12" style={{ paddingTop: '2vh', paddingLeft: '2vw', paddingRight: '2vw' }}>
-                                <AddTenderMap getData={getData} />
+                                <AddTenderMap getData={getData} showDirec={showDirec}/>
                             </div>
                             <div className="col s12">
                                 {
@@ -105,8 +117,8 @@ function AddTender(props) {
                                                     </div>
                                                 </div>
                                                 <div className="col s12 right-align" style={{ paddingRight: '80px', paddingTop: '20px' }}>
-                                                    <a class="btn red" style={{ marginRight: '10px', borderRadius: '24px' }}><i class="material-icons right">close</i>Cancel</a>
-                                                    <a class="btn blue" style={{ borderRadius: '24px' }}><i class="material-icons right">arrow_forward</i>Submit</a>
+                                                    <div class="btn red" onClick={() => cancel()} style={{ marginRight: '10px', borderRadius: '24px' }}><i class="material-icons right">close</i>Cancel</div>
+                                                    <div class="btn blue" style={{ borderRadius: '24px' }}><i class="material-icons right">arrow_forward</i>Submit</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,7 +148,7 @@ function AddTender(props) {
                                             <label htmlFor="autocomplete-input">Search Zip Codes</label>
                                         </div>
                                         <div className="col s1" style={{ paddingLeft: '0', paddingTop: '30px' }}>
-                                            <Icon onClick={() => setShowAll(true)} className="black-text" icon='close' />
+                                            <Icon onClick={() => resetInput()} className="black-text" icon='close' />
                                         </div>
                                         <div className="col s3" style={{ paddingLeft: '0' }}>
                                             <div onClick={() => searchZip()} className="btn" style={{ backgroundColor: '#0099FF', borderRadius: '24px', marginTop: '24px' }}>Search</div>

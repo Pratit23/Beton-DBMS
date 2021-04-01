@@ -37,7 +37,7 @@ const AddTenderMap = (props) => {
 
     const [marks, setMarks] = useState([])
     const [directions, setDirections] = useState(null)
-    const [showDirections, setShowDirections] = useState(false)
+    const [showDirections, setShowDirections] = useState(props.showDirec)
 
     const setMark = e => {
         console.log("E: ", e)
@@ -46,9 +46,11 @@ const AddTenderMap = (props) => {
         }
     };
 
-    const deleteMark = () => {
-        setMarks([])
-    };
+    useEffect(() => {
+        if(props.showDirec == false) {
+            setMarks([])
+        }
+    })
 
     const [isOn, { called, loading, data }] = useLazyQuery(
         isOnLine,
@@ -130,6 +132,9 @@ const AddTenderMap = (props) => {
 
     return (
         <div>
+        {
+            console.log("Show directioins: ", showDirections)
+        }
             <Map
                 googleMapURL="http://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w"
                 loadingElement={<div style={{ height: `100%`, borderRadius: '24px' }} />}
@@ -138,9 +143,8 @@ const AddTenderMap = (props) => {
                 onMapClick={(e) => setMark(e)}
                 marks={marks}
                 directions={directions}
-                showDirec={showDirections}
+                showDirec={props.showDirec}
             />
-            <button onClick={() => deleteMark()}>DELETE MARKS</button>
         </div>
     );
 }
