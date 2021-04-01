@@ -6,7 +6,6 @@ import Lottie from 'react-lottie';
 import loading from '../../../../images/Lottie/loading.json'
 import moreDetails from '../../../../images/Lottie/moreDetails.json'
 import CoverImg from '../../../../images/instructionCover.png'
-import ProfileImg from '../../../../images/two.png'
 import { Link } from 'react-router-dom';
 
 const UsersTab = (props) => {

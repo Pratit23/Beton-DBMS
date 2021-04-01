@@ -19,7 +19,11 @@ const bidSchema = new mongoose.Schema({
         ref: "Users",
         require: true
     },
-
+    tenderId: {
+        type: ObjectId,
+        ref: "Tenders",
+        require: true
+    }
 });
 
 module.exports = mongoose.model("Bids", bidSchema);

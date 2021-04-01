@@ -193,6 +193,12 @@ const BidsType = new GraphQLObjectType({
         },
         bidedAt: { type: GraphQLString },   // time
         bidedOn: { type: GraphQLString },   // date
+        tenderId: {
+            type: TendersType,
+            async resolve(parent, args) {
+                return await Tenders.findById(parent.tenderId);
+            }
+        }
     })
 })
 
@@ -240,6 +246,7 @@ const AdvertisersType = new GraphQLObjectType({
                 })
             }
         },
+        isVerified: { type: GraphQLBoolean },
         advertisments: {
             type: new GraphQLList(AdvertisementType),
             async resolve(parent, args) {
@@ -481,6 +488,12 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(AdvertisersType),
             resolve(parent, args) {
                 return Advertisers.find()
+            }
+        },
+        allContractors: {
+            type: new GraphQLList(ContractorsType),
+            resolve(parent, args) {
+                return Contractors.find()
             }
         },
         allCoupons: {
@@ -757,7 +770,7 @@ const Mutation = new GraphQLObjectType({
             type: UserType,
             args: {
                 name: { type: new GraphQLNonNull(GraphQLString) },
-                profile: { type: new GraphQLNonNull(GraphQLString) },
+                profile: { type: GraphQLString },
                 password: { type: new GraphQLNonNull(GraphQLString) },
                 email: { type: new GraphQLNonNull(GraphQLString) },
                 dob: { type: new GraphQLNonNull(GraphQLString) },
@@ -854,7 +867,8 @@ const Mutation = new GraphQLObjectType({
                             category: args.category,
                             password: hashedPwd,
                             coupons: [],
-                            advertisments: []
+                            advertisments: [],
+                            isVerified: false
                         })
                         // saving to db
                         let results = await newUser.save();
@@ -889,9 +903,14 @@ const Mutation = new GraphQLObjectType({
                     if (!didMatch) {
                         throw new Error("Invalid Email and Password combination :(")
                     }
-                    const token = jwt.sign({ _id: res._id }, JWT_SEC);
-                    res['token'] = token;
-                    return res;
+                    let isVerified = res.isVerified;
+                    if (isVerified == true) {
+                        const token = jwt.sign({ _id: res._id }, JWT_SEC);
+                        res['token'] = token;
+                        return res;
+                    } else {
+                        return;
+                    }
                 })
             }
         }, // * Advertiser login done
@@ -1028,6 +1047,35 @@ const Mutation = new GraphQLObjectType({
                 })
             }
         }, // * login contractor done
+        toggleActivation: {
+            type: GraphQLBoolean,
+            args: {
+                id: { type: GraphQLID },
+                type: { type: GraphQLString }
+            },
+            async resolve(parent, args) {
+                // console.log(args);
+                if (args.type == "advertiser") {
+                    let result = await Advertisers.findById(args.id);
+                    let fin = await Advertisers.findByIdAndUpdate(args.id, {
+                        "isVerified": !result["isVerified"]
+                    })
+                    if (!fin) {
+                        return false;
+                    }
+                    return true;
+                } else {
+                    let result = await Contractors.findById(args.id);
+                    let fin = await Contractors.findByIdAndUpdate(args.id, {
+                        "isVerified": !result["isVerified"]
+                    })
+                    if (!fin) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        },
         // * add a new coupon
         addCoupon: {
             type: GraphQLBoolean,
