@@ -117,7 +117,7 @@ const HomepageSide = (props) => {
                                             <span className="left">Recently reported at</span>
                                             <span className="right" style={{ fontWeight: "bolder" }}>
                                                 {
-                                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports ? (
+                                                    props.allMyReports && !props.allMyReports.loading && props.allMyReports.allMyReports && props.allMyReports.allMyReports.length != 0 ? (
                                                         props.allMyReports.allMyReports.sort(compare)[0]["reportedAt"]
                                                     ) : "Never"
                                                 }
@@ -192,7 +192,7 @@ const HomepageSide = (props) => {
                             <div className="col s8 offset-s2">
                                 {
                                     called && !loading && data ?
-                                        <StatsCard text="Total Reports in your area" value={data && data.findUsingZipCode && data.findUsingZipCode.length != 0 ?  data.findUsingZipCode[0].similar.length + 1 : 0} props={props.props} /> :
+                                        <StatsCard text="Total Reports in your area" value={data && data.findUsingZipCode && data.findUsingZipCode.length != 0 ? data.findUsingZipCode[0].similar.length + 1 : 0} props={props.props} /> :
                                         <StatsCard text="Total Reports in your area" props={props.props} />
                                 }
                             </div>

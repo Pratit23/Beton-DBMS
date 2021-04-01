@@ -2,23 +2,23 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
 
 const advertiserSchema = new mongoose.Schema({
-    email:{
-        type:String,
-        require:true
-    },
-    password :{
-        type:String,
-        require:true,
-    },
-    category:{
+    email: {
         type: String,
         require: true
     },
-    website:{
+    password: {
+        type: String,
+        require: true,
+    },
+    category: {
         type: String,
         require: true
     },
-    company:{
+    website: {
+        type: String,
+        require: true
+    },
+    company: {
         type: String,
         require: true
     },
@@ -29,7 +29,11 @@ const advertiserSchema = new mongoose.Schema({
     advertisments: [{
         type: ObjectId,
         ref: "Advertisments"
-    }]
+    }],
+    isVerified: {
+        type: Boolean,
+        require: true
+    },
 });
 
 module.exports = mongoose.model("Advertisers", advertiserSchema);

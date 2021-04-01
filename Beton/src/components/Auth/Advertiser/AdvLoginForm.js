@@ -24,13 +24,18 @@ const AdvLogin = (props) => {
                 password,
             }
         })
+        console.log(res)
         if (res && res.data && res.data.loginAdvertiser) {
             M.toast({ html: "Wohoo! You're in...ヽ(•‿•)ノ" });
             localStorage.setItem("token", res.data.loginAdvertiser.token)
             props.props.history.push("/advertiser/homepage");
         }
         else {
-            M.toast({ html: "Oopsie! Something went wrong!" })
+            if ('errors' in res) {
+                M.toast({ html: "Oopsie! Something went wrong!" })
+            } else {
+                M.toast({ html: "Your account has been deactivated! Contact us for further information." })
+            }
             setShowLoader(false)
         }
     }
@@ -54,10 +59,10 @@ const AdvLogin = (props) => {
                             <div className="indeterminate blue"></div>
                         </div>
                     </div>
-                ) : 
-                <div className="col s10 offset-s1 m9 offset-m2 l6 offset-l3">
-                    <SubmitButton text="Create" id="login-adv" func={handleSubmit} />
-                </div>
+                ) :
+                    <div className="col s10 offset-s1 m9 offset-m2 l6 offset-l3">
+                        <SubmitButton text="Create" id="login-adv" func={handleSubmit} />
+                    </div>
             }
         </form>
     )

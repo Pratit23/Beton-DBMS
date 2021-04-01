@@ -36,8 +36,54 @@ const users = gql`
   }
 }`
 
+const toggleActivation = gql`
+mutation($id: ID!, $type: String!){
+  toggleActivation(id: $id, type: $type)
+}
+`
+
+const allContractors = gql`
+{
+  allContractors{
+    id
+    email
+    address
+    name
+    isVerified
+    bidsMade{
+      id
+      amount
+      tenderId{
+        id
+        source
+        address
+        destination
+        isAssigned
+        isCompleted
+        nameOfWork
+        amount
+        contractorId{
+          id
+          email
+        }
+        bids{
+          id
+          amount
+          bidedAt
+          bidedOn
+        }
+      }
+      bidedAt
+      bidedOn
+    }
+    profile
+    
+  }
+}
+`
+
 const addUser = gql`
-mutation($name: String!, $email: String!, $password: String!, $dob: String!, $address: String!, $profile: String!){
+mutation($name: String!, $email: String!, $password: String!, $dob: String!, $address: String!, $profile: String){
     addUser(name: $name, email: $email, password: $password, dob: $dob, address: $address, profile: $profile){
       name
       email
@@ -287,6 +333,8 @@ const allAdvertisers = gql`
     email
     company
     website
+    category
+    isVerified
     coupons{
       id
       name
@@ -510,7 +558,9 @@ export {
   allFeedbackReports,
   loginContractor,
   addContractor,
-  getSpecificReport
+  getSpecificReport,
+  toggleActivation,
+  allContractors
 };
 
 
