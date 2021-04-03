@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { graphql } from 'react-apollo';
-import { flowRight as composey } from 'lodash';
+import { flowRight as composey, toInteger } from 'lodash';
 import MapStyles from '../../../Maps/GoogleMapStyles'
-import { allReports, allBaseReports, allFeedbackReports } from '../../../../queries/query';
 const fetch = require("isomorphic-fetch");
 const { compose, withProps, withHandlers } = require("recompose");
 const {
@@ -33,8 +32,8 @@ const MapWithAMarkerClusterer = compose(
     withGoogleMap
 )(props =>
     <GoogleMap
-        defaultZoom={3}
-        defaultCenter={{ lat: 25.0391667, lng: 121.525 }}
+        defaultZoom={10}
+        defaultCenter={{ lat: Number(((props.baseReports[0].location).split(" "))[0]), lng: Number(((props.baseReports[0].location).split(" "))[1]) }}
         options={{
             styles: MapStyles
         }}
@@ -45,89 +44,42 @@ const MapWithAMarkerClusterer = compose(
             enableRetinaIcons
             gridSize={60}
         >
-            {props.markers.length != 0 && props.markers.map(marker => {
-                if (marker == undefined) {
-                    return;
-                }
-                return (
-                    <Marker
-                        key={marker.photo_id}
-                        position={{ lat: marker.latitude, lng: marker.longitude }}
-                    />
-                )
-            })}
+            {
+                console.log("Props in tendermap: ", props),
+                props.baseReports && props.baseReports.map(marker => {
+                    return (
+                        <>
+                            {
+                                marker.similar.map((mark, k) => {
+                                    console.log("Mark: ", mark)
+                                    var tempArray = mark.location.split(" ")
+                                    var lat = Number(tempArray[0])
+                                    var lng = Number(tempArray[1])
+                                    return (
+                                        <Marker
+                                            key={k}
+                                            position={{ lat: lat, lng: lng }}
+                                        />
+                                    )
+                                })
+                            }
+                        </>
+                    )
+                })}
         </MarkerClusterer>
     </GoogleMap>
 );
 
 const TenderMap = (props) => {
-    const [base, setBase] = useState([])
-    const [dependents, setDependents] = useState([])
-    const [feedback, setFeedback] = useState([])
+    const [markers, setMarkers] = useState([])
     useEffect(() => {
-        if (props && props.allBaseReports && !props.allBaseReports.loading) {
-            let temp = []
-            temp = props.allBaseReports.allBaseReports.map(i => {
-                if (i.noOfReports < 12) {
-                    return;
-                }
-                let test = {
-                    ...i,
-                    key: i.id,
-                    latitude: Number(i.location.split(" ")[0]),
-                    longitude: Number(i.location.split(" ")[1])
-                }
-                return test;
-            })
-            setBase(temp)
-        }
-        if (props && props.allReports && !props.allReports.loading) {
-            let temp = []
-            temp = props.allReports.allReports.map(i => {
-                if (i.noOfReports < 12) {
-                    return;
-                }
-                let test = {
-                    ...i,
-                    key: i.id,
-                    latitude: Number(i.location.split(" ")[0]),
-                    longitude: Number(i.location.split(" ")[1])
-                }
-                return test;
-            })
-            setDependents(temp)
-        }
-        if (props && props.allFeedbackReports && !props.allFeedbackReports.loading) {
-            let temp = []
-            temp = props.allFeedbackReports.allFeedbackReports.map(i => {
-                if (i.noOfReports < 12) {
-                    return;
-                }
-                let test = {
-                    ...i,
-                    key: i.id,
-                    latitude: Number(i.location.split(" ")[0]),
-                    longitude: Number(i.location.split(" ")[1])
-                }
-                return test;
-            })
-            setFeedback(temp)
-        }
-        return () => {
-            setBase([])
-            setDependents([])
-            setFeedback([])
-        }
+
     }, [props])
 
     return (
-        <MapWithAMarkerClusterer markers={[...base, ...dependents, ...feedback]} />
+        <MapWithAMarkerClusterer baseReports={props.baseReports} />
     )
 }
 
 
-export default composey(
-    graphql(allBaseReports, { name: "allBaseReports" }),
-    graphql(allReports, { name: "allReports" }),
-    graphql(allFeedbackReports, { name: "allFeedbackReports" })
-)(TenderMap);
+export default TenderMap;

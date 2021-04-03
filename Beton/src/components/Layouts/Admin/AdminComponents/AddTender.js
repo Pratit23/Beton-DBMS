@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Sidenav from '../AdminSidenav'
-import { allBaseReports } from '../../../../queries/query'
+import { allBaseReports, addTender } from '../../../../queries/query'
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { Icon } from 'rsuite'
 import AddTenderMap from '../AdminComponents/AddTenderMap'
 import GeneralInput from '../../../Buttons/GeneralInput'
 import GeneralDOB from '../../../Buttons/GeneralDOB1'
+import M from 'materialize-css'
 
 var lo = ''
 //var sortedReports = [] 
@@ -19,6 +20,7 @@ function AddTender(props) {
     const [mapData, setMapData] = useState(null)
     const [showDirec, setShowDirec] = useState(true)
     const [numPotholes, setNumPotholes] = useState(null)
+    const [onRoadPotholes, setOnRoadPotholes] = useState(null)
 
     const searchZip = () => {
         setSortedReports([])
@@ -44,14 +46,59 @@ function AddTender(props) {
         console.log("Map data: ", mapData)
     }
 
-    const getNumPotholes = (data) => {
+    const getNumPotholes = (data, routePotholes) => {
         console.log("Num of potholes: ", data)
         setNumPotholes(data)
+        setOnRoadPotholes(routePotholes)
     }
 
     const resetInput = () => {
         setShowAll(true)
         document.getElementById('autocomplete-input').value = ''
+    }
+
+    const handleAddTender = async () => {
+        let day = document.querySelector('.day').value
+        console.log("Day: ", day)
+        let month = document.querySelector('.month').value
+        console.log("Month: ", month)
+        let year = document.querySelector('.year').value
+        console.log("Year: ", year)
+        let amount = document.getElementById('tender-cost').value
+        console.log("Amount: ", amount)
+        let nameOfWork = document.getElementById('tender-title').value
+        console.log("Name of work: ", nameOfWork)
+        let endDate = `${day}/${month}/${year}`;
+        console.log("End Date: ", endDate)
+        var address = mapData.start_address + ' to ' + mapData.end_address
+        console.log("Address: ", address)
+        var source = mapData.start_location.lat + ', ' + mapData.start_location.lng
+        console.log("Source: ", source)
+        var destination = mapData.end_location.lat + ', ' + mapData.end_location.lng
+        console.log("Destination: ", destination)
+        var baseReports = onRoadPotholes.isOnLinev2
+        console.log("Base reports: ", baseReports)
+
+        let res = await props.addTender({
+            variables: {
+                endDate,
+                address,
+                source,
+                destination,
+                baseReports,
+                amount,
+                nameOfWork,
+            }
+        })
+
+        if (res && res.data && res.data.addTender) {
+            M.toast({ html: "Wohoo! Tender successfully created!" });
+            setShowDirec(false)
+            setMapData(null)
+        } else {
+            M.toast({ html: "Something went wrong, please try again!" });
+        }
+
     }
 
     useEffect(() => {
@@ -93,7 +140,7 @@ function AddTender(props) {
                     <div className="demo" id="main" style={{ overflowY: "auto" }} >
                         <div className="row" >
                             <div className="col s12" style={{ paddingTop: '2vh', paddingLeft: '2vw', paddingRight: '2vw' }}>
-                                <AddTenderMap getData={getData} showDirec={showDirec} getNumPotholes={getNumPotholes}/>
+                                <AddTenderMap getData={getData} showDirec={showDirec} getNumPotholes={getNumPotholes} />
                             </div>
                             <div className="col s12">
                                 {
@@ -125,7 +172,7 @@ function AddTender(props) {
                                                 </div>
                                                 <div className="col s12 right-align" style={{ paddingRight: '80px', paddingTop: '20px' }}>
                                                     <div class="btn red" onClick={() => cancel()} style={{ marginRight: '10px', borderRadius: '24px' }}><i class="material-icons right">close</i>Cancel</div>
-                                                    <div class="btn blue" style={{ borderRadius: '24px' }}><i class="material-icons right">arrow_forward</i>Submit</div>
+                                                    <div class="btn blue" onClick={() => handleAddTender()} style={{ borderRadius: '24px' }}><i class="material-icons right">arrow_forward</i>Submit</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -217,5 +264,8 @@ function AddTender(props) {
 export default compose(
     graphql(allBaseReports, {
         name: "allBaseReports",
+    }),
+    graphql(addTender, {
+        name: "addTender"
     })
 )(AddTender)

@@ -25,7 +25,7 @@ const ContractorForm = (props) => {
         console.log(res);
         if (res && res.data && res.data.loginContractor) {
             M.toast({ html: "Wohoo! You're in...ヽ(•‿•)ノ" });
-            localStorage.setItem("token", res.data.loginContractor.data)
+            localStorage.setItem("token", res.data.loginContractor.token)
             props.props.history.push("/contractor/homepage");
         } else {
             M.toast({ html: "Oopsie! Your account is either not verified or you entered incorrect credentials!" })

@@ -5,7 +5,7 @@ import MapStyles from '../../../Maps/GoogleMapStyles'
 import { geolocated } from "react-geolocated";
 import { flowRight as compose } from 'lodash';
 import { graphql, useLazyQuery } from 'react-apollo';
-import { isOnLine } from '../../../../queries/query'
+import { isOnLinev2 } from '../../../../queries/query'
 
 const Map = withScriptjs(
     withGoogleMap(props => (
@@ -52,8 +52,8 @@ const AddTenderMap = (props) => {
         }
     })
 
-    const [isOn, { called, loading, data }] = useLazyQuery(
-        isOnLine,
+    const [isOnv2, { called, loading, data }] = useLazyQuery(
+        isOnLinev2,
         {
             variables: {
                 encoded: coords
@@ -112,7 +112,7 @@ const AddTenderMap = (props) => {
             })
 
             coords = [...encoded]
-            isOn();
+            isOnv2();
 
             if (called && loading) {
                 console.log("Patience is virtue")
@@ -123,9 +123,10 @@ const AddTenderMap = (props) => {
     }
 
     if (data) {
-        var num = data.isOnLine.length
+        var num = data.isOnLinev2.length
+        console.log("Data1: ", data)
         console.log("Num: ", num)
-        props.getNumPotholes(num)
+        props.getNumPotholes(num, data)
     }
 
     useEffect(() => {

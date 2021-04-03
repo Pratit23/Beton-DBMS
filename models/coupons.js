@@ -22,10 +22,10 @@ const couponsSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "Advertisers"
     },
-    userID: {
+    userID: [{
         type: String || ObjectId,
         ref: "User"        
-    }
+    }]
 });
 
 module.exports = mongoose.model("Coupons", couponsSchema);

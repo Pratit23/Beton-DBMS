@@ -6,6 +6,10 @@ const tenderSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    endDate: {
+        type: String,
+        require: true
+    },
     source: {
         type: String,
         require: true
@@ -27,6 +31,10 @@ const tenderSchema = new mongoose.Schema({
         ref: "BaseReports"
     }],
     isAssigned: {
+        type: Boolean,
+        require: true
+    },
+    isCompleted: {
         type: Boolean,
         require: true
     },

@@ -83,13 +83,12 @@ const allContractors = gql`
 `
 
 const addTender = gql`
-mutation($address: String!, $source: String!, $destination: String!, $baseReports: [String]!, $amount: String!, $nameOfWork: String!){
-  addTender(address: $address, source: $source, destination: $destination, baseReports: $baseReports, amount: $amount, nameOfWork: $nameOfWork){
+mutation($endDate: String!, $address: String!, $source: String!, $destination: String!, $baseReports: [ID]!, $amount: String!, $nameOfWork: String!){
+  addTender(endDate: $endDate, address: $address, source: $source, destination: $destination, baseReports: $baseReports, amount: $amount, nameOfWork: $nameOfWork){
     id
     address
     source
     destination
-    baseReports
     amount
     nameOfWork
     isAssigned
@@ -256,6 +255,33 @@ query($token: String){
 }
 `
 
+const decryptContractor = gql`
+query($token: String){
+  decryptContractor(token: $token){
+    id
+    email
+    address
+    name
+    isVerified
+    bidsMade{
+      id
+      amount
+      bidedAt
+      bidedOn
+      tenderId{
+        id
+        address
+        source
+        destination
+        isAssigned
+      	isCompleted
+      }
+    }
+    profile    
+  }
+}
+`
+
 const addAdvertiser = gql`
 mutation($company: String!, $email: String!, $password: String!, $website: String!, $category: String!){
   addAdvertiser(company: $company, email: $email, password: $password, website: $website, category: $category){
@@ -339,6 +365,12 @@ query($encoded: [String]){
     latitude
     longitude
   }
+}
+`
+
+const isOnLinev2 = gql`
+query($encoded: [String]){
+  isOnLinev2(encoded: $encoded)
 }
 `
 
@@ -542,6 +574,206 @@ query($id: String!){
     }
   }
 }
+`;
+
+const availableTenders = gql`
+query($id: ID!){
+  availableTenders(id: $id){
+    id
+    address
+    source
+    destination
+    isAssigned
+    isCompleted
+    endDate
+    amount
+    nameOfWork
+    baseReports{
+      id
+      image
+      address
+      location
+      reportedAt
+      reportedOn
+      noOfReports
+      userID{
+        id
+        name
+        profile
+        email
+        address
+        karma
+      }
+      similar{
+        id
+        address
+        location
+        image
+        reportedAt
+        reportedOn
+        userID{
+          id
+          name
+          profile
+          email
+          address
+          karma
+        }
+      }
+    }
+    contractorId{
+      name
+      id
+      email
+    }
+    bids{
+      id
+      amount
+      bidedAt
+      bidedOn
+      contractorId{
+        name
+        id
+        email
+        isVerified
+        
+      }
+    }
+  }
+}
+`
+
+const myTenders = gql`
+query($id: ID!){
+  myTenders(id: $id){
+    id
+    address
+    source
+    destination
+    isAssigned
+    isCompleted
+    endDate
+    amount
+    nameOfWork
+    baseReports{
+      id
+      image
+      address
+      location
+      reportedAt
+      reportedOn
+      noOfReports
+      userID{
+        id
+        name
+        profile
+        email
+        address
+        karma
+      }
+      similar{
+        id
+        address
+        location
+        image
+        reportedAt
+        reportedOn
+        userID{
+          id
+          name
+          profile
+          email
+          address
+          karma
+        }
+      }
+    }
+    contractorId{
+      name
+      id
+      email
+    }
+    bids{
+      id
+      amount
+      bidedAt
+      bidedOn
+      contractorId{
+        name
+        id
+        email
+        isVerified
+        
+      }
+    }
+  }
+}
+`
+const getSpecificTender = gql`
+query($id: ID!){
+  getSpecificTender(id: $id){
+    id
+    address
+    source
+    destination
+    isAssigned
+    isCompleted
+    endDate
+    amount
+    nameOfWork
+    baseReports{
+      id
+      image
+      address
+      location
+      reportedAt
+      reportedOn
+      noOfReports
+      userID{
+        id
+        name
+        profile
+        email
+        address
+        karma
+      }
+      similar{
+        id
+        address
+        location
+        image
+        reportedAt
+        reportedOn
+        userID{
+          id
+          name
+          profile
+          email
+          address
+          karma
+        }
+      }
+    }
+    contractorId{
+      name
+      id
+      email
+    }
+    bids{
+      id
+      amount
+      bidedAt
+      bidedOn
+      contractorId{
+        name
+        id
+        email
+        isVerified
+        
+      }
+    }
+  }
+}
 `
 
 
@@ -577,7 +809,12 @@ export {
   getSpecificReport,
   toggleActivation,
   allContractors,
-  addTender
+  addTender,
+  isOnLinev2,
+  availableTenders,
+  myTenders,
+  decryptContractor,
+  getSpecificTender
 };
 
 

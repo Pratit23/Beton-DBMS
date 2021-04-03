@@ -51,10 +51,8 @@ const Features = () => {
                             <h2>Why Us?</h2>
                             <hr className="divider" />
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </p>
+                                Beton uses only verified pothole reports to make the journey for the user as hassle free as possible! Users also stand to earn rewards after each of their pothole reports is verified! Users also get a feeling of responsibility and community as they join others in reporting potholes and making the roads a better and safer place! Beton is very user friendly, easy to understand and simple to use! Beton is easily accessible as an app on your phone as well as a useful website.
+                            </p>
                         </div>
                     </div>
 

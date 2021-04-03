@@ -166,6 +166,7 @@ const TendersType = new GraphQLObjectType({
             }
         },
         amount: { type: GraphQLString },
+        endDate: { type: GraphQLString },
         bids: {
             type: new GraphQLList(BidsType),
             async resolve(parent, args) {
@@ -656,6 +657,19 @@ const RootQuery = new GraphQLObjectType({
                 return Advertisers.findById(res._id);
             }
         },
+        decryptContractor: {
+            type: ContractorsType,
+            args: {
+                token: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
+                if (args.token == "") return null;
+                let res = jwt.verify(args.token, JWT_SEC);
+                return Contractors.findById(res._id);
+            }
+        },
         findUsingZipCode: {
             type: new GraphQLList(BaseReportsType),
             args: { zip: { type: GraphQLString } },
@@ -732,6 +746,61 @@ const RootQuery = new GraphQLObjectType({
                 return allResults
             }
         },
+        isOnLinev2: {
+            type: new GraphQLList(GraphQLString),
+            args: {
+                // location: { type: GraphQLString },
+                encoded: { type: new GraphQLList(GraphQLString) }
+            },
+            async resolve(parent, args) {
+                var noOfPotholes = 0
+                console.log(args)
+                var enc = args.encoded.map((e, key) => {
+                    // console.log("E: ", e, typeof (e))
+                    return Polyutil.decode(e)
+                })
+
+                console.log("Enc1", enc)
+                enc = enc.map(e => {
+                    var objs = e.map(function (x) {
+                        return {
+                            latitude: x[0],
+                            longitude: x[1]
+                        };
+                    }); 3
+                    return objs
+                })
+                enc = [].concat.apply([], enc);
+                console.log("Enc", enc)
+                // return true;
+                var res = await BaseReports.find();
+                console.log(res)
+                let allResults = [];
+                res.forEach(r => {
+                    let temp = {
+                        latitude: Number(r.location.split(" ")[0]),
+                        longitude: Number(r.location.split(" ")[1])
+                    }
+                    console.log("temp", temp)
+                    let awaiting = geolib.findNearest(temp, enc);
+                    let temp_awaiting = {
+                        latitude: Number(awaiting['latitude']),
+                        longitude: Number(awaiting['longitude'])
+                    }
+                    console.log("temp-awiting", temp_awaiting)
+                    // checking distance of this nearest coordinate with our coordinate
+                    let disanceBet = geolib.getDistance(temp, temp_awaiting)
+                    console.log("Distance:", disanceBet)
+                    if (disanceBet < 200) {
+                        console.log("The pothole is on the path")
+                        allResults.push(r._id);
+                    } else {
+                        console.log("Pothole not on the path")
+                    }
+                })
+                return allResults
+            }
+        },
         getRandomAd: {
             type: AdvertisementType,
             async resolve(parent, args) {
@@ -757,7 +826,59 @@ const RootQuery = new GraphQLObjectType({
                 console.log(args.id);
                 return await BaseReports.findById(args.id);
             }
-        }
+        },
+        allTenders: {
+            type: new GraphQLList(TendersType),
+            async resolve(parent, args) {
+                return await Tenders.find();
+            }
+        },
+        getSpecificTender: {
+            type: TendersType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) }
+            },
+            async resolve(parent, args) {
+                return await Tenders.findById(args.id);
+            }
+        },
+        availableTenders: {
+            type: new GraphQLList(TendersType),
+            args: {
+                id: { type: GraphQLID }
+            },
+            async resolve(parent, args) {
+                return await Tenders.find({"isAssigned": false, "bids.contractorId": { $nin: [args.id] }});
+            }
+        },
+        myTenders: {
+            type: new GraphQLList(TendersType),
+            args: {
+                id: { type: GraphQLID }
+            },
+            async resolve(parent, args) {
+                return await Tenders.find({"contractorId": args.id, "isCompleted": false});
+            }
+        },
+        quotedTenders: {
+            type: new GraphQLList(TendersType),
+            args: {
+                id: { type: GraphQLID }
+            },
+            async resolve(parent, args) {
+                return await Tenders.find({"isAssigned": false, "bids.contractorId": { $in: [args.id] }});
+            }
+        },
+        pastTenders: {
+            type: new GraphQLList(TendersType),
+            args: {
+                id: { type: GraphQLID }
+            },
+            async resolve(parent, args) {
+                return await Tenders.find({"isAssigned": true, "contractorId": args.id, "isCompleted": true });
+            }
+        },
+        
     }
 })
 
@@ -1099,7 +1220,7 @@ const Mutation = new GraphQLObjectType({
                                         validity: c.validity,
                                         assigned: false,
                                         advertiserID: args.advertiserID,
-                                        userID: ""
+                                        userID: []
                                     }
                                 }
                             }
@@ -1354,11 +1475,13 @@ const Mutation = new GraphQLObjectType({
                 address: { type: GraphQLString },
                 source: { type: GraphQLString },
                 destination: { type: GraphQLString },
-                baseReports: { type: new GraphQLList(GraphQLString) },
+                baseReports: { type: new GraphQLList(GraphQLID) },
                 amount: { type: GraphQLString },
-                nameOfWork: { type: GraphQLString }
+                nameOfWork: { type: GraphQLString },
+                endDate: { type: GraphQLString },
             },
             async resolve(parent, args) {
+                console.log("Args: ", args)
                 if(!args.address || !args.source || !args.destination || !args.baseReports || !args.amount || !args.nameOfWork){
                     throw new Error("Kindly provide all details");
                 }

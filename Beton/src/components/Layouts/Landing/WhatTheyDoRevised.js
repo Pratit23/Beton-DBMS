@@ -15,7 +15,10 @@ const WhatTheyDoRevised = () => {
                         <h2>What we do?</h2>
                         <hr className="divider" />
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            We came up with the idea for Beton when we realized there's no official app or website to help commuters report potholes on the roads and have a safe journey, avoiding the pothole-filled roads.
+                            <br/>
+                            <br/>
+                            About 6 people die on Indian roads everyday due to potholes, and we feel that with increased reporting, verifying and adding  the potholes to the database, hopefully the safety of the roads will increase and less pothole-related accidents will occur.
                         </p>
                         <div className="right-align" style={{width: "max-content"}}>
                             <GenericButton text="Be with us" id="CTA" link="signup" />

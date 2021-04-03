@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react'
 import TenderMap from './TenderMap'
 import Lottie from 'react-lottie';
 import loading from '../../../../images/Lottie/newTenders.json'
+import { availableTenders, myTenders } from '../../../../queries/query'
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
+import { Link } from 'react-router-dom';
 
-export default function TenderSide() {
+const TenderSide = (props) => {
 
     const [currentTab, setCurrentTab] = useState(0)
     const [showTenders, setShowTenders] = useState(false)
@@ -48,6 +52,8 @@ export default function TenderSide() {
         });
     })
 
+    console.log("Props in tenderside: ", props)
+
     return (
         <>
             {
@@ -57,10 +63,10 @@ export default function TenderSide() {
                             <div className="demo" id="main" style={{ overflowY: "auto" }} >
                                 <div className="row">
                                     <div className="col s12" style={{ paddingTop: '40px' }}>
-                                        <div class="frame">
-                                            <ul class="tabbar" style={{ "--x-n": "81.133px", "--x": "81.133px" }}>
-                                                <li class="active">
-                                                    <a onClick={() => setCurrentTab(0)} class="box">
+                                        <div className="frame">
+                                            <ul className="tabbar" style={{ "--x-n": "81.133px", "--x": "81.133px" }}>
+                                                <li className="active">
+                                                    <a onClick={() => setCurrentTab(0)} className="box">
                                                         <div>
                                                             <svg>
                                                                 <use xlinkHref="#box" />
@@ -75,7 +81,7 @@ export default function TenderSide() {
                                                     }
                                                 </li>
                                                 <li>
-                                                    <a onClick={() => setCurrentTab(1)} class="home">
+                                                    <a onClick={() => setCurrentTab(1)} className="home">
                                                         <div>
                                                             <svg>
                                                                 <use xlinkHref="#home" />
@@ -89,7 +95,7 @@ export default function TenderSide() {
                                                     }
                                                 </li>
                                                 <li>
-                                                    <a onClick={() => setCurrentTab(2)} class="calendar">
+                                                    <a onClick={() => setCurrentTab(2)} className="calendar">
                                                         <div>
                                                             <svg>
                                                                 <use xlinkHref="#calendar" />
@@ -118,116 +124,52 @@ export default function TenderSide() {
                                             </symbol>
                                         </svg>
                                         {
-                                            currentTab == 0 ?
+                                            currentTab == 0 && props.availableTenders && props.availableTenders.availableTenders ?
                                                 <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
-                                                    <div className="card-panel col s10 offset-s1" onClick={() => setShowTenders(true)} style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                            </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    NH-17
-                                                    </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                    </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                    <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                            </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    NH-20
-                                                    </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                    </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                            </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    NH-15
-                                                                </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                                </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    {
+                                                        props.availableTenders.availableTenders.map((tender, key) => {
+                                                            return (
+                                                                <Link to={`/contractor/tender/${tender.id}`}>
+                                                                    <div key={key} className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
+                                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
+                                                                            </div>
+                                                                            <div className="col s9">
+                                                                                {tender.address.length > 50 ? <h5 className="black-text">{(tender.address).substring(0, 50)}...</h5> : <h5 className="black-text">{tender.address}</h5>}
+                                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >{tender.amount} | {tender.endDate} | Click to know more</p>
+                                                                            </div>
+                                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }}>➜</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </Link>
+                                                            )
+                                                        })
+                                                    }
                                                 </div>
                                                 : null
                                         }
                                         {
-                                            currentTab == 1 ?
+                                            currentTab == 1 && props.myTenders && props.myTenders.myTenders ?
                                                 <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                            </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    SH-17
-                                                        </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                        </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                            </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    SH-20
-                                                        </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                        </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                            </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    SH-15
-                                                        </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                        </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                                    </div>
-                                                        </div>
-                                                    </div>
+                                                    {
+                                                        props.myTenders.myTenders.map((tender, key) => {
+                                                            return (
+                                                                <Link to={`/contractor/tender/${tender.id}`}>
+                                                                    <div key={key} className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
+                                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
+                                                                            </div>
+                                                                            <div className="col s9">
+                                                                                {tender.address.length > 50 ? <h5 className="black-text">{(tender.address).substring(0, 50)}...</h5> : <h5 className="black-text">{tender.address}</h5>}
+                                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >{tender.amount} | {tender.endDate} | Click to know more</p>
+                                                                            </div>
+                                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }}>➜</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </Link>
+                                                            )
+                                                        })
+                                                    }
                                                 </div>
                                                 : null
                                         }
@@ -303,118 +245,32 @@ export default function TenderSide() {
                         </div>
                     </div>
                     :
-                    <div className="row">
-                        <div className="col s8" style={{ height: '100vh' }}>
-                            <div className="demo" id="main" style={{ overflowY: "auto" }} >
-                                <div className="row">
-                                    <div className="col s12" style={{ paddingTop: '40px' }}>
-                                        <ul className="tabs" style={{ paddingLeft: '40px', borderRadius: '12px', backgroundColor: '#F5F5F5', width: '700px' }}>
-                                            <li onClick={() => setCurrentTab(0)} className="tab col s3"><a className="blue-text">All Reports</a></li>
-                                            <li onClick={() => setCurrentTab(1)} className="tab col s3"><a className="blue-text">Images</a></li>
-                                            <li onClick={() => setCurrentTab(2)} className="tab col s3"><a className="blue-text">Users</a></li>
-                                            <li onClick={() => setCurrentTab(3)} className="tab col s3"><a className="blue-text">Map View</a></li>
-                                        </ul>
-                                        {
-                                            currentTab == 0 ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '100px', paddingTop: '25px' }}>
-                                                    <ul className="collapsible">
-                                                        <li>
-                                                            <div className="collapsible-header"><i className="material-icons">filter_drama</i>Address of the first report</div>
-                                                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                                                        </li>
-                                                        <li>
-                                                            <div className="collapsible-header"><i className="material-icons">place</i>Address of the second report</div>
-                                                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                                                        </li>
-                                                        <li>
-                                                            <div className="collapsible-header"><i className="material-icons">whatshot</i>Address of the third report</div>
-                                                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                : null
-                                        }
-                                        {
-                                            currentTab == 1 ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '160px', paddingTop: '25px' }}>
-                                                    <div class="row" >
-                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?beach" alt="" class="materialboxed responsive-img" /></div>
-                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?sand" alt="" class="materialboxed responsive-img" /></div>
-                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?boat" alt="" class="materialboxed responsive-img" /></div>
-                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?cruise" alt="" class="materialboxed responsive-img" /></div>
-                                                        <div class="col s3 m3" style={{ paddingBottom: '20px' }}><img src="https://source.unsplash.com/800x600/?cruise" alt="" class="materialboxed responsive-img" /></div>
-                                                    </div>
-                                                </div>
-                                                : null
-                                        }
-                                        {
-                                            currentTab == 2 ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '200px', paddingRight: '180px', paddingTop: '25px' }}>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                     </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                    <div class="chip">
-                                                        <img src="https://source.unsplash.com/800x600/?beach" alt="Contact Person" />
-                                                        Jane Doe
-                                                    </div>
-                                                </div>
-                                                : null
-                                        }
-                                        {
-                                            currentTab == 3 ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '80px', paddingTop: '25px' }}>
-                                                    <TenderMap />
-                                                </div>
-                                                : null
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col s4" style={{ height: '100vh' }}>
-                            <Lottie options={defaultOptions}
-                                height={700}
-                                width={400}
-                                isStopped={false}
-                                isPaused={false}
-                                style={{ marginTop: '15vh' }}
-                            />
-                        </div>
-                    </div>
+                    null
             }
         </>
     )
 }
+export default compose(
+    graphql(availableTenders, {
+        name: "availableTenders",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    id: temp
+                }
+            }
+        }
+    }),
+    graphql(myTenders, {
+        name: "myTenders",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    id: temp
+                }
+            }
+        }
+    }),
+)(TenderSide)
