@@ -642,10 +642,142 @@ query($id: ID!){
   }
 }
 `
+const pastTenders = gql`
+query($id: ID!){
+  availableTenders(id: $id){
+    id
+    address
+    source
+    destination
+    isAssigned
+    isCompleted
+    endDate
+    amount
+    nameOfWork
+    baseReports{
+      id
+      image
+      address
+      location
+      reportedAt
+      reportedOn
+      noOfReports
+      userID{
+        id
+        name
+        profile
+        email
+        address
+        karma
+      }
+      similar{
+        id
+        address
+        location
+        image
+        reportedAt
+        reportedOn
+        userID{
+          id
+          name
+          profile
+          email
+          address
+          karma
+        }
+      }
+    }
+    contractorId{
+      name
+      id
+      email
+    }
+    bids{
+      id
+      amount
+      bidedAt
+      bidedOn
+      contractorId{
+        name
+        id
+        email
+        isVerified
+        
+      }
+    }
+  }
+}
+`
 
 const myTenders = gql`
 query($id: ID!){
   myTenders(id: $id){
+    id
+    address
+    source
+    destination
+    isAssigned
+    isCompleted
+    endDate
+    amount
+    nameOfWork
+    baseReports{
+      id
+      image
+      address
+      location
+      reportedAt
+      reportedOn
+      noOfReports
+      userID{
+        id
+        name
+        profile
+        email
+        address
+        karma
+      }
+      similar{
+        id
+        address
+        location
+        image
+        reportedAt
+        reportedOn
+        userID{
+          id
+          name
+          profile
+          email
+          address
+          karma
+        }
+      }
+    }
+    contractorId{
+      name
+      id
+      email
+    }
+    bids{
+      id
+      amount
+      bidedAt
+      bidedOn
+      contractorId{
+        name
+        id
+        email
+        isVerified
+        
+      }
+    }
+  }
+}
+`
+const allTenders = gql`
+{
+  allTenders{
     id
     address
     source
@@ -776,6 +908,32 @@ query($id: ID!){
 }
 `
 
+const addBids = gql`
+mutation($amount: String!, $bidedAt: String!, $bidedOn: String!, $contractorId: ID!, $tenderId: ID!){
+  addBids(amount: $amount, bidedAt: $bidedAt, bidedOn: $bidedOn, contractorId: $contractorId, tenderId: $tenderId){
+    id
+    amount
+    bidedAt
+    bidedOn
+    contractorId{
+      id
+      email
+      address
+      name
+      isVerified
+      profile
+    }
+    tenderId{
+      id
+      address
+      source
+      destination
+      amount
+    }
+  }
+}
+`
+
 
 export {
   users,
@@ -814,7 +972,10 @@ export {
   availableTenders,
   myTenders,
   decryptContractor,
-  getSpecificTender
+  getSpecificTender,
+  pastTenders,
+  allTenders,
+  addBids
 };
 
 

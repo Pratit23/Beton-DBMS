@@ -1,36 +1,43 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import QuickInfoCard from '../../Cards/QuickInfoCard';
-import AdminDonut from '../../Charts/AdminDonut';
+import ContractorDonut from './Contractor Components/ContractorDonut';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
-import { allAdvertisers, allReports, users } from '../../../queries/query';
+import { allBaseReports, availableTenders, myTenders } from '../../../queries/query';
 import HomeCards from '../../Cards/HomeCards';
+import RecentList from './Contractor Components/RecentList'
 
-const AdminHomepageSide = (props) => {
+
+const ContractorHomepageSide = (props) => {
+
+    console.log("Props in contractor homepage side", props)
+
+    useEffect(() => {
+
+    }, [props])
     return (
         <div className="demo" id="main" style={{ overflowY: "auto" }} >
             <div className="row advHomeTop">
                 <div className="col s12 m8">
                     {
-                        props.users && !props.users.loading && props.users.users ? (
-                            <QuickInfoCard color="#c33c29" textColor="#fff" text="Active Tenders" value={props.users.users.length} />
+                        props.myTenders && !props.myTenders.loading && props.myTenders.myTenders ? (
+                            <QuickInfoCard color="#c33c29" textColor="#fff" text="Active Tenders" value={props.myTenders.myTenders.length} />
                         ) :
                             <QuickInfoCard color="#c33c29" textColor="#fff" text="Active Tenders" value="0" />
                     }
-                    <QuickInfoCard color="#e5be90" textColor="#000" text="Available Tenders" />
-                    {/*
-                        props.allAdvertisers && !props.allAdvertisers.loading && props.allAdvertisers.allAdvertisers ? (
-                            <QuickInfoCard color="#f7f1ec" textColor="#000" text="All Advertisers" value={props.allAdvertisers.allAdvertisers.length} />
-                        ) :
-                            <QuickInfoCard color="#f7f1ec" textColor="#000" text="All Advertisers" />
-                        */}
                     {
-                        props.allReports && !props.allReports.loading && props.allReports.allReports ? (
-                            <QuickInfoCard color="#75a29e" textColor="#fff" text="All Reports" value={props.allReports.allReports.length} />
-                        ) :
-                            <QuickInfoCard color="#75a29e" textColor="#fff" text="All Reports" />
-                    }
 
+                        props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders ? (
+                            <QuickInfoCard color="#75a29e" textColor="#fff" text="Available Tenders" value={props.availableTenders.availableTenders.length} />
+                        ) :
+                            <QuickInfoCard color="#75a29e" textColor="#fff" text="Available Tenders" />
+                    }
+                    {
+                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports ? (
+                            <QuickInfoCard color="#f7f1ec" textColor="#000" text="All Reports" value={props.allBaseReports.allBaseReports.length} />
+                        ) :
+                            <QuickInfoCard color="#f7f1ec" textColor="#000" text="All Reports" />
+                    }
                     {/* total */}
                     <div className="col s12">
                         <h3>Total Activity</h3>
@@ -40,11 +47,15 @@ const AdminHomepageSide = (props) => {
                 <div className="col s12 m4 advStatsInfographics">
                     <h3 style={{ margin: "30px 0 0 30px" }}>Statistics</h3>
                     <hr className="divider" />
-                    <AdminDonut values={[12, 7, 5, 2]} />
-
+                    {
+                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders && props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports ?
+                        <ContractorDonut values={[props.myTenders.myTenders.length, props.availableTenders.availableTenders.length, props.allBaseReports.allBaseReports.length]} /> :
+                        <p>Loading chart</p>
+                    }
                     {/* Recent users */}
                     <h3 style={{ margin: "30px 0 0 30px" }}>Recent Tenders</h3>
                     <hr className="divider" />
+                    <RecentList/>
                 </div>
             </div>
         </div>
@@ -52,7 +63,29 @@ const AdminHomepageSide = (props) => {
 }
 
 export default compose(
-    graphql(users, { name: "users" }),
-    graphql(allAdvertisers, { name: "allAdvertisers" }),
-    graphql(allReports, { name: "allReports" }),
-)(AdminHomepageSide)
+    graphql(availableTenders, {
+        name: "availableTenders",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    id: temp
+                }
+            }
+        }
+    }),
+    graphql(myTenders, {
+        name: "myTenders",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    id: temp
+                }
+            }
+        }
+    }),
+    graphql(allBaseReports, {
+        name: "allBaseReports",
+    }),
+)(ContractorHomepageSide)

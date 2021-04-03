@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { getSpecificTender, myTenders } from '../../../../queries/query'
+import { getSpecificTender, myTenders, addBids, decryptContractor } from '../../../../queries/query'
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import Lottie from 'react-lottie';
 import loading from '../../../../images/Lottie/newTenders.json'
 import TenderMap from './TenderMap';
 import Sidenav from '../ContractorSideNav'
+import GeneralInput from '../../../Buttons/GeneralInput'
+import M from 'materialize-css'
+
+var formatter = null
 
 const TenderDetailed = (props) => {
+
     const [currentTab, setCurrentTab] = useState(0);
+    const [quoteSubmitted, setQuoteSubmitted] = useState(false)
 
     const defaultOptions = {
         loop: true,
@@ -19,9 +25,44 @@ const TenderDetailed = (props) => {
         }
     };
 
+    const handleSubmit = async () => {
+        var amount = document.getElementById('tender-quote').value
+        var bidedAt = new Date().toDateString()
+        var bidedOn = new Date().toLocaleString().split(", ")[1]
+        var contractorId = props.decryptContractor.decryptContractor.id
+        var tenderId = props.match.params.id
+
+        let res = await props.addBids({
+            variables: {
+                amount,
+                bidedAt,
+                bidedOn,
+                contractorId,
+                tenderId
+            }
+        })
+
+        if (res.data.addBids) {
+            M.toast({ html: "Quotation submitted successfully" });
+            setQuoteSubmitted(true)
+        }
+        else {
+            M.toast({ html: "Something went wrong, please try again!" })
+        }
+    }
+
     useEffect(() => {
         window.$(document).ready(function () {
             window.$('.collapsible').collapsible();
+        });
+
+        formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'INR',
+
+            // These options are needed to round to whole numbers if that's what you want.
+            minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+            //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
         });
     })
 
@@ -46,7 +87,7 @@ const TenderDetailed = (props) => {
                                         <>
                                             {
                                                 currentTab == 0 ?
-                                                    <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '100px', paddingTop: '25px' }}>
+                                                    <div className="row" style={{ height: '60vh', width: '100%', paddingLeft: '150px', paddingRight: '100px', paddingTop: '25px', overflowY: 'auto' }}>
                                                         <ul className="collapsible">
                                                             {
                                                                 props.getSpecificTender.getSpecificTender.baseReports.map((report, key) => {
@@ -78,7 +119,7 @@ const TenderDetailed = (props) => {
                                             }
                                             {
                                                 currentTab == 1 ?
-                                                    <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '150px', paddingRight: '160px', paddingTop: '25px' }}>
+                                                    <div className="row" style={{ height: '60vh', width: '100%', paddingLeft: '150px', paddingRight: '160px', paddingTop: '25px', overflowY: 'auto' }}>
                                                         <div className="row" >
                                                             {
                                                                 props.getSpecificTender.getSpecificTender.baseReports.map((report, key) => {
@@ -93,7 +134,7 @@ const TenderDetailed = (props) => {
                                             }
                                             {
                                                 currentTab == 2 ?
-                                                    <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '200px', paddingRight: '180px', paddingTop: '25px' }}>
+                                                    <div className="row" style={{ height: '60vh', width: '100%', paddingLeft: '200px', paddingRight: '180px', paddingTop: '25px', overflowY: 'auto' }}>
                                                         {
                                                             props.getSpecificTender.getSpecificTender.baseReports.map((report, key) => {
                                                                 return (
@@ -118,12 +159,46 @@ const TenderDetailed = (props) => {
                                             }
                                             {
                                                 currentTab == 3 ?
-                                                    <div className="row" style={{ height: '100%', width: '100%', paddingLeft: '80px', paddingTop: '25px' }}>
-                                                        <TenderMap baseReports={props.getSpecificTender.getSpecificTender.baseReports}/>
+                                                    <div className="row" style={{ height: '60vh', width: '100%', paddingLeft: '80px', paddingTop: '25px', overflowY: 'auto' }}>
+                                                        <TenderMap baseReports={props.getSpecificTender.getSpecificTender.baseReports} />
                                                     </div>
                                                     : null
                                             }
                                         </> : null
+                                }
+                                {
+                                    <div className="row" style={{ marginLeft: '10%', marginRight: '10%' }}>
+                                        <div className="col s12" style={{ paddingTop: '5vh' }}>
+                                            <div className="card blue-grey darken-1" style={{ borderRadius: '24px', height: '16vh' }}>
+                                                <div className="card-content white-text" style={{ paddingBottom: '15px' }}>
+                                                    <div className="row" style={{ marginBottom: '0' }}>
+                                                        <div className="col s5" style={{ borderRight: '2px solid grey', height: '115px' }}>
+                                                            <span className="card-title" >Quote price</span>
+                                                            <div style={{ width: '80%' }}>
+                                                                <GeneralInput style={{ width: '30%' }} placeholder="Amount in ₹" classy="" type="text" id="tender-quote" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col s7" style={{ paddingLeft: '30px' }}>
+                                                            <p style={{ paddingBottom: '20px' }}>Please check the details carefully before submitting a quotation</p>
+                                                            <div className="row">
+                                                                <div className="col s6 center-align">
+                                                                    {
+                                                                        props.getSpecificTender && props.getSpecificTender.getSpecificTender ?
+                                                                            <p className="grey-text" style={{ paddingBottom: '5px' }}>Est. cost: {formatter.format(props.getSpecificTender.getSpecificTender.amount)}</p>
+                                                                            :
+                                                                            <p style={{ paddingBottom: '5px' }}>Loading amount..</p>
+                                                                    }
+                                                                </div>
+                                                                <div className="col s6">
+                                                                    <div onClick={() => handleSubmit()} className="btn blue" style={{ borderRadius: '24px' }}>Quote</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -154,4 +229,17 @@ export default compose(
             }
         }
     }),
+    graphql(addBids, { name: "addBids" }),
+    graphql(decryptContractor, {
+        name: "decryptContractor",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    token: temp
+                }
+            }
+        }
+    }),
 )(TenderDetailed)
+

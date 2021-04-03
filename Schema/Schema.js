@@ -177,6 +177,16 @@ const TendersType = new GraphQLObjectType({
                 })
             }
         },
+        bidsBy: {
+            type: new GraphQLList(UserType),
+            async resolve(parent, args) {
+                return User.find({
+                    _id: {
+                        $in: parent.bidsBy
+                    }
+                })
+            }
+        },
         nameOfWork: { type: GraphQLString }
     })
 });
@@ -848,7 +858,9 @@ const RootQuery = new GraphQLObjectType({
                 id: { type: GraphQLID }
             },
             async resolve(parent, args) {
-                return await Tenders.find({"isAssigned": false, "bids.contractorId": { $nin: [args.id] }});
+                if (args.id == "") return null;
+                let res = jwt.verify(args.id, JWT_SEC);
+                return await Tenders.find({"isAssigned": false, "bidsBy": { $nin: [res._id] }});
             }
         },
         myTenders: {
@@ -857,7 +869,9 @@ const RootQuery = new GraphQLObjectType({
                 id: { type: GraphQLID }
             },
             async resolve(parent, args) {
-                return await Tenders.find({"contractorId": args.id, "isCompleted": false});
+                if (args.id == "") return null;
+                let res = jwt.verify(args.id, JWT_SEC);
+                return await Tenders.find({"contractorId": res._id, "isCompleted": false});
             }
         },
         quotedTenders: {
@@ -866,7 +880,9 @@ const RootQuery = new GraphQLObjectType({
                 id: { type: GraphQLID }
             },
             async resolve(parent, args) {
-                return await Tenders.find({"isAssigned": false, "bids.contractorId": { $in: [args.id] }});
+                if (args.id == "") return null;
+                let res = jwt.verify(args.id, JWT_SEC);
+                return await Tenders.find({"isAssigned": false, "bidsBy": { $in: [res._id] }});
             }
         },
         pastTenders: {
@@ -875,7 +891,9 @@ const RootQuery = new GraphQLObjectType({
                 id: { type: GraphQLID }
             },
             async resolve(parent, args) {
-                return await Tenders.find({"isAssigned": true, "contractorId": args.id, "isCompleted": true });
+                if (args.id == "") return null;
+                let res = jwt.verify(args.id, JWT_SEC);
+                return await Tenders.find({"isAssigned": true, "contractorId": res._id, "isCompleted": true });
             }
         },
         
@@ -1495,7 +1513,8 @@ const Mutation = new GraphQLObjectType({
                     isCompleted: false,
                     contractorId: "",
                     bids: [],
-                    baseReports: args.baseReports
+                    baseReports: args.baseReports,
+                    bidsBy: []
                 });
                 let fin = await obj.save();
                 if(!fin) {
@@ -1504,6 +1523,47 @@ const Mutation = new GraphQLObjectType({
                 return fin;
             }
         }, // * add tender done
+        addBids: {
+            type: BidsType,
+            args: {
+                amount: { type: GraphQLString },
+                bidedAt: { type: GraphQLString },   // time
+                bidedOn: { type: GraphQLString },   // date
+                contractorId: { type: GraphQLID },
+                tenderId: { type: GraphQLID },
+            },
+            async resolve(parent, args) {
+                if(!args.amount || !args.bidedAt || !args.bidedOn || !args.contractorId || !args.tenderId) {
+                    throw new Error("Kindly provide all details!")
+                }
+                let BidObj = new Bids({
+                    amount: args.amount,
+                    bidedAt: args.bidedAT,
+                    bidedOn: args.bidedOn,
+                    contractorId: args.contractorId,
+                    tenderId: args.tenderId
+                });
+                // saving bid
+                let res = await BidObj.save();
+                if(!res) {
+                    throw new Error("Something unexpected happen!")
+                }
+
+                // updating contractor
+                let ressy = await Contractors.findByIdAndUpdate(args.contractorId, {
+                    $push: { "bidsMade": res._id }
+                })
+
+                // adding to tender's array
+                let res2 = await Tenders.findByIdAndUpdate(args.tenderId, {
+                    $push: { "bids": res._id, "bidsBy": args.contractorId }
+                });
+                if(!res2) {
+                    throw new Error("Something unexpected happen!")
+                }
+                return res;
+            }
+        }
     }
 })
 

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import TenderMap from './TenderMap'
 import Lottie from 'react-lottie';
 import loading from '../../../../images/Lottie/newTenders.json'
-import { availableTenders, myTenders } from '../../../../queries/query'
+import lonely from '../../../../images/Lottie/lonely.json'
+import { availableTenders, myTenders, pastTenders } from '../../../../queries/query'
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { Link } from 'react-router-dom';
+
 
 const TenderSide = (props) => {
 
@@ -16,6 +18,14 @@ const TenderSide = (props) => {
         loop: true,
         autoplay: true,
         animationData: loading,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
+    const defaultOptions1 = {
+        loop: true,
+        autoplay: true,
+        animationData: lonely,
         rendererSettings: {
             preserveAspectRatio: 'xMidYMid slice'
         }
@@ -124,111 +134,116 @@ const TenderSide = (props) => {
                                             </symbol>
                                         </svg>
                                         {
-                                            currentTab == 0 && props.availableTenders && props.availableTenders.availableTenders ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
+                                            currentTab != 1 && currentTab != 2 ?
+                                                <>
                                                     {
-                                                        props.availableTenders.availableTenders.map((tender, key) => {
-                                                            return (
-                                                                <Link to={`/contractor/tender/${tender.id}`}>
-                                                                    <div key={key} className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                                            </div>
-                                                                            <div className="col s9">
-                                                                                {tender.address.length > 50 ? <h5 className="black-text">{(tender.address).substring(0, 50)}...</h5> : <h5 className="black-text">{tender.address}</h5>}
-                                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >{tender.amount} | {tender.endDate} | Click to know more</p>
-                                                                            </div>
-                                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }}>➜</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </Link>
-                                                            )
-                                                        })
+                                                        currentTab == 0 && props.availableTenders && props.availableTenders.availableTenders && props.availableTenders.availableTenders.length != 0 ?
+                                                            <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
+                                                                {
+                                                                    console.log("Current tab is 0"),
+                                                                    props.availableTenders.availableTenders.map((tender, key) => {
+                                                                        return (
+                                                                            <Link to={`/contractor/tender/${tender.id}`}>
+                                                                                <div key={key} className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                                                    <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
+                                                                                        <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
+                                                                                        </div>
+                                                                                        <div className="col s9">
+                                                                                            {tender.address.length > 50 ? <h5 className="black-text">{(tender.address).substring(0, 50)}...</h5> : <h5 className="black-text">{tender.address}</h5>}
+                                                                                            <p className="grey-text" style={{ paddingTop: "8px" }} >{tender.amount} | {tender.endDate} | Click to know more</p>
+                                                                                        </div>
+                                                                                        <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }}>➜</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </Link>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </div>
+                                                            :
+                                                            <Lottie options={defaultOptions1}
+                                                                height={300}
+                                                                width={500}
+                                                                isStopped={false}
+                                                                isPaused={false}
+                                                                style={{}}
+                                                            />
                                                     }
-                                                </div>
-                                                : null
+                                                </> : null
                                         }
                                         {
-                                            currentTab == 1 && props.myTenders && props.myTenders.myTenders ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
+                                            currentTab != 0 && currentTab != 2 ?
+                                                <>
                                                     {
-                                                        props.myTenders.myTenders.map((tender, key) => {
-                                                            return (
-                                                                <Link to={`/contractor/tender/${tender.id}`}>
-                                                                    <div key={key} className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                                            </div>
-                                                                            <div className="col s9">
-                                                                                {tender.address.length > 50 ? <h5 className="black-text">{(tender.address).substring(0, 50)}...</h5> : <h5 className="black-text">{tender.address}</h5>}
-                                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >{tender.amount} | {tender.endDate} | Click to know more</p>
-                                                                            </div>
-                                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }}>➜</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </Link>
-                                                            )
-                                                        })
+                                                        currentTab == 1 && props.myTenders && props.myTenders.myTenders && props.myTenders.myTenders.length != 0 ?
+                                                            <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
+                                                                {
+                                                                    console.log("Current tab is 1"),
+                                                                    props.myTenders.myTenders.map((tender, key) => {
+                                                                        return (
+                                                                            <Link to={`/contractor/tender/${tender.id}`}>
+                                                                                <div key={key} className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                                                    <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
+                                                                                        <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
+                                                                                        </div>
+                                                                                        <div className="col s9">
+                                                                                            {tender.address.length > 50 ? <h5 className="black-text">{(tender.address).substring(0, 50)}...</h5> : <h5 className="black-text">{tender.address}</h5>}
+                                                                                            <p className="grey-text" style={{ paddingTop: "8px" }} >{tender.amount} | {tender.endDate} | Click to know more</p>
+                                                                                        </div>
+                                                                                        <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }}>➜</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </Link>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </div>
+                                                            : <Lottie options={defaultOptions1}
+                                                                height={300}
+                                                                width={500}
+                                                                isStopped={false}
+                                                                isPaused={false}
+                                                                style={{}}
+                                                            />
                                                     }
-                                                </div>
-                                                : null
+                                                </> : null
                                         }
                                         {
-                                            currentTab == 2 ?
-                                                <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
+                                            currentTab != 0 && currentTab != 1 ?
+                                                <>
+                                                    {
+                                                        currentTab == 2 && props.pastTenders && props.pastTenders.pastTenders ?
+                                                            <div className="row" style={{ height: '100%', width: '100%', paddingTop: '25px' }}>
+                                                                {
+                                                                    console.log("Current tab is 2"),
+                                                                    props.pastTenders.pastTenders.map((tender, key) => {
+                                                                        return (
+                                                                            <Link to={`/contractor/tender/${tender.id}`}>
+                                                                                <div key={key} className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
+                                                                                    <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
+                                                                                        <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
+                                                                                        </div>
+                                                                                        <div className="col s9">
+                                                                                            {tender.address.length > 50 ? <h5 className="black-text">{(tender.address).substring(0, 50)}...</h5> : <h5 className="black-text">{tender.address}</h5>}
+                                                                                            <p className="grey-text" style={{ paddingTop: "8px" }} >{tender.amount} | {tender.endDate} | Click to know more</p>
+                                                                                        </div>
+                                                                                        <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }}>➜</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </Link>
+                                                                        )
+                                                                    })
+                                                                }
                                                             </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    DH-17
-                                                        </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                        </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                            </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    DH-20
-                                                        </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                        </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px" }} >
-                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${'https://source.unsplash.com/800x600/?beach'})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
-                                                            </div>
-                                                            <div className="col s9">
-                                                                <h5 className="black-text">
-                                                                    DH-15
-                                                        </h5>
-                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    50,00,000 | May 2021 | Click to know more
-                                                        </p>
-                                                            </div>
-                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
-                                                                ➜
-                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                : null
+                                                            : <Lottie options={defaultOptions1}
+                                                                height={300}
+                                                                width={500}
+                                                                isStopped={false}
+                                                                isPaused={false}
+                                                                style={{}}
+                                                            />
+                                                    }
+                                                </> : null
                                         }
                                     </div>
                                 </div>
@@ -264,6 +279,17 @@ export default compose(
     }),
     graphql(myTenders, {
         name: "myTenders",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    id: temp
+                }
+            }
+        }
+    }),
+    graphql(pastTenders, {
+        name: "pastTenders",
         options: () => {
             let temp = localStorage.getItem("token") || "";
             return {

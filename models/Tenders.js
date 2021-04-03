@@ -26,6 +26,10 @@ const tenderSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "Bids"
     }],
+    bidsBy: [{
+        type: ObjectId,
+        ref: "User"
+    }],
     baseReports: [{
         type: ObjectId,
         ref: "BaseReports"

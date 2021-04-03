@@ -31,6 +31,7 @@ import ContractorHomepage from './components/Layouts/Contractors/ContractorHomep
 import Tenders from './components/Layouts/Contractors/Contractor Components/Tenders'
 import Profile from './components/Layouts/Profile'
 import AddTender from './components/Layouts/Admin/AdminComponents/AddTender'
+import AllTenders from './components/Layouts/Admin/AllTenders'
 import SpecificReport from './components/Layouts/Admin/SpecificReport.js';
 import AllAdvertisers from './components/Layouts/Admin/AllAdvertisers.js';
 import AllContractors from './components/Layouts/Admin/AllContractors.js';
@@ -94,6 +95,7 @@ const App = (props) => {
             <Route exact path='/admin/advertisers' component={AllAdvertisers} />
             <Route exact path='/admin/contractors' component={AllContractors} />
             <Route exact path='/admin/add/tender' component={AddTender} />
+            <Route exact path='/admin/all/tender' component={AllTenders} />
             <Route exact path='/admin/report/:id' component={SpecificReport} />
 
             {/* Contractor routes */}
