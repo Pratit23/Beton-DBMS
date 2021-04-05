@@ -20,20 +20,20 @@ const ContractorHomepageSide = (props) => {
             <div className="row advHomeTop">
                 <div className="col s12 m8">
                     {
-                        props.myTenders && !props.myTenders.loading && props.myTenders.myTenders ? (
+                        props.myTenders && !props.myTenders.loading && props.myTenders.myTenders && props.myTenders.myTenders.length != 0? (
                             <QuickInfoCard color="#c33c29" textColor="#fff" text="Active Tenders" value={props.myTenders.myTenders.length} />
                         ) :
                             <QuickInfoCard color="#c33c29" textColor="#fff" text="Active Tenders" value="0" />
                     }
                     {
 
-                        props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders ? (
+                        props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders && props.availableTenders.availableTenders.length != 0 ? (
                             <QuickInfoCard color="#75a29e" textColor="#fff" text="Available Tenders" value={props.availableTenders.availableTenders.length} />
                         ) :
                             <QuickInfoCard color="#75a29e" textColor="#fff" text="Available Tenders" />
                     }
                     {
-                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports ? (
+                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.allBaseReports.allBaseReports.length != 0  ? (
                             <QuickInfoCard color="#f7f1ec" textColor="#000" text="All Reports" value={props.allBaseReports.allBaseReports.length} />
                         ) :
                             <QuickInfoCard color="#f7f1ec" textColor="#000" text="All Reports" />
