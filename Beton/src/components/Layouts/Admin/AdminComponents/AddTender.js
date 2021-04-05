@@ -57,6 +57,10 @@ function AddTender(props) {
         document.getElementById('autocomplete-input').value = ''
     }
 
+    useEffect(() => {
+        console.log("Map data useffect")
+    }, [mapData])
+
     const handleAddTender = async () => {
         let day = document.querySelector('.day').value
         console.log("Day: ", day)
