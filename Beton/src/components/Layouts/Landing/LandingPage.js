@@ -22,8 +22,8 @@ const LandingPage = (props) => {
       {/* starting globe section */}
       <div className="row" style={{ background: "#000011", margin: 0, padding: "20px" }} >
         <h4 className="col s5 white-text center-align">Beton</h4>
-        <a href="#whyus" style={{ textDecoration: "none" }} className=" valign-wrappper col s2 offset-s2 right-align white-text" ><h5>Why Us?</h5></a>
-        <a href="#options" style={{ textDecoration: "none" }} className=" valign-wrappper col s2 offset-s1 left-align white-text" ><h5>Register?</h5></a>
+        <a href="#whyus" style={{ textDecoration: "none" }} className=" valign-wrappper col s1 offset-s3 center-align white-text" ><h5>Why Us?</h5></a>
+        <a href="#options" style={{ textDecoration: "none", borderLeft: "3.5px solid white" }} className=" valign-wrappper col s1 center-align white-text" ><h5>Options</h5></a>
       </div>
 
       <Globe />

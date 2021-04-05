@@ -20,7 +20,7 @@ const ContractorHomepageSide = (props) => {
             <div className="row advHomeTop">
                 <div className="col s12 m8">
                     {
-                        props.myTenders && !props.myTenders.loading && props.myTenders.myTenders && props.myTenders.myTenders.length != 0? (
+                        props.myTenders && !props.myTenders.loading && props.myTenders.myTenders && props.myTenders.myTenders.length != 0 ? (
                             <QuickInfoCard color="#c33c29" textColor="#fff" text="Active Tenders" value={props.myTenders.myTenders.length} />
                         ) :
                             <QuickInfoCard color="#c33c29" textColor="#fff" text="Active Tenders" value="0" />
@@ -33,7 +33,7 @@ const ContractorHomepageSide = (props) => {
                             <QuickInfoCard color="#75a29e" textColor="#fff" text="Available Tenders" />
                     }
                     {
-                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.allBaseReports.allBaseReports.length != 0  ? (
+                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.allBaseReports.allBaseReports.length != 0 ? (
                             <QuickInfoCard color="#f7f1ec" textColor="#000" text="All Reports" value={props.allBaseReports.allBaseReports.length} />
                         ) :
                             <QuickInfoCard color="#f7f1ec" textColor="#000" text="All Reports" />
@@ -49,13 +49,12 @@ const ContractorHomepageSide = (props) => {
                     <hr className="divider" />
                     {
                         props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders && props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports ?
-                        <ContractorDonut values={[props.myTenders.myTenders.length, props.availableTenders.availableTenders.length, props.allBaseReports.allBaseReports.length]} /> :
-                        <p>Loading chart</p>
+                            <ContractorDonut values={[props.myTenders.myTenders.length, props.availableTenders.availableTenders.length, props.allBaseReports.allBaseReports.length]} /> :
+                            <p>Loading chart</p>
                     }
                     {/* Recent users */}
                     <h3 style={{ margin: "30px 0 0 30px" }}>Recent Tenders</h3>
                     <hr className="divider" />
-                    <RecentList/>
                 </div>
             </div>
         </div>

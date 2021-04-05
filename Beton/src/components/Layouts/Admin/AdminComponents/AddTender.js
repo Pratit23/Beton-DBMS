@@ -90,7 +90,6 @@ function AddTender(props) {
                 nameOfWork,
             }
         })
-
         if (res && res.data && res.data.addTender) {
             M.toast({ html: "Wohoo! Tender successfully created!" });
             setShowDirec(false)
