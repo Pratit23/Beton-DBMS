@@ -4,6 +4,7 @@ import { flowRight as compose } from 'lodash';
 import { allTenders } from '../../../../queries/query';
 import Lottie from 'react-lottie';
 import sunny from '../../../../images/Lottie/sunny.json';
+import NoneLive from '../../../../images/Lottie/noneLive.json';
 import { Link } from 'react-router-dom';
 
 
@@ -12,6 +13,14 @@ const TendersTab = (props) => {
         loop: true,
         autoplay: true,
         animationData: sunny,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
+    const defaultOptions2 = {
+        loop: true,
+        autoplay: true,
+        animationData: NoneLive,
         rendererSettings: {
             preserveAspectRatio: 'xMidYMid slice'
         }
@@ -28,7 +37,7 @@ const TendersTab = (props) => {
                     <div className="container" style={{ width: "85%" }} >
                         {
                             props.allTenders && !props.allTenders.loading && props.allTenders.allTenders ? (
-                                props.allTenders.allTenders.map(u => {
+                                props.allTenders.allTenders.length != 0 ? props.allTenders.allTenders.map(u => {
                                     return (
                                         <Link to={`/admin/tender/${u.id}`}>
                                             <div className="card-panel" style={{ borderRadius: "12px", padding: "10px", cursor: "pointer", height: "150px" }}  >
@@ -88,7 +97,17 @@ const TendersTab = (props) => {
                                             </div>
                                         </Link>
                                     )
-                                })
+                                }) :
+                                    <>
+                                        <h6 className="center-align" >So empty, wow! No tenders are live yet. Headover and make some now!</h6>
+                                        <Lottie
+                                            options={defaultOptions2}
+                                            height={400}
+                                            width={400}
+                                            isStopped={false}
+                                            isPaused={false}
+                                        />
+                                    </>
                             ) : <p>Loading..</p>
                         }
                     </div>

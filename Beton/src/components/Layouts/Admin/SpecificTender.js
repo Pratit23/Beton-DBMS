@@ -8,7 +8,7 @@ const SpecificTender = (props) => {
     return (
         <div>
             <AdminSidenav />
-            <TenderDetail />
+            <TenderDetail props={props} />
         </div>
     )
 }

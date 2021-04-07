@@ -83,8 +83,8 @@ const allContractors = gql`
 `
 
 const addTender = gql`
-mutation($endDate: String!, $address: String!, $source: String!, $destination: String!, $baseReports: [ID]!, $amount: String!, $nameOfWork: String!){
-  addTender(endDate: $endDate, address: $address, source: $source, destination: $destination, baseReports: $baseReports, amount: $amount, nameOfWork: $nameOfWork){
+mutation($endDate: String!, $address: String!, $source: String!, $destination: String!, $baseReports: [ID]!, $amount: String!, $nameOfWork: String!, $encoded: [encCoordsInput]!){
+  addTender(endDate: $endDate, address: $address, source: $source, destination: $destination, baseReports: $baseReports, amount: $amount, nameOfWork: $nameOfWork, encoded: $encoded){
     id
     address
     source
@@ -93,6 +93,10 @@ mutation($endDate: String!, $address: String!, $source: String!, $destination: S
     nameOfWork
     isAssigned
     isCompleted
+    encoded{
+      lat
+      lng
+    }
   }
 }
 `
@@ -275,6 +279,10 @@ query($token: String){
         destination
         isAssigned
       	isCompleted
+        encoded{
+          lat
+          lng
+        }
       }
     }
     profile    
@@ -588,6 +596,10 @@ query($id: ID!){
     endDate
     amount
     nameOfWork
+    encoded{
+      lat
+      lng
+    }
     baseReports{
       id
       image
@@ -654,6 +666,10 @@ query($id: ID!){
     endDate
     amount
     nameOfWork
+    encoded{
+      lat
+      lng
+    }
     baseReports{
       id
       image
@@ -721,6 +737,10 @@ query($id: ID!){
     endDate
     amount
     nameOfWork
+    encoded{
+      lat
+      lng
+    }
     baseReports{
       id
       image
@@ -787,6 +807,10 @@ const allTenders = gql`
     endDate
     amount
     nameOfWork
+    encoded{
+      lat
+      lng
+    }
     baseReports{
       id
       image
@@ -852,6 +876,10 @@ query($id: ID!){
     isCompleted
     endDate
     amount
+    encoded{
+      lat
+      lng
+    }
     nameOfWork
     baseReports{
       id
@@ -929,6 +957,10 @@ mutation($amount: String!, $bidedAt: String!, $bidedOn: String!, $contractorId: 
       source
       destination
       amount
+      encoded{
+        lat
+        lng
+      }
     }
   }
 }

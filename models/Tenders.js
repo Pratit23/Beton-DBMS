@@ -54,7 +54,11 @@ const tenderSchema = new mongoose.Schema({
     nameOfWork: {
         type: String,
         require: true
-    }
+    },
+    encoded: [{
+        lat: Number,
+        lng: Number
+    }]
 });
 
 module.exports = mongoose.model("Tenders", tenderSchema);

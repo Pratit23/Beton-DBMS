@@ -21,6 +21,7 @@ function AddTender(props) {
     const [showDirec, setShowDirec] = useState(true)
     const [numPotholes, setNumPotholes] = useState(null)
     const [onRoadPotholes, setOnRoadPotholes] = useState(null)
+    const [encoded, setEncoded] = useState(null)
 
     const searchZip = () => {
         setSortedReports([])
@@ -61,6 +62,11 @@ function AddTender(props) {
         console.log("Map data useffect")
     }, [mapData])
 
+    const getEncoded = (data) => {
+        setEncoded(data)
+        console.log('Encoded data: ', data)
+    }
+
     const handleAddTender = async () => {
         let day = document.querySelector('.day').value
         console.log("Day: ", day)
@@ -92,6 +98,7 @@ function AddTender(props) {
                 baseReports,
                 amount,
                 nameOfWork,
+                encoded
             }
         })
         if (res && res.data && res.data.addTender) {
@@ -143,7 +150,7 @@ function AddTender(props) {
                     <div className="demo" id="main" style={{ overflowY: "auto" }} >
                         <div className="row" >
                             <div className="col s12" style={{ paddingTop: '2vh', paddingLeft: '2vw', paddingRight: '2vw' }}>
-                                <AddTenderMap getData={getData} showDirec={showDirec} getNumPotholes={getNumPotholes} />
+                                <AddTenderMap getData={getData} showDirec={showDirec} getNumPotholes={getNumPotholes} getEncoded={getEncoded} />
                             </div>
                             <div className="col s12">
                                 {

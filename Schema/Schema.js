@@ -33,7 +33,8 @@ const {
     GraphQLList,
     GraphQLNonNull,
     GraphQLBoolean,
-    GraphQLInputObjectType
+    GraphQLInputObjectType,
+    GraphQLFloat,
 } = graphql
 
 // dummy data
@@ -187,9 +188,30 @@ const TendersType = new GraphQLObjectType({
                 })
             }
         },
-        nameOfWork: { type: GraphQLString }
+        nameOfWork: { type: GraphQLString },
+        encoded: {
+            type: new GraphQLList(encCoords),
+            async resolve(parent, args) {
+                return parent.encoded;
+            }
+        }
     })
 });
+
+const encCoords = new GraphQLObjectType({
+    name: "encCoords",
+    fields: () => ({
+        lat: { type: GraphQLFloat },
+        lng: { type: GraphQLFloat },
+    })
+})
+const encCoordsInput = new GraphQLInputObjectType({
+    name: "encCoordsInput",
+    fields: () => ({
+        lat: { type: GraphQLFloat },
+        lng: { type: GraphQLFloat },
+    })
+})
 
 const BidsType = new GraphQLObjectType({
     name: "Bids",
@@ -860,7 +882,7 @@ const RootQuery = new GraphQLObjectType({
             async resolve(parent, args) {
                 if (args.id == "") return null;
                 let res = jwt.verify(args.id, JWT_SEC);
-                return await Tenders.find({"isAssigned": false, "bidsBy": { $nin: [res._id] }});
+                return await Tenders.find({ "isAssigned": false, "bidsBy": { $nin: [res._id] } });
             }
         },
         myTenders: {
@@ -871,7 +893,7 @@ const RootQuery = new GraphQLObjectType({
             async resolve(parent, args) {
                 if (args.id == "") return null;
                 let res = jwt.verify(args.id, JWT_SEC);
-                return await Tenders.find({"contractorId": res._id, "isCompleted": false});
+                return await Tenders.find({ "contractorId": res._id, "isCompleted": false });
             }
         },
         quotedTenders: {
@@ -882,7 +904,7 @@ const RootQuery = new GraphQLObjectType({
             async resolve(parent, args) {
                 if (args.id == "") return null;
                 let res = jwt.verify(args.id, JWT_SEC);
-                return await Tenders.find({"isAssigned": false, "bidsBy": { $in: [res._id] }});
+                return await Tenders.find({ "isAssigned": false, "bidsBy": { $in: [res._id] } });
             }
         },
         pastTenders: {
@@ -893,10 +915,10 @@ const RootQuery = new GraphQLObjectType({
             async resolve(parent, args) {
                 if (args.id == "") return null;
                 let res = jwt.verify(args.id, JWT_SEC);
-                return await Tenders.find({"isAssigned": true, "contractorId": res._id, "isCompleted": true });
+                return await Tenders.find({ "isAssigned": true, "contractorId": res._id, "isCompleted": true });
             }
         },
-        
+
     }
 })
 
@@ -1497,10 +1519,11 @@ const Mutation = new GraphQLObjectType({
                 amount: { type: GraphQLString },
                 nameOfWork: { type: GraphQLString },
                 endDate: { type: GraphQLString },
+                encoded: { type: new GraphQLList(encCoordsInput) }
             },
             async resolve(parent, args) {
                 console.log("Args: ", args)
-                if(!args.address || !args.source || !args.destination || !args.baseReports || !args.amount || !args.nameOfWork){
+                if (!args.address || !args.source || !args.destination || !args.baseReports || !args.amount || !args.nameOfWork || !args.encoded) {
                     throw new Error("Kindly provide all details");
                 }
                 let obj = new Tenders({
@@ -1514,10 +1537,11 @@ const Mutation = new GraphQLObjectType({
                     contractorId: "",
                     bids: [],
                     baseReports: args.baseReports,
-                    bidsBy: []
+                    bidsBy: [],
+                    encoded: args.encoded
                 });
                 let fin = await obj.save();
-                if(!fin) {
+                if (!fin) {
                     throw new Error("Something unexpected happened!")
                 }
                 return fin;
@@ -1533,7 +1557,7 @@ const Mutation = new GraphQLObjectType({
                 tenderId: { type: GraphQLID },
             },
             async resolve(parent, args) {
-                if(!args.amount || !args.bidedAt || !args.bidedOn || !args.contractorId || !args.tenderId) {
+                if (!args.amount || !args.bidedAt || !args.bidedOn || !args.contractorId || !args.tenderId) {
                     throw new Error("Kindly provide all details!")
                 }
                 let BidObj = new Bids({
@@ -1545,7 +1569,7 @@ const Mutation = new GraphQLObjectType({
                 });
                 // saving bid
                 let res = await BidObj.save();
-                if(!res) {
+                if (!res) {
                     throw new Error("Something unexpected happen!")
                 }
 
@@ -1558,7 +1582,7 @@ const Mutation = new GraphQLObjectType({
                 let res2 = await Tenders.findByIdAndUpdate(args.tenderId, {
                     $push: { "bids": res._id, "bidsBy": args.contractorId }
                 });
-                if(!res2) {
+                if (!res2) {
                     throw new Error("Something unexpected happen!")
                 }
                 return res;

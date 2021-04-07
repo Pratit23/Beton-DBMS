@@ -48,7 +48,7 @@ const ContractorHomepageSide = (props) => {
                     <h3 style={{ margin: "30px 0 0 30px" }}>Statistics</h3>
                     <hr className="divider" />
                     {
-                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders && props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports ?
+                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders && props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.allBaseReports.allBaseReports.length != 0 ?
                             <ContractorDonut values={[props.myTenders.myTenders.length, props.availableTenders.availableTenders.length, props.allBaseReports.allBaseReports.length]} /> :
                             <p>Loading chart</p>
                     }
