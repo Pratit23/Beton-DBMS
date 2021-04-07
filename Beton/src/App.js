@@ -40,7 +40,7 @@ import SpecificTender from './components/Layouts/Admin/SpecificTender';
 
 // setting up an apollo client
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: 'http://localhost:1000/graphql',
   onError: ({ response, operation, graphQLErrors, networkError }) => {
     if (operation.operationName === "IgnoreErrorsQuery") {
       response.errors = null;

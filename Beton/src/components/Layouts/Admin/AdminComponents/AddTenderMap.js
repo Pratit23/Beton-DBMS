@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer } from "react-google-maps";
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer, Polyline } from "react-google-maps";
 import AddTender from "./AddTender";
 import MapStyles from '../../../Maps/GoogleMapStyles'
 import { geolocated } from "react-geolocated";
 import { flowRight as compose } from 'lodash';
 import { graphql, useLazyQuery } from 'react-apollo';
 import { isOnLinev2 } from '../../../../queries/query'
+import Polyutil from 'polyline-encoded'
 
 const Map = withScriptjs(
     withGoogleMap(props => (
@@ -27,6 +28,17 @@ const Map = withScriptjs(
                         directions={props.directions}
                     /> : null
             }
+            <Polyline
+                path={[{lat: 16.0028296947859, lng: 73.69015128235833}, {lat: 16.030216409900216, lng: 73.59322248735043}, {lat: 16.0028896947859, lng: 73.69085128235833}, {lat: 16.030816409900216, lng: 73.59382248735043}]}
+                //key={key}
+                options={{
+                    fillColor: "#F15152",
+                    fillOpacity: 0.4,
+                    strokeColor: "#000",
+                    strokeOpacity: 1,
+                    strokeWeight: 1
+                }}
+            />
         </GoogleMap>
     ))
 );
@@ -47,7 +59,7 @@ const AddTenderMap = (props) => {
     };
 
     useEffect(() => {
-        if(props.showDirec == false) {
+        if (props.showDirec == false) {
             setMarks([])
         }
     })
@@ -91,7 +103,7 @@ const AddTenderMap = (props) => {
             const lng1 = marks[1].lng()
             const fromName = lat + "," + lng
             const toName = lat1 + "," + lng1
-            let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${fromName}&destination=${toName}&mode=driving&key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w`)
+            let resp = await fetch(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/directions/json?origin=${fromName}&destination=${toName}&mode=driving&key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w`)
             let respJson = await resp.json()
             console.log("JSON response: ", respJson)
 
@@ -114,6 +126,25 @@ const AddTenderMap = (props) => {
             coords = [...encoded]
             isOnv2();
 
+            var enc = encoded.map((e, key) => {
+                // console.log("E: ", e, typeof (e))
+                return Polyutil.decode(e)
+            })
+
+            console.log("Enc1", enc)
+            enc = enc.map(e => {
+                var objs = e.map(function (x) {
+                    return {
+                        lng: x[0],
+                        lat: x[1]
+                    };
+                }); 
+                return objs
+            })
+            enc = [].concat.apply([], enc);
+
+            console.log("Enc: ", enc)
+
             if (called && loading) {
                 console.log("Patience is virtue")
             }
@@ -135,9 +166,9 @@ const AddTenderMap = (props) => {
 
     return (
         <div>
-        {
-            console.log("Show directioins: ", showDirections)
-        }
+            {
+                console.log("Show directioins: ", showDirections)
+            }
             <Map
                 googleMapURL="http://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w"
                 loadingElement={<div style={{ height: `100%`, borderRadius: '24px' }} />}
