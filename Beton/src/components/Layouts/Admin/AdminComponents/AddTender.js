@@ -155,13 +155,11 @@ function AddTender(props) {
                             <div className="col s12">
                                 {
                                     mapData ?
-                                        <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px", height: '45vh' }} >
+                                        <div className="card-panel col s10 offset-s1" style={{ borderRadius: "24px", padding: "10px", height: 'max-content' }} >
                                             <div className="row" style={{ margin: "5px -.75rem" }} >
                                                 <div className="col s5">
                                                     <h4 className="center-align">Selected route</h4>
                                                     <div style={{ backgroundColor: '#F5F5F5', marginLeft: '1vw', borderRadius: '24px', padding: '10px' }}>
-                                                        <p style={{ paddingTop: '1vh' }}>From: Kudal</p>
-                                                        <p>To: Malvan</p>
                                                         <p>Distance: {mapData.distance}</p>
                                                         <p>{mapData.start_address}</p>
                                                         <p>{mapData.end_address}</p>

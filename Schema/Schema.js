@@ -469,9 +469,6 @@ const AdvertisementType = new GraphQLObjectType({
 
 
 
-
-
-
 const RootQuery = new GraphQLObjectType({
     name: "RootQueryType",
     fields: {
@@ -1338,56 +1335,65 @@ const Mutation = new GraphQLObjectType({
                         throw new Error("Uh oh! You can't report twice in an area")
                     }
                     let decision = false;
-                    basey['similar'].forEach(async (b) => {
+                    console.log(basey)
+                    basey['similar'].forEach(async function (b, ind) {
                         let temp = await Report.findById(b);
-                        if (temp['userID'] == args.userID) {
+                        console.log("tt", temp);
+                        console.log(String(temp['userID']))
+                        console.log(String(args.userID))
+                        console.log(String(temp['userID']).localeCompare(String(args.userID)) == 0)
+                        if (String(temp['userID']).localeCompare(String(args.userID)) == 0) {
                             decision = true;
                         }
-                    });
-                    if (decision) {
-                        throw new Error("Uh oh! You can't report twice in an area")
-                    }
-                    let newReport = new Report({
-                        image: args.image,
-                        address: args.address,
-                        location: args.location,
-                        userID: args.userID,
-                        baseParent: args.baseParent,
-                        reportedAt: args.reportedAt,
-                        reportedOn: args.reportedOn
-                    })
-                    // saving to db
-                    let results = await newReport.save();
-                    let points = 0;
-                    // ? <25 - Beginner
-                    // ? <65 - Intermediate
-                    // ? >65 - Pro
-                    if (args.karma <= 25) {
-                        points = 1
-                    } else if (args.karma <= 65) {
-                        points = 5;
-                    } else {
-                        points = 10;
-                    }
+                        if (ind == basey['similar'].length - 1) {
+                            if (decision == true) {
+                                throw new Error("Uh oh! You can't report twice in an area");
+                            } else {
+                                console.log("Diecece", decision);
+                                let newReport = new Report({
+                                    image: args.image,
+                                    address: args.address,
+                                    location: args.location,
+                                    userID: args.userID,
+                                    baseParent: args.baseParent,
+                                    reportedAt: args.reportedAt,
+                                    reportedOn: args.reportedOn
+                                })
+                                // saving to db
+                                let results = await newReport.save();
+                                let points = 0;
+                                // ? <25 - Beginner
+                                // ? <65 - Intermediate
+                                // ? >65 - Pro
+                                if (args.karma <= 25) {
+                                    points = 1
+                                } else if (args.karma <= 65) {
+                                    points = 5;
+                                } else {
+                                    points = 10;
+                                }
 
-                    // adding to the base reports data
-                    await BaseReports.findByIdAndUpdate(
-                        results.baseParent,
-                        {
-                            $push: { "similar": results._id },
-                            $inc: { "noOfReports": points }
+                                // adding to the base reports data
+                                await BaseReports.findByIdAndUpdate(
+                                    results.baseParent,
+                                    {
+                                        $push: { "similar": results._id },
+                                        $inc: { "noOfReports": points }
+                                    }
+                                );
+
+                                // adding to users data
+                                await User.findByIdAndUpdate(args.userID, {
+                                    $push: { "reports": results._id },
+                                    $inc: { "karma": 1 }
+                                })
+                                if (!results) {
+                                    throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
+                                }
+                                return results
+                            }
                         }
-                    );
-
-                    // adding to users data
-                    await User.findByIdAndUpdate(args.userID, {
-                        $push: { "reports": results._id },
-                        $inc: { "karma": 1 }
-                    })
-                    if (!results) {
-                        throw new Error('Uh-oh! This wasn\'t meant to happen.Make sure your internet connection is strong.')
-                    }
-                    return results
+                    });
                 }
             }
         }, // *depending mutation done
@@ -1538,7 +1544,8 @@ const Mutation = new GraphQLObjectType({
                     bids: [],
                     baseReports: args.baseReports,
                     bidsBy: [],
-                    encoded: args.encoded
+                    encoded: args.encoded,
+                    endDate: args.endDate
                 });
                 let fin = await obj.save();
                 if (!fin) {
@@ -1547,6 +1554,20 @@ const Mutation = new GraphQLObjectType({
                 return fin;
             }
         }, // * add tender done
+        // !assign tender
+        assignTender: {
+            type: TendersType,
+            args: {
+                tid: { type: new GraphQLNonNull(GraphQLID) },
+                cid: { type: new GraphQLNonNull(GraphQLID) },
+            },
+            async resolve(parent, args) {
+                return await Tenders.findByIdAndUpdate(args.tid, {
+                    "isAssigned": true,
+                    "contractorId": args.cid
+                });
+            }
+        }, //! assgin tender done
         addBids: {
             type: BidsType,
             args: {
@@ -1587,9 +1608,55 @@ const Mutation = new GraphQLObjectType({
                 }
                 return res;
             }
+        }, // ! add bids done!
+        completeTender: {
+            type: GraphQLBoolean,
+            args: {
+                tid: { type: new GraphQLNonNull(GraphQLID) },
+                contri: { type: new GraphQLList(GraphQLID) }
+            },
+            async resolve(parent, args) {
+                let res = await Tenders.findByIdAndUpdate(args.tid, {
+                    "isCompleted": true
+                });
+                await BaseReports.updateMany({
+                    _id: {
+                        $in: res.baseReports
+                    }
+                }, {
+                    "resolved": true
+                });
+                let error = []
+                args.contri.forEach(async (c, index) => {
+                    let coup = await Coupon.findOneAndUpdate({ "assigned": false }, {
+                        "assigned": true,
+                        "userID": c
+                    }).then(async (yea) => {
+                        console.log("id", yea._id);
+                        let user = await User.findByIdAndUpdate(c, {
+                            $push: {
+                                "coupons": yea._id
+                            }
+                        }).then((uu) => {
+                            console.log("user:", uu._id);
+                            if (!uu) {
+                                error.push(index)
+                            }
+                        })
+                    });
+                    if (index == args.contri.length - 1) {
+                        if (error.length == 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+            }
         }
     }
 })
+
 
 // -------- Schema --------- //
 module.exports = new GraphQLSchema({

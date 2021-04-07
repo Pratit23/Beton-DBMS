@@ -31,17 +31,26 @@ const Map = withScriptjs(
             }
             {
                 props.allTenders && props.allTenders.allTenders ?
-                    <Polyline
-                        path={props.allTenders.allTenders[0].encoded.map((u) => { return { "lng": u["lat"], "lat": u["lng"] } })}
-                        //key={key}
-                        options={{
-                            fillColor: "#d50000",
-                            fillOpacity: 0.4,
-                            strokeColor: "#d50000",
-                            strokeOpacity: 1,
-                            strokeWeight: 5
-                        }}
-                    /> : null
+                    <>
+                        {
+                            props.allTenders.allTenders.map((tender, key) => {
+                                return (
+                                    <Polyline
+                                        path={tender.encoded.map((u) => { return { "lng": u["lat"], "lat": u["lng"] } })}
+                                        key={key}
+                                        options={{
+                                            fillColor: "#d50000",
+                                            fillOpacity: 0.4,
+                                            strokeColor: "#d50000",
+                                            strokeOpacity: 1,
+                                            strokeWeight: 5
+                                        }}
+                                    />
+                                )
+                            })
+                        }
+                    </>
+                    : null
             }
         </GoogleMap>
     ))

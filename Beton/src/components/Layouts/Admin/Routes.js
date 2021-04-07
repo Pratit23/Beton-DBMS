@@ -45,12 +45,6 @@ export const routes = [
         eventKey: 7
     },
     {
-        name: 'Onroad Reports',
-        link: '/admin/onroad/reports',
-        icon: 'bullhorn',
-        eventKey: 8
-    },
-    {
         name: 'Add Tender',
         link: '/admin/add/tender',
         icon: 'gift',

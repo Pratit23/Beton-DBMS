@@ -1,17 +1,17 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { flowRight as composey } from 'lodash';
-import { getSpecificTender } from '../../../../queries/query';
+import { getSpecificTender as gs, assignTender, completeTender as ct } from '../../../../queries/query';
 import SpecificTenderMap from './SpecificTenderMap';
 import Lottie from 'react-lottie';
 import loading from '../../../../images/Lottie/loading.json'
 import allocate from '../../../../images/Lottie/allocate.json'
 import noResults from '../../../../images/Lottie/noResults.json'
 import BidGraph from './BidGraph';
+import M from 'materialize-css';
 
-
-const TenderDetail = ({ props, getSpecificTender }) => {
-    console.log(props, getSpecificTender);
+const TenderDetail = ({ props, getSpecificTender, assignTender, completeTender }) => {
+    console.log(getSpecificTender)
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -48,6 +48,60 @@ const TenderDetail = ({ props, getSpecificTender }) => {
             return 0;
         }
     }
+
+    const handleComplete = async () => {
+        if (window.confirm("This action is irreversible. Are you sure if you want to complete the tender?")) {
+            let yeet = [];
+            let tt = getSpecificTender.getSpecificTender.baseReports.map(b => b["id"]);
+            yeet = [...yeet, ...tt]
+            getSpecificTender.getSpecificTender.baseReports.forEach(g => {
+                let temp = g.similar.map(gs => gs["id"])
+                yeet = [...yeet, ...temp]
+            })
+            let res = await completeTender({
+                variables: {
+                    tid: props.match.params.tid,
+                    contri: yeet
+                },
+                refetchQueries: [{
+                    query: gs,
+                    variables: {
+                        id: props.match.params.tid
+                    }
+                }]
+            });
+            console.log(res);
+            if (res && res.data && res.data.completeTender) {
+                M.toast({ html: "Report successfully done and users rewarded accordingly!" })
+            } else {
+                M.toast({ html: "Something went wrong." })
+            }
+        }
+    }
+
+    const handleAssign = async (cid) => {
+        if (window.confirm("This action is irreversible. Please confirm if you wish to assign this tender to this contractor ?")) {
+            let titties = props.match.params.tid;
+            let res = await assignTender({
+                variables: {
+                    tid: props.match.params.tid,
+                    cid
+                },
+                refetchQueries: [{
+                    query: gs,
+                    variables: {
+                        id: titties
+                    }
+                }]
+            });
+            if (res && res.data && res.data.assignTender) {
+                M.toast({ html: "Assigned contractor successfully!" })
+            } else {
+                M.toast({ html: "Something went wrong." })
+            }
+        }
+    }
+
     return (
         <>
             {
@@ -88,7 +142,35 @@ const TenderDetail = ({ props, getSpecificTender }) => {
                                     <hr className="divider" />
                                     {
                                         getSpecificTender.getSpecificTender.isAssigned == true ? (
-                                            <p>Assigned</p>
+                                            <div className="card-panel" style={{ borderRadius: "12px", padding: "10px", cursor: "pointer" }}>
+                                                <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
+                                                    <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url(${getSpecificTender.getSpecificTender.contractorId.profile})`, backgroundSize: "cover", backgroundPosition: "center center" }} >
+                                                    </div>
+                                                    <div className="col s9">
+                                                        <h5 className="black-text">
+                                                            {getSpecificTender.getSpecificTender.contractorId.name}
+                                                        </h5>
+                                                        <p className="grey-text" style={{ paddingTop: "8px" }} >
+                                                            Bided amount: Rs. {getSpecificTender.getSpecificTender.amount}/-
+                                                            </p>
+                                                        <p className="grey-text lighten-1" style={{ fontSize: "13px" }} >
+                                                            {getSpecificTender.getSpecificTender.contractorId.email} | {getSpecificTender.getSpecificTender.contractorId.bidsMade.length} bids done in career
+                                                            </p>
+                                                    </div>
+                                                </div>
+                                                <div className="divider" style={{ marginTop: "20px" }} />
+                                                <div className="card-action center-align" style={{ marginTop: "10px" }}>
+                                                    <span className="btn red" style={{ borderRadius: "24px" }}>
+                                                        Due date: {getSpecificTender.getSpecificTender.endDate}
+                                                    </span>
+                                                    {
+                                                        getSpecificTender.getSpecificTender.isCompleted == false ? (
+                                                            <span onClick={handleComplete} className="btn blue" style={{ borderRadius: "24px", marginLeft: "20px" }} >Mark as done</span>
+                                                        ) :
+                                                            <span className="btn grey" style={{ borderRadius: "24px", marginLeft: "20px", cursor: "not-allowed" }} >Already done</span>
+                                                    }
+                                                </div>
+                                            </div>
                                         ) : (
                                             <>
                                                 <h6 className="center-align">
@@ -133,7 +215,7 @@ const TenderDetail = ({ props, getSpecificTender }) => {
                                                     <div className="card-action center-align" style={{ marginTop: "10px" }}>
                                                         {
                                                             getSpecificTender.getSpecificTender.isAssigned == false ? (
-                                                                <span className="btn blue" style={{ borderRadius: "24px" }} >Assign</span>
+                                                                <span onClick={() => handleAssign(g.contractorId.id)} className="btn blue" style={{ borderRadius: "24px" }} >Assign</span>
                                                             ) :
                                                                 <span className="btn grey" style={{ borderRadius: "24px", cursor: "not-allowed" }} >Already assigned</span>
                                                         }
@@ -167,7 +249,7 @@ const TenderDetail = ({ props, getSpecificTender }) => {
 }
 
 export default composey(
-    graphql(getSpecificTender, {
+    graphql(gs, {
         name: "getSpecificTender",
         options: (props) => {
             return {
@@ -176,5 +258,11 @@ export default composey(
                 }
             }
         }
-    })
+    }),
+    graphql(assignTender, {
+        name: "assignTender"
+    }),
+    graphql(ct, {
+        name: "completeTender"
+    }),
 )(TenderDetail)

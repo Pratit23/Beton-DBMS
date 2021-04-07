@@ -212,6 +212,7 @@ query($token: String){
     email
     id
     karma
+    profile
     reports {
       id
       location
@@ -224,6 +225,32 @@ query($token: String){
       name
       amount
       validity
+    }
+    baseReports{
+      id
+    location
+    noOfReports
+    address
+    reportedAt
+    reportedOn
+    image
+    userID{
+      name
+      id
+      email
+    }
+    similar{
+      id
+      reportedAt
+      reportedOn
+      location
+      userID{
+        name
+  			id
+        email
+      }
+      address
+    }
     }
   }
 }
@@ -266,6 +293,7 @@ query($token: String){
     email
     address
     name
+    profile
     isVerified
     bidsMade{
       id
@@ -946,6 +974,28 @@ query($id: ID!){
 }
 `
 
+const assignTender = gql`
+mutation($tid: ID!, $cid: ID!){
+  assignTender(tid: $tid, cid: $cid){
+    id
+    address
+    source
+    contractorId{
+      id
+      email
+      address
+      name
+    }
+  }
+}
+`
+
+const completeTender = gql`
+mutation($tid: ID!, $contri: [ID!]!){
+  completeTender(tid: $tid, contri: $contri)
+}
+`
+
 const addBids = gql`
 mutation($amount: String!, $bidedAt: String!, $bidedOn: String!, $contractorId: ID!, $tenderId: ID!){
   addBids(amount: $amount, bidedAt: $bidedAt, bidedOn: $bidedOn, contractorId: $contractorId, tenderId: $tenderId){
@@ -1017,7 +1067,9 @@ export {
   getSpecificTender,
   pastTenders,
   allTenders,
-  addBids
+  addBids,
+  assignTender,
+  completeTender
 };
 
 

@@ -167,38 +167,39 @@ const TenderDetailed = (props) => {
                                         </> : null
                                 }
                                 {
-                                    <div className="row" style={{ marginLeft: '10%', marginRight: '10%' }}>
-                                        <div className="col s12" style={{ paddingTop: '5vh' }}>
-                                            <div className="card blue-grey darken-1" style={{ borderRadius: '24px', height: '16vh' }}>
-                                                <div className="card-content white-text" style={{ paddingBottom: '15px' }}>
-                                                    <div className="row" style={{ marginBottom: '0' }}>
-                                                        <div className="col s5" style={{ borderRight: '2px solid grey', height: '115px' }}>
-                                                            <span className="card-title" >Quote price</span>
-                                                            <div style={{ width: '80%' }}>
-                                                                <GeneralInput style={{ width: '30%' }} placeholder="Amount in ₹" classy="" type="text" id="tender-quote" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col s7" style={{ paddingLeft: '30px' }}>
-                                                            <p style={{ paddingBottom: '20px' }}>Please check the details carefully before submitting a quotation</p>
-                                                            <div className="row">
-                                                                <div className="col s6 center-align">
-                                                                    {
-                                                                        props.getSpecificTender && props.getSpecificTender.getSpecificTender ?
-                                                                            <p className="grey-text" style={{ paddingBottom: '5px' }}>Est. cost: {formatter.format(props.getSpecificTender.getSpecificTender.amount)}</p>
-                                                                            :
-                                                                            <p style={{ paddingBottom: '5px' }}>Loading amount..</p>
-                                                                    }
+                                    props.getSpecificTender && props.getSpecificTender.getSpecificTender && props.getSpecificTender.getSpecificTender.isAssigned != true ?
+                                        <div className="row" style={{ marginLeft: '10%', marginRight: '10%' }}>
+                                            <div className="col s12" style={{ paddingTop: '5vh' }}>
+                                                <div className="card blue-grey darken-1" style={{ borderRadius: '24px', height: 'max-content' }}>
+                                                    <div className="card-content white-text" style={{ paddingBottom: '10px 15px' }}>
+                                                        <div className="row" style={{ marginBottom: '0' }}>
+                                                            <div className="col s5" style={{ borderRight: '2px solid grey', height: '115px' }}>
+                                                                <span className="card-title" >Quote price</span>
+                                                                <div style={{ width: '80%' }}>
+                                                                    <GeneralInput style={{ width: '30%' }} placeholder="Amount in ₹" classy="" type="text" id="tender-quote" />
                                                                 </div>
-                                                                <div className="col s6">
-                                                                    <div onClick={() => handleSubmit()} className="btn blue" style={{ borderRadius: '24px' }}>Quote</div>
+                                                            </div>
+                                                            <div className="col s7" style={{ paddingLeft: '30px' }}>
+                                                                <p style={{ paddingBottom: '20px' }}>Please check the details carefully before submitting a quotation</p>
+                                                                <div className="row">
+                                                                    <div className="col s6 center-align">
+                                                                        {
+                                                                            props.getSpecificTender && props.getSpecificTender.getSpecificTender ?
+                                                                                <p className="grey-text" style={{ paddingBottom: '5px' }}>Est. cost: {formatter.format(props.getSpecificTender.getSpecificTender.amount)}</p>
+                                                                                :
+                                                                                <p style={{ paddingBottom: '5px' }}>Loading amount..</p>
+                                                                        }
+                                                                    </div>
+                                                                    <div className="col s6">
+                                                                        <div onClick={() => handleSubmit()} className="btn blue" style={{ borderRadius: '24px' }}>Quote</div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div> : null
                                 }
                             </div>
                         </div>

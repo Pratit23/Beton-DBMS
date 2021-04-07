@@ -20,7 +20,7 @@ const BidGraph = ({ label, datae }) => {
         labels: [...label],
         datasets: [
             {
-                label: '# of Votes',
+                label: 'Quotations',
                 data: [...datae],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',

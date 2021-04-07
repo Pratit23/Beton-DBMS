@@ -32,7 +32,7 @@ const ContractorTab = (props) => {
             <div className="row advHomeTop" style={{ height: "100%" }} >
                 <div className="col s8">
                     <h3 style={{ margin: "30px 0 0 30px" }}>
-                        All Advertisers
+                        All Contractors
                     </h3>
                     <hr className="divider" />
                     {

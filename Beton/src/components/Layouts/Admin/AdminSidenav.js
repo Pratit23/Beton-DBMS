@@ -38,7 +38,7 @@ class AdminSidenav extends React.Component {
 
         return (
 
-            <div className="sidenav" id="mySidenav" style={{overflowY: 'hidden'}}>
+            <div className="sidenav" id="mySidenav" style={{ overflowY: 'hidden' }}>
                 {
                     expanded ? (
                         <h3 className="white-text center-align" style={{ fontFamily: "'Lexend Deca', Arial", marginTop: "15px" }} >Beton</h3>
@@ -71,11 +71,11 @@ class AdminSidenav extends React.Component {
                 </Sidenav>
                 <div className="valign-wrapper center-align" style={expanded ? {
                     position: "fixed",
-                    bottom: "20px",
+                    bottom: "10px",
                     left: "30px"
                 } : {
                     position: "fixed",
-                    bottom: "10px",
+                    bottom: "5px",
                     left: "2px"
                 }}>
                     <GooeySwitch onChange={this.handleToggle} checked={expanded} />

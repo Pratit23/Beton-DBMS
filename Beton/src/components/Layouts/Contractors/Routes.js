@@ -15,6 +15,12 @@ export const routes = [
         eventKey: 2
     },
     {
+        name: 'Profile',
+        link: '/contractor/profile',
+        icon: 'user-info',
+        eventKey: 2
+    },
+    {
         name: 'Logout',
         link: '/',
         icon: 'sign-out',

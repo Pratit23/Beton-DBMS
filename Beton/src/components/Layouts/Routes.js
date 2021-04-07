@@ -1,4 +1,4 @@
-    
+
 // add all routes here
 
 export const routes = [
@@ -27,10 +27,16 @@ export const routes = [
         eventKey: 4
     },
     {
+        name: 'Rewards',
+        link: '/rewards',
+        icon: 'gift',
+        eventKey: 5
+    },
+    {
         name: 'Logout',
         link: '/',
         icon: 'sign-out',
         eventKey: 99
     },
-    
+
 ]
