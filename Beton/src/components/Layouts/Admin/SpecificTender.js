@@ -1,15 +1,16 @@
 import React from 'react';
-import ReportDetails from './AdminComponents/ReportDetails';
 import AdminSidenav from './AdminSidenav';
+import TenderDetail from './AdminComponents/TenderDetail';
 
-const SpecificReport = (props) => {
+
+const SpecificTender = (props) => {
     console.log(props)
     return (
         <div>
             <AdminSidenav />
-            <ReportDetails props={props} />
+            <TenderDetail />
         </div>
     )
 }
 
-export default SpecificReport
+export default SpecificTender
