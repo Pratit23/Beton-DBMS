@@ -170,7 +170,7 @@ const AddTenderMap = (props) => {
                 console.log("Show directioins: ", showDirections)
             }
             <Map
-                googleMapURL="http://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w"
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvZX8lKdR6oCkPOn2z-xmw0JHMEzrM_6w"
                 loadingElement={<div style={{ height: `100%`, borderRadius: '24px' }} />}
                 containerElement={<div style={{ height: `400px`, borderRadius: '24px' }} />}
                 mapElement={<div style={{ height: `100%`, borderRadius: '24px' }} />}
