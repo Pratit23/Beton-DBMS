@@ -918,6 +918,12 @@ query($id: ID!){
       name
       id
       email
+      profile
+      isVerified
+      bidsMade{
+        id
+        amount
+      }
     }
     bids{
       id
@@ -929,7 +935,11 @@ query($id: ID!){
         id
         email
         isVerified
-        
+        profile
+        bidsMade{
+          id
+          amount
+        }
       }
     }
   }

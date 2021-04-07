@@ -9,7 +9,7 @@ const RecentUser = (props) => {
         <div className="row">
             {
                 props.users && !props.users.loading && props.users.users ? (
-                    props.users.users.map((u) => {
+                    props.users.users.slice(0, 10).map((u) => {
                         return (
                             <div className="chip" style={{ margin: "5px 10px" }} >
                                 <img src={u.profile} alt="Profile Person" />

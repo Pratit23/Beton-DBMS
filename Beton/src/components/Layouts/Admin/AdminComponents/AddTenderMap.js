@@ -7,6 +7,7 @@ import { flowRight as compose } from 'lodash';
 import { graphql, useLazyQuery } from 'react-apollo';
 import { isOnLinev2 } from '../../../../queries/query'
 import Polyutil from 'polyline-encoded'
+import { allTenders } from '../../../../queries/query'
 
 const Map = withScriptjs(
     withGoogleMap(props => (
@@ -28,17 +29,20 @@ const Map = withScriptjs(
                         directions={props.directions}
                     /> : null
             }
-            <Polyline
-                path={[{lat: 16.0028296947859, lng: 73.69015128235833}, {lat: 16.030216409900216, lng: 73.59322248735043}, {lat: 16.0028896947859, lng: 73.69085128235833}, {lat: 16.030816409900216, lng: 73.59382248735043}]}
-                //key={key}
-                options={{
-                    fillColor: "#F15152",
-                    fillOpacity: 0.4,
-                    strokeColor: "#000",
-                    strokeOpacity: 1,
-                    strokeWeight: 1
-                }}
-            />
+            {
+                props.allTenders && props.allTenders.allTenders ?
+                    <Polyline
+                        path={props.allTenders.allTenders[0].encoded.map((u) => { return { "lng": u["lat"], "lat": u["lng"] } })}
+                        //key={key}
+                        options={{
+                            fillColor: "#d50000",
+                            fillOpacity: 0.4,
+                            strokeColor: "#d50000",
+                            strokeOpacity: 1,
+                            strokeWeight: 5
+                        }}
+                    /> : null
+            }
         </GoogleMap>
     ))
 );
@@ -63,6 +67,10 @@ const AddTenderMap = (props) => {
             setMarks([])
         }
     })
+
+    useEffect(() => {
+        console.log("Got encoded: ", props.allTenders)
+    }, [props.allTenders.allTenders])
 
     const [isOnv2, { called, loading, data }] = useLazyQuery(
         isOnLinev2,
@@ -123,8 +131,6 @@ const AddTenderMap = (props) => {
                 return obj.polyline.points
             })
 
-            props.getEncoded(encoded)
-
             coords = [...encoded]
             isOnv2();
 
@@ -140,10 +146,12 @@ const AddTenderMap = (props) => {
                         lng: x[0],
                         lat: x[1]
                     };
-                }); 
+                });
                 return objs
             })
             enc = [].concat.apply([], enc);
+
+            props.getEncoded(enc)
 
             console.log("Enc: ", enc)
 
@@ -180,6 +188,7 @@ const AddTenderMap = (props) => {
                 marks={marks}
                 directions={directions}
                 showDirec={props.showDirec}
+                allTenders={props.allTenders}
             />
         </div>
     );
@@ -193,5 +202,8 @@ export default compose(
         },
         userDecisionTimeout: 5000,
     }),
+    graphql(allTenders, {
+        name: "allTenders"
+    })
 )(AddTenderMap)
 
