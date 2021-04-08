@@ -47,7 +47,7 @@ const Rewards = (props) => {
                                                                 <h5 className="black-text">
                                                                     {coupon.name}
                                                                 </h5>
-                                                                <div className="chip" style={{ margin: "5px 10px" }} >
+                                                                <div className="chip">
                                                                     {coupon.advertiserID.company}
                                                                 </div>
                                                                 <p className="grey-text" style={{ paddingTop: "8px" }} >
