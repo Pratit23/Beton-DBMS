@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import { loginQuery } from '../../../queries/query'
+import BetonLogo from '../../../images/beton_circle.png'
 import M from 'materialize-css'
 
 
@@ -107,10 +108,7 @@ const LoginForm = (props) => {
             <div className="signInContainer valign-wrapper center-align" >
                 <div id="login-form-wrapper">
                     <form id="login-form" style={{ margin: '100px', marginLeft: '150px' }}>
-                        <svg className="logo">
-                            <use xlinkHref="#logo" />
-                        </svg>
-
+                        <img style={{ height: '80px' }} src={BetonLogo} id='img1' alt="Image not loading" />
                         <h1>Log In</h1>
 
                         <div className="input email">
