@@ -608,7 +608,7 @@ const RootQuery = new GraphQLObjectType({
                 console.log("args", main)
 
                 //findNearest(point, arrayOfPoints)
-                let allCoords = await BaseReports.find();
+                let allCoords = await BaseReports.find({ "resolved": false });
                 console.log(allCoords);
                 if (allCoords.length == 0) {
                     return false
@@ -1616,46 +1616,55 @@ const Mutation = new GraphQLObjectType({
                 contri: { type: new GraphQLList(GraphQLID) }
             },
             async resolve(parent, args) {
-                // let res = await Tenders.findByIdAndUpdate(args.tid, {
-                //     "isCompleted": true
-                // });
-                // await BaseReports.updateMany({
-                //     _id: {
-                //         $in: res.baseReports
-                //     }
-                // }, {
-                //     "resolved": true
-                // });
-                // let error = []
-                // args.contri.forEach(async (c, index) => {
-                //     let coup = await Coupon.findOneAndUpdate({ "assigned": false }, {
-                //         "assigned": true,
-                //         "userID": c
-                //     }).then(async (yea) => {
-                //         console.log("id", yea._id);
-                //         let user = await User.findByIdAndUpdate(c, {
-                //             $push: {
-                //                 "coupons": yea._id
-                //             }
-                //         }).then((uu) => {
-                //             console.log("user:", uu._id);
-                //             if (!uu) {
-                //                 error.push(index)
-                //             }
-                //         })
-                //     });
-                //     if (index == args.contri.length - 1) {
-                //         if (error.length == 0) {
-                //             return true;
-                //         } else {
-                //             return false;
-                //         }
-                //     }
-                // })
-                args.contri.forEach(async (c, index) => {
-                    let res = await User.findById(c);
-                    console.log("suerrr", res);
+                let res = await Tenders.findByIdAndUpdate(args.tid, {
+                    "isCompleted": true
+                });
+                console.log("yes res", res);
+                let baby = await BaseReports.updateMany({
+                    _id: {
+                        $in: res.baseReports
+                    }
+                }, {
+                    "resolved": true
+                });
+                console.log("basey baby", baby)
+                let error = []
+                return await args.contri.forEach(async (c, index) => {
+                    let coup = await Coupon.findOneAndUpdate({ "assigned": false }, {
+                        "assigned": true,
+                        "userID": c
+                    }).then(async (yea) => {
+                        console.log("id", yea._id);
+                        let user = await User.findByIdAndUpdate(c, {
+                            $push: {
+                                "coupons": yea._id
+                            }
+                        }).then((uu) => {
+                            console.log("user:", uu._id);
+                            console.log(uu);
+                            console.log(!uu);
+                            if (!uu) {
+                                console.log("here")
+                                error.push(index)
+                            }
+                        })
+                    });
+                    if (index == args.contri.length - 1) {
+                        console.log("in last. showing error", error)
+                        console.log("chal ja yaar", error.length)
+                        console.log(error.length == 0)
+                        if (error.length == 0) {
+                            return true;
+                        } else {
+                            throw new Error("Oopsie. Something went wrong. Please try again later.")
+                        }
+                    }
                 })
+                // args.contri.forEach(async (c, index) => {
+                //     console.log(c);
+                //     let res = await User.findById(c);
+                //     console.log("suerrr", res);
+                // })
             }
         }, // !complete tender done
         refreshCoupon: {

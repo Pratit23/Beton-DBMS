@@ -105,6 +105,7 @@ function AddTender(props) {
             M.toast({ html: "Wohoo! Tender successfully created!" });
             setShowDirec(false)
             setMapData(null)
+            props.history.push("/admin/homepage");
         } else {
             M.toast({ html: "Something went wrong, please try again!" });
         }
@@ -137,9 +138,7 @@ function AddTender(props) {
     console.log(props)
 
     const cancel = () => {
-        console.log("Cancel running")
-        setShowDirec(false)
-        setMapData(null)
+        props.history.push("/admin/homepage");
     }
 
     return (
