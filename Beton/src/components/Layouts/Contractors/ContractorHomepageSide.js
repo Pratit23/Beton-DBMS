@@ -6,6 +6,7 @@ import { flowRight as compose } from 'lodash';
 import { allBaseReports, availableTenders, myTenders } from '../../../queries/query';
 import HomeCards from '../../Cards/HomeCards';
 import RecentList from './Contractor Components/RecentList'
+import { Link } from 'react-router-dom';
 
 
 const ContractorHomepageSide = (props) => {
@@ -46,7 +47,6 @@ const ContractorHomepageSide = (props) => {
                     <h3 style={{ margin: "30px 0 0 30px" }}>Statistics</h3>
                     <hr className="divider" />
                     {
-                        console.log(props),
                         props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders && props.myTenders && props.myTenders.myTenders ?
                             <ContractorDonut values={[props.myTenders.myTenders.length, props.availableTenders.availableTenders.length, props.allBaseReports.allBaseReports.length]} /> :
                             <p>Loading chart</p>
@@ -54,6 +54,75 @@ const ContractorHomepageSide = (props) => {
                     {/* Recent users */}
                     <h3 style={{ margin: "30px 0 0 30px" }}>Recent Tenders</h3>
                     <hr className="divider" />
+                    {
+                        props.myTenders && !props.myTenders.loading && props.myTenders.myTenders && props.myTenders.myTenders.length != 0 ?
+                            (
+                                props.myTenders.myTenders.map((u) => {
+                                    console.log(u)
+                                    return (
+                                        <Link to={`/contractor/tenders`}>
+                                            <div className="card-panel" style={{ borderRadius: "12px", padding: "10px", cursor: "pointer", height: "150px" }}  >
+                                                <div className="row valign-wrapper" style={
+                                                    u.isCompleted == false ? u.isAssigned == false ? {
+                                                        margin: "5px -.75rem",
+                                                        borderLeft: "3px solid #5f88fe",
+                                                        marginLeft: "20px",
+                                                        height: "90%"
+                                                    } : {
+                                                        margin: "5px -.75rem",
+                                                        borderLeft: "3px solid #feb81b",
+                                                        marginLeft: "20px",
+                                                        height: "90%"
+                                                    } : {
+                                                        margin: "5px -.75rem",
+                                                        borderLeft: "3px solid #fe7e7c",
+                                                        marginLeft: "20px",
+                                                        height: "90%"
+                                                    }}
+                                                >
+                                                    <i className="material-icons col s1 center" style={
+                                                        u.isCompleted == false ? u.isAssigned == false ? {
+                                                            backgroundColor: "#eef5ff",
+                                                            color: "#5f88fe",
+                                                            padding: "15px 15px",
+                                                            width: "max-content",
+                                                            borderRadius: "50%",
+                                                            fontWeight: "bolder"
+                                                        } : {
+                                                            backgroundColor: "#fff3da",
+                                                            color: "#feb81b",
+                                                            padding: "15px 15px",
+                                                            width: "max-content",
+                                                            borderRadius: "50%",
+                                                            fontWeight: "bolder"
+                                                        } : {
+                                                            backgroundColor: "#ffebea",
+                                                            color: "#fe7e7c",
+                                                            padding: "15px 15px",
+                                                            width: "max-content",
+                                                            borderRadius: "50%",
+                                                            fontWeight: "bolder"
+                                                        }} >check</i>
+                                                    <div className="col s10">
+                                                        <h5 className="black-text">
+                                                            {u.nameOfWork}
+                                                        </h5>
+                                                        <p className="truncate black-text lighten-1" style={{ paddingTop: "8px" }}>
+                                                            {u.address}
+                                                        </p>
+                                                        <p className="grey-text">
+                                                            Estimated amount: {u.amount} | {u.bids.length} bids made | Click to know more
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    )
+                                })
+                            ) : (
+                                <h6 className="center-align">No active tenders assigned to you! :/</h6>
+                            )
+                    }
                 </div>
             </div>
         </div>
