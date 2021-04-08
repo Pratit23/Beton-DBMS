@@ -331,21 +331,21 @@
             &::before {
                 position: absolute;
                 left: 20%;
-                content: "Quote 3";
+                content: "Download our new mobile app";
                 width: max-content;
                 height: 18px;
                 display: inline-block;
                 background-size: cover;
             }
-            &::after {
-              margin-left: 0;
-              content: "";
-              width: 30px;
-              height: 18px;
-              display: block;
-              background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/945546/new.svg") no-repeat;
-              background-size: cover;
-            }
+            // &::after {
+            //   margin-left: 0;
+            //   content: "";
+            //   width: 30px;
+            //   height: 18px;
+            //   display: block;
+            //   background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/945546/new.svg") no-repeat;
+            //   background-size: cover;
+            // }
           }
         }
         &:nth-of-type(1){
@@ -353,7 +353,7 @@
                 &::before {
                     position: absolute;
                     left: 20%;
-                    content: "Quote 2";
+                    content: "Interconnected interface!";
                     width: max-content;
                     height: 18px;
                     display: inline-block;
@@ -379,7 +379,7 @@
                 &::before {
                     position: absolute;
                     left: 20%;
-                    content: "Quote 3";
+                    content: "See things from a birds eye view";
                     width: max-content;
                     height: 18px;
                     display: inline-block;

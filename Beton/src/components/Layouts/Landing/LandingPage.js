@@ -11,7 +11,7 @@ import { flowRight as compose } from 'lodash';
 import { decrypt } from '../../../queries/query';
 import { Redirect } from 'react-router-dom';
 import CountUp from './Interactive/CountUp';
-
+import logo from '../../../images/beton_circle.png';
 
 const LandingPage = (props) => {
 
@@ -21,7 +21,9 @@ const LandingPage = (props) => {
     <div style={{ overflowX: "hidden" }}>
       {/* starting globe section */}
       <div className="row" style={{ background: "#000011", margin: 0, padding: "20px" }} >
-        <h4 className="col s5 white-text center-align">Beton</h4>
+        <h4 className="col s5 white-text center-align">
+          <img src={logo} alt="logo" height="30" width="30" style={{ marginRight: "10px" }} />
+          Beton</h4>
         <a href="#whyus" style={{ textDecoration: "none" }} className=" valign-wrappper col s1 offset-s3 center-align white-text" ><h5>Why Us?</h5></a>
         <a href="#options" style={{ textDecoration: "none", borderLeft: "3.5px solid white" }} className=" valign-wrappper col s1 center-align white-text" ><h5>Options</h5></a>
       </div>

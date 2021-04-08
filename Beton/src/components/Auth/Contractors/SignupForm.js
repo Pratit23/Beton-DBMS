@@ -59,7 +59,7 @@ const SignUpForm = (props) => {
     console.log(props)
     return (
         <form id="signup-form" className="row">
-            <h4>
+            <h4 className="center-align" >
                 <Link to="/" style={{ textDecoration: "none", color: "inherit" }} >
                     Beton
                 </Link>

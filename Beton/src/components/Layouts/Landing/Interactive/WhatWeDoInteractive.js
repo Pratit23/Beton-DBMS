@@ -166,7 +166,7 @@ const WhatWeDoInteractive = () => {
                                 </g>
                             </svg>
                         </div>
-                        <p style={{ fontFamily: "'Nanum Pen Script', cursive", fontSize: "large" }}>Text here</p>
+                        {/* <p style={{ fontFamily: "'Nanum Pen Script', cursive", fontSize: "large" }}>Text here</p> */}
                     </div>
                     <div className="right_card card rightCard2" style={{ margin: "0" }} >
                         <div className="logo">
@@ -192,7 +192,7 @@ const WhatWeDoInteractive = () => {
                                 </defs>
                             </svg>
                         </div>
-                        <p style={{ fontFamily: "'Nanum Pen Script', cursive", fontSize: "large" }}>Text here</p>
+                        {/* <p style={{ fontFamily: "'Nanum Pen Script', cursive", fontSize: "large" }}>Text here</p> */}
                     </div>
                     <div className="right_card card rightCard3" style={{ margin: "0", borderRadius: "0 0 24px 0" }} >
                         <div className="logo">
@@ -219,7 +219,7 @@ const WhatWeDoInteractive = () => {
                             </svg>
 
                         </div>
-                        <p style={{ fontFamily: "'Nanum Pen Script', cursive", fontSize: "large" }}>Text here</p>
+                        {/* <p style={{ fontFamily: "'Nanum Pen Script', cursive", fontSize: "large" }}>Text here</p> */}
                     </div>
                     <div className="right_hero-wrap">
                         <img src="./img/hero-1.png" alt="" id="right_hero" />
