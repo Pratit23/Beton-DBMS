@@ -42,18 +42,17 @@ const Rewards = (props) => {
                                                 return (
                                                     <div className="card-panel hoverable" style={{ borderRadius: "24px", padding: "10px", cursor: "pointer" }} >
                                                         <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
-                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url('')`, backgroundSize: "unset", backgroundRepeat: "no-repeat", backgroundPosition: "center center" }} >
+                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url('https://f1.allesedv.com/64/${coupon.advertiserID.website}')`, backgroundSize: "unset", backgroundRepeat: "no-repeat", backgroundPosition: "center center" }} >
                                                             </div>
                                                             <div className="col s9">
                                                                 <h5 className="black-text">
                                                                     {coupon.name}
                                                                 </h5>
                                                                 <div className="chip" style={{ margin: "5px 10px" }} >
-                                                                    <img src={`https://f1.allesedv.com/64/${coupon.advertiserID.website}`} alt="Profile Advertiser" />
-                                                                    {coupon.company}
+                                                                    {coupon.advertiserID.company}
                                                                 </div>
                                                                 <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    Valid for {coupon.validity} month
+                                                                    Valid for {coupon.validity} month | ₹{coupon.amount}
                                                                 </p>
                                                             </div>
                                                             <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
