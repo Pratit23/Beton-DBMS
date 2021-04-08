@@ -42,7 +42,7 @@ import Rewards from './components/Layouts/Rewards'
 
 // setting up an apollo client
 const client = new ApolloClient({
-  uri: 'http://localhost:1000/graphql',
+  uri: '/graphql',
   onError: ({ response, operation, graphQLErrors, networkError }) => {
     if (operation.operationName === "IgnoreErrorsQuery") {
       response.errors = null;
