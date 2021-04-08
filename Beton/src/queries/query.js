@@ -225,6 +225,12 @@ query($token: String){
       name
       amount
       validity
+      advertiserID{
+        id
+        email
+        company
+        website
+      }
     }
     baseReports{
       id

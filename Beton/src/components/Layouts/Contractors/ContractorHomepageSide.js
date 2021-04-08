@@ -12,9 +12,7 @@ const ContractorHomepageSide = (props) => {
 
     console.log("Props in contractor homepage side", props)
 
-    useEffect(() => {
 
-    }, [props])
     return (
         <div className="demo" id="main" style={{ overflowY: "auto" }} >
             <div className="row advHomeTop">
@@ -48,7 +46,8 @@ const ContractorHomepageSide = (props) => {
                     <h3 style={{ margin: "30px 0 0 30px" }}>Statistics</h3>
                     <hr className="divider" />
                     {
-                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.allBaseReports.allBaseReports.length != 0 && props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders && props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.allBaseReports.allBaseReports.length != 0 && props.myTenders && props.myTenders.myTenders && props.myTenders.myTenders.length != 0 ?
+                        console.log(props),
+                        props.allBaseReports && !props.allBaseReports.loading && props.allBaseReports.allBaseReports && props.availableTenders && !props.availableTenders.loading && props.availableTenders.availableTenders && props.myTenders && props.myTenders.myTenders ?
                             <ContractorDonut values={[props.myTenders.myTenders.length, props.availableTenders.availableTenders.length, props.allBaseReports.allBaseReports.length]} /> :
                             <p>Loading chart</p>
                     }

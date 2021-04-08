@@ -45,10 +45,14 @@ const Rewards = (props) => {
                                                             </div>
                                                             <div className="col s9">
                                                                 <h5 className="black-text">
-                                                                    Test
+                                                                    {coupon.name}
                                                                 </h5>
+                                                                <div className="chip" style={{ margin: "5px 10px" }} >
+                                                                    <img src={`url('https://f1.allesedv.com/64/${coupon.website}')`} alt="Profile Advertiser" />
+                                                                    {coupon.company}
+                                                                </div>
                                                                 <p className="grey-text" style={{ paddingTop: "8px" }} >
-                                                                    Test | Click to know more
+                                                                    Valid for {coupon.validity} month
                                                                 </p>
                                                             </div>
                                                             <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
@@ -62,14 +66,14 @@ const Rewards = (props) => {
                                         }
                                     </> :
                                     <>
-                                    <Lottie
-                                        options={defaultOptions}
-                                        height={400}
-                                        width={500}
-                                        isStopped={false}
-                                        isPaused={false}
-                                    />
-                                    <p className="center-align">Keep on reporting and you'll earn rewards</p>
+                                        <Lottie
+                                            options={defaultOptions}
+                                            height={400}
+                                            width={500}
+                                            isStopped={false}
+                                            isPaused={false}
+                                        />
+                                        <p className="center-align">Keep on reporting and you'll earn rewards</p>
                                     </>
                             }
                         </div>
