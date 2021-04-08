@@ -39,6 +39,7 @@ import TenderDetailed from './components/Layouts/Contractors/Contractor Componen
 import SpecificTender from './components/Layouts/Admin/SpecificTender';
 import ContractorProfile from './components/Layouts/Contractors/Contractor Components/ContractorProfile'
 import Rewards from './components/Layouts/Rewards'
+import DownloadPage from './components/Layouts/DownloadPage.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
@@ -68,6 +69,7 @@ const App = (props) => {
         <div className="App" >
           <Switch>
             <Route exact path='/' component={LandingPage} />
+            <Route exact path='/download' component={DownloadPage} />
             <Route exact path='/login' component={SignIn} />
             <Route exact path='/Signup' component={SignUpRevised} />
             <Route exact path='/Profile' component={Profile} />

@@ -31,13 +31,14 @@ const Rewards = (props) => {
                 <div className="col s8" style={{ height: '100vh', backgroundColor: 'rgb(35, 37, 47)' }}>
                     <div className="demo" id="main" style={{ overflowY: "hidden" }} >
                         <div className="col s12">
-                            <h1 style={{ padding: '20px' }}>Your Coupons</h1>
+                            <h2 style={{ padding: '20px' }}>Your Coupons</h2>
                             <hr />
                             {
                                 props.decrypt && props.decrypt.decrypt && props.decrypt.decrypt.coupons.length > 0 ?
                                     <>
                                         {
                                             props.decrypt.decrypt.coupons.map((coupon, key) => {
+                                                console.log(coupon)
                                                 return (
                                                     <div className="card-panel hoverable" style={{ borderRadius: "24px", padding: "10px", cursor: "pointer" }} >
                                                         <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
@@ -48,7 +49,7 @@ const Rewards = (props) => {
                                                                     {coupon.name}
                                                                 </h5>
                                                                 <div className="chip" style={{ margin: "5px 10px" }} >
-                                                                    <img src={`url('https://f1.allesedv.com/64/${coupon.website}')`} alt="Profile Advertiser" />
+                                                                    <img src={`https://f1.allesedv.com/64/${coupon.advertiserID.website}`} alt="Profile Advertiser" />
                                                                     {coupon.company}
                                                                 </div>
                                                                 <p className="grey-text" style={{ paddingTop: "8px" }} >
