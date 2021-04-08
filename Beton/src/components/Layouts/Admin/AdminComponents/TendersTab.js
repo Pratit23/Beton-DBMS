@@ -37,7 +37,7 @@ const TendersTab = (props) => {
                     <div className="container" style={{ width: "85%" }} >
                         {
                             props.allTenders && !props.allTenders.loading && props.allTenders.allTenders ? (
-                                props.allTenders.allTenders.length != 0 ? props.allTenders.allTenders.map(u => {
+                                props.allTenders.allTenders.length != 0 ? props.allTenders.allTenders.reverse().map(u => {
                                     return (
                                         <Link to={`/admin/tender/${u.id}`}>
                                             <div className="card-panel" style={{ borderRadius: "12px", padding: "10px", cursor: "pointer", height: "150px" }}  >

@@ -234,6 +234,7 @@ query($token: String){
     reportedAt
     reportedOn
     image
+    resolved
     userID{
       name
       id

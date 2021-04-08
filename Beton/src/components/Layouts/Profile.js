@@ -23,7 +23,7 @@ const Profile = (props) => {
             preserveAspectRatio: 'xMidYMid slice'
         }
     };
-
+    console.log("babua", props.decrypt)
     return (
         <div>
             <Sidenav />
@@ -69,8 +69,8 @@ const Profile = (props) => {
                                                     <div className='col s4'>
                                                         <p>Reports</p>
                                                         {
-                                                            props.decrypt && props.decrypt.loading == false && props.decrypt.decrypt && props.decrypt.decrypt.reports.length > 0 ?
-                                                                <p className='black-text' style={{ fontWeight: 'bold' }}>{props.decrypt.decrypt.reports.length}</p> :
+                                                            props.decrypt && !props.decrypt.loading && props.decrypt.decrypt && props.decrypt.decrypt.baseReports.length > 0 ?
+                                                                <p className='black-text' style={{ fontWeight: 'bold' }}>{props.decrypt.decrypt.baseReports.length}</p> :
                                                                 <p className='black-text' style={{ fontWeight: 'bold' }}>0</p>
                                                         }
                                                     </div>
@@ -84,7 +84,11 @@ const Profile = (props) => {
                                                     </div>
                                                     <div className='col s4'>
                                                         <p>Rewards</p>
-                                                        <p className='black-text' style={{ fontWeight: 'bold' }}>40</p>
+                                                        {
+                                                            props.decrypt && props.decrypt.loading == false && props.decrypt.decrypt && props.decrypt.decrypt.coupons.length > 0 ?
+                                                                <p className='black-text' style={{ fontWeight: 'bold' }}>{props.decrypt.decrypt.coupons.length}</p> :
+                                                                <p className='black-text' style={{ fontWeight: 'bold' }}>0</p>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>

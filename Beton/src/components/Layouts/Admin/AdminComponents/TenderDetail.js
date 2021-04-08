@@ -52,10 +52,11 @@ const TenderDetail = ({ props, getSpecificTender, assignTender, completeTender }
     const handleComplete = async () => {
         if (window.confirm("This action is irreversible. Are you sure if you want to complete the tender?")) {
             let yeet = [];
-            let tt = getSpecificTender.getSpecificTender.baseReports.map(b => b["id"]);
+            console.log(getSpecificTender.getSpecificTender.baseReports);
+            let tt = getSpecificTender.getSpecificTender.baseReports.map(b => b.userID["id"]);
             yeet = [...yeet, ...tt]
             getSpecificTender.getSpecificTender.baseReports.forEach(g => {
-                let temp = g.similar.map(gs => gs["id"])
+                let temp = g.similar.map(gs => gs.userID["id"])
                 yeet = [...yeet, ...temp]
             })
             let res = await completeTender({
@@ -71,7 +72,7 @@ const TenderDetail = ({ props, getSpecificTender, assignTender, completeTender }
                 }]
             });
             console.log(res);
-            if (res && res.data && res.data.completeTender) {
+            if (res && res.data) {
                 M.toast({ html: "Report successfully done and users rewarded accordingly!" })
             } else {
                 M.toast({ html: "Something went wrong." })
