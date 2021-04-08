@@ -14,8 +14,8 @@ const DownloadPage = () => {
     };
     return (
         <div style={{ height: "100vh", width: "100vw" }} className="valign-wrapper center-align" >
-            <div className="container">
-                <h5 className="container">
+            <div className="container" style={{ padding: "20px" }} >
+                <h5 className="container" style={{ padding: "20px 0" }} >
                     For smaller screens, we strongly advise you to use our app.
                     
                     Therefore, for performance issues we have limited the use of this website to only large screen devices.
@@ -23,13 +23,15 @@ const DownloadPage = () => {
                     <hr className="divider" />
                     Haven't downloaded our app yet? You can download it right here by clicking <a href={apk} download target="__blank" style={{ textDecoration: "none", fontSize: "initial" }}  >here</a>
                 </h5>
-                <Lottie
-                    options={defaultOptions}
-                    height={400}
-                    width={400}
-                    isStopped={false}
-                    isPaused={false}
-                />
+                <div className="hide-on-small-only">
+                    <Lottie
+                        options={defaultOptions}
+                        height={400}
+                        width={400}
+                        isStopped={false}
+                        isPaused={false}
+                    />
+                </div>
             </div>
         </div>
     )
