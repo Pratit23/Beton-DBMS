@@ -6,7 +6,7 @@ import { decrypt } from '../../queries/query';
 import { graphql } from 'react-apollo';
 import { flowRight as compose } from 'lodash';
 import Lottie from 'react-lottie';
-import loading from '../../images/Lottie/loading.json'
+import lonely from '../../images/Lottie/lonely.json'
 
 
 const Rewards = (props) => {
@@ -18,7 +18,7 @@ const Rewards = (props) => {
     const defaultOptions = {
         loop: true,
         autoplay: true,
-        animationData: loading,
+        animationData: lonely,
         rendererSettings: {
             preserveAspectRatio: 'xMidYMid slice'
         }
@@ -32,7 +32,46 @@ const Rewards = (props) => {
                     <div className="demo" id="main" style={{ overflowY: "hidden" }} >
                         <div className="col s12">
                             <h1 style={{ padding: '20px' }}>Your Coupons</h1>
+                            <hr />
+                            {
+                                props.decrypt && props.decrypt.decrypt && props.decrypt.decrypt.coupons.length > 0 ?
+                                    <>
+                                        {
+                                            props.decrypt.decrypt.coupons.map((coupon, key) => {
+                                                return (
+                                                    <div className="card-panel hoverable" style={{ borderRadius: "24px", padding: "10px", cursor: "pointer" }} >
+                                                        <div className="row valign-wrapper" style={{ margin: "5px -.75rem" }} >
+                                                            <div className="col s2 center" style={{ height: "80px", width: "80px", borderRadius: "100%", backgroundImage: `url('')`, backgroundSize: "unset", backgroundRepeat: "no-repeat", backgroundPosition: "center center" }} >
+                                                            </div>
+                                                            <div className="col s9">
+                                                                <h5 className="black-text">
+                                                                    Test
+                                                                </h5>
+                                                                <p className="grey-text" style={{ paddingTop: "8px" }} >
+                                                                    Test | Click to know more
+                                                                </p>
+                                                            </div>
+                                                            <div className="col s1" style={{ paddingTop: "10px", fontSize: "26px" }} >
+                                                                ➜
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
 
+                                            })
+                                        }
+                                    </> :
+                                    <>
+                                    <Lottie
+                                        options={defaultOptions}
+                                        height={400}
+                                        width={500}
+                                        isStopped={false}
+                                        isPaused={false}
+                                    />
+                                    <p className="center-align">Keep on reporting and you'll earn rewards</p>
+                                    </>
+                            }
                         </div>
                     </div>
                 </div>
@@ -47,6 +86,17 @@ const Rewards = (props) => {
 }
 
 export default compose(
+    graphql(decrypt, {
+        name: "decrypt",
+        options: () => {
+            let temp = localStorage.getItem("token") || "";
+            return {
+                variables: {
+                    token: temp
+                }
+            }
+        }
+    })
 )(Rewards)
 
 
