@@ -16,7 +16,7 @@ const Footer = () => {
             <h5 className="white-text">Quick Links</h5>
             <ul>
               <li><Link className="grey-text text-lighten-3" to="/admin/login">Admin login</Link></li>
-              <li><a className="grey-text text-lighten-3" href="#!" download target="__blank">Download mobile app</a></li>
+              <li><Link className="grey-text text-lighten-3" to="/download">Download mobile app</Link></li>
             </ul>
           </div>
         </div>

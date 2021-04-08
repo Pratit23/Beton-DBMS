@@ -98,7 +98,7 @@ const HomepageSide = (props) => {
                                     So, what are you waiting for?
                                 </p>
                                     <div style={{ marginTop: "15px" }}>
-                                        <GenericButton text="Download" id="download" link="google.com" />
+                                        <GenericButton text="Download" id="download" link="download" />
                                     </div>
                                 </div>
                             </div>

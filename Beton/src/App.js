@@ -39,10 +39,11 @@ import TenderDetailed from './components/Layouts/Contractors/Contractor Componen
 import SpecificTender from './components/Layouts/Admin/SpecificTender';
 import ContractorProfile from './components/Layouts/Contractors/Contractor Components/ContractorProfile'
 import Rewards from './components/Layouts/Rewards'
+import DownloadPage from './components/Layouts/DownloadPage.js';
 
 // setting up an apollo client
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: 'http://localhost:1000/graphql',
   onError: ({ response, operation, graphQLErrors, networkError }) => {
     if (operation.operationName === "IgnoreErrorsQuery") {
       response.errors = null;
@@ -67,49 +68,60 @@ const App = (props) => {
       <BrowserRouter>
         <div className="App" >
           <Switch>
-            <Route exact path='/' component={LandingPage} />
-            <Route exact path='/login' component={SignIn} />
-            <Route exact path='/Signup' component={SignUpRevised} />
-            <Route exact path='/Profile' component={Profile} />
-            <Route exact path='/rewards' component={Rewards} />
+            {
+              Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) < 800 ? (
+                <>
+                  <Route exact path='/' component={DownloadPage} />
+                </>
+              ) : (
+                <>
+                  <Route exact path='/' component={LandingPage} />
+                  <Route exact path='/download' component={DownloadPage} />
+                  <Route exact path='/login' component={SignIn} />
+                  <Route exact path='/Signup' component={SignUpRevised} />
+                  <Route exact path='/Profile' component={Profile} />
+                  <Route exact path='/rewards' component={Rewards} />
 
-            {/* auth routes below */}
-            <Route exact path='/Homepage' component={Homepage} />
-            <Route exact path='/Cluster' component={Cluster} />
-            <Route exact path='/ReportPage' component={ReportPage} />
-            <Route exact path='/feedback/report' component={FeedbackReport} />
-            <Route exact path='/coupons' component={Coupons} />
+                  {/* auth routes below */}
+                  <Route exact path='/Homepage' component={Homepage} />
+                  <Route exact path='/Cluster' component={Cluster} />
+                  <Route exact path='/ReportPage' component={ReportPage} />
+                  <Route exact path='/feedback/report' component={FeedbackReport} />
+                  <Route exact path='/coupons' component={Coupons} />
 
-            {/* advertiser routes */}
-            <Route exact path='/advertiser/signup' component={AdvSignupPage} />
-            <Route exact path='/advertiser/login' component={AdvLoginPage} />
-            <Route exact path='/advertiser/homepage' component={AdvertiserHomepage} />
-            <Route exact path='/advertiser/advertisments' component={AllAdvertisments} />
-            <Route exact path='/advertiser/add/advertisments' component={AddAdvertisment} />
-            <Route exact path='/advertiser/add/coupons' component={AddCoupons} />
-            <Route exact path='/advertiser/coupons' component={AllCoupons} />
+                  {/* advertiser routes */}
+                  <Route exact path='/advertiser/signup' component={AdvSignupPage} />
+                  <Route exact path='/advertiser/login' component={AdvLoginPage} />
+                  <Route exact path='/advertiser/homepage' component={AdvertiserHomepage} />
+                  <Route exact path='/advertiser/advertisments' component={AllAdvertisments} />
+                  <Route exact path='/advertiser/add/advertisments' component={AddAdvertisment} />
+                  <Route exact path='/advertiser/add/coupons' component={AddCoupons} />
+                  <Route exact path='/advertiser/coupons' component={AllCoupons} />
 
-            {/* admin routes */}
-            <Route exact path='/admin/login' component={AdminLogin} />
-            <Route exact path='/admin/homepage' component={AdminHomepage} />
-            <Route exact path='/admin/verified/reports' component={Verified} />
-            <Route exact path='/admin/all/reports' component={All} />
-            <Route exact path='/admin/feedback/reports' component={Feedback} />
-            <Route exact path='/admin/users' component={AllUsers} />
-            <Route exact path='/admin/advertisers' component={AllAdvertisers} />
-            <Route exact path='/admin/contractors' component={AllContractors} />
-            <Route exact path='/admin/add/tender' component={AddTender} />
-            <Route exact path='/admin/all/tender' component={AllTenders} />
-            <Route exact path='/admin/tender/:tid' component={SpecificTender} />
-            <Route exact path='/admin/report/:id' component={SpecificReport} />
+                  {/* admin routes */}
+                  <Route exact path='/admin/login' component={AdminLogin} />
+                  <Route exact path='/admin/homepage' component={AdminHomepage} />
+                  <Route exact path='/admin/verified/reports' component={Verified} />
+                  <Route exact path='/admin/all/reports' component={All} />
+                  <Route exact path='/admin/feedback/reports' component={Feedback} />
+                  <Route exact path='/admin/users' component={AllUsers} />
+                  <Route exact path='/admin/advertisers' component={AllAdvertisers} />
+                  <Route exact path='/admin/contractors' component={AllContractors} />
+                  <Route exact path='/admin/add/tender' component={AddTender} />
+                  <Route exact path='/admin/all/tender' component={AllTenders} />
+                  <Route exact path='/admin/tender/:tid' component={SpecificTender} />
+                  <Route exact path='/admin/report/:id' component={SpecificReport} />
 
-            {/* Contractor routes */}
-            <Route exact path='/contractor/login' component={LoginPage} />
-            <Route exact path='/contractor/signup' component={SignupPage} />
-            <Route exact path='/contractor/homepage' component={ContractorHomepage} />
-            <Route exact path='/contractor/tenders' component={Tenders} />
-            <Route exact path='/contractor/tender/:id' component={TenderDetailed} />
-            <Route exact path='/contractor/profile' component={ContractorProfile} />
+                  {/* Contractor routes */}
+                  <Route exact path='/contractor/login' component={LoginPage} />
+                  <Route exact path='/contractor/signup' component={SignupPage} />
+                  <Route exact path='/contractor/homepage' component={ContractorHomepage} />
+                  <Route exact path='/contractor/tenders' component={Tenders} />
+                  <Route exact path='/contractor/tender/:id' component={TenderDetailed} />
+                  <Route exact path='/contractor/profile' component={ContractorProfile} />
+                </>
+              )
+            }
           </Switch>
         </div>
       </BrowserRouter>

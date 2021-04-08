@@ -111,7 +111,7 @@ const ContractorHomepageSide = (props) => {
                                                             {u.address}
                                                         </p>
                                                         <p className="grey-text">
-                                                            Estimated amount: {u.amount} | {u.bids.length} bids made | Click to know more
+                                                            Due date: {u.endDate}
                                                         </p>
                                                     </div>
                                                 </div>
