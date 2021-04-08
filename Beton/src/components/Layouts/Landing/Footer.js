@@ -1,33 +1,34 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
-    return (
-        <footer className="page-footer" style={{ backgroundColor: "#977ba3" }}>
-          <div className="container">
-            <div className="row">
-              <div className="col l6 s12">
-                <h5 className="white-text">Footer Content</h5>
-                <p className="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-              </div>
-              <div className="col l4 offset-l2 s12">
-                <h5 className="white-text">Links</h5>
-                <ul>
-                  <li><a className="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a className="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a className="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a className="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
-              </div>
-            </div>
+  return (
+    <footer className="page-footer" style={{ backgroundColor: "#977ba3" }}>
+      <div className="container">
+        <div className="row">
+          <div className="col l6 s12">
+            <h5 className="white-text">Beton</h5>
+            <p className="grey-text text-lighten-4">
+              An interface to help give everyone a voice of their own. <br /> So what are you waiting for?
+                </p>
           </div>
-          <div className="footer-copyright">
-            <div className="container">
-            © 2014 Copyright Text
-            <a className="grey-text text-lighten-4 right" href="#!">More Links</a>
-            </div>
+          <div className="col l4 offset-l2 s12">
+            <h5 className="white-text">Quick Links</h5>
+            <ul>
+              <li><Link className="grey-text text-lighten-3" to="/admin/login">Admin login</Link></li>
+              <li><a className="grey-text text-lighten-3" href="#!" download target="__blank">Download mobile app</a></li>
+            </ul>
           </div>
-        </footer>
-    )
+        </div>
+      </div>
+      <div className="footer-copyright">
+        <div className="container">
+          © 2021 Beton
+            <a className="grey-text text-lighten-4 right" href="https://github.com/Pratit23/Beton-DBMS" target="__blank">Contributors</a>
+        </div>
+      </div>
+    </footer>
+  )
 }
 
 export default Footer
