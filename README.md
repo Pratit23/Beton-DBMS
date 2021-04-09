@@ -29,6 +29,15 @@ Each of the 4 modules have their own Login/Signup page where, after entering the
 ### Screenshots
 ---
 <p align="center">
+  <img src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/5.PNG" alt="Beton " />
+</p>
+<p align="center">
+  <img src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/6.PNG" alt="Beton " />
+</p>
+<p align="center">
+  <img src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/7.PNG" alt="Beton " />
+</p>
+<p align="center">
   <img src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/1st.png" alt="Beton " />
 </p>
 <p align="center">
