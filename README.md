@@ -27,6 +27,29 @@ We have made a very convenient and accessible website for the benefit of our use
 Each of the 4 modules have their own Login/Signup page where, after entering their credentials, they can view their respective data.
 
 ### Screenshots
+---
+<p align="center">
+  <img height='100px' width='100px' src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/1st.png" width="320" alt="Contro " />
+</p>
+<p align="center">
+  <img height='100px' width='100px' src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/2nd.png" width="320" alt="Contro " />
+</p>
+<p align="center">
+  <img height='100px' width='100px' src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/3rd.png" width="320" alt="Contro " />
+</p>
+<p align="center">
+  <img height='100px' width='100px' src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/4th.png" width="320" alt="Contro " />
+</p>
+
+
+### ER Diagrams
+---
+<p align="center">
+  <img height='100px' width='100px' src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/Beton-ER-Diagram.png" width="320" alt="Contro " />
+</p>
+<p align="center">
+  <img height='100px' width='100px' src="https://github.com/Pratit23/Beton-DBMS/blob/main/Beton/src/images/Beton-Mongo-ER.png" width="320" alt="Contro " />
+</p>
 
 
 ### Technologies Used
